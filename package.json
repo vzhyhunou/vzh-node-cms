@@ -1,12 +1,9 @@
 {
-  "name": "base",
+  "name": "@vzhyhunou/vzh-node-cms",
   "version": "0.0.1",
-  "description": "",
-  "author": "",
-  "private": true,
-  "license": "UNLICENSED",
   "scripts": {
     "format": "prettier --write \"**/*.js\"",
+    "build": "babel src -d dist",
     "start": "babel-node index.js",
     "start:dev": "nodemon",
     "test": "jest",
@@ -22,6 +19,7 @@
   },
   "devDependencies": {
     "@nestjs/testing": "^10.0.0",
+    "@babel/cli": "7.23.9",
     "@babel/core": "7.23.9",
     "@babel/node": "7.23.9",
     "@babel/plugin-proposal-decorators": "7.23.9",
@@ -34,6 +32,10 @@
     "prettier": "3.2.5",
     "supertest": "6.3.4"
   },
+  "files": [
+    "package.json",
+    "dist"
+  ],
   "jest": {
     "moduleFileExtensions": [
       "js",

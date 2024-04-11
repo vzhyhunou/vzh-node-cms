@@ -1,0 +1,27 @@
+name: Deploy
+on:
+  pull_request:
+  push:
+    branches: [master]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions: write-all
+    strategy:
+          matrix:
+            node-version: [20]
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+    - name: Set up NODE ${{ matrix.node-version }}
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ matrix.node-version }}
+    - name: Install with NPM
+      run: npm i
+    - name: Build with NPM
+      run: npm run build
+    - name: Publish with NPM
+      run: npm publish
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
