@@ -19,6 +19,10 @@ jobs:
         node-version: ${{ matrix.node-version }}
     - name: Install with NPM
       run: npm i
+    - name: Test with NPM
+      run: npm run test
+    - name: Test E2E with NPM
+      run: npm run test:e2e
     - name: Build with NPM
       run: npm run build
     - name: Publish with NPM

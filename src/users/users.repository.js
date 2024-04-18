@@ -1,0 +1,67 @@
+import '../common/repository/tagged.repository';
+
+export default {
+  findAll({ page = 0, size = 20, sort }) {
+    const b = this.createQueryBuilder('user')
+      .leftJoin('user.tags', 'tag')
+      .leftJoin('user.user', 'u')
+      .select(['user', 'tag', 'u.id'])
+      .orderByObject('user', sort)
+      .skip(page * size)
+      .take(size)
+      .getMany();
+
+    const c = this.createQueryBuilder('user').select(['user.id']).getCount();
+
+    return Promise.all([b, c]).then(([content, totalElements]) => ({
+      content,
+      totalElements
+    }));
+  },
+
+  list({ id, tags }, { page, size, sort }) {
+    const filter = this.createQueryBuilder('user')
+      .leftJoin('user.tags', 'tag')
+      .select('user.id')
+      .andWhereContains('user.id', id)
+      .andWhereIn('tag.name', tags);
+
+    const b = this.createQueryBuilder('user')
+      .leftJoin('user.tags', 'tag')
+      .leftJoin('user.user', 'u')
+      .select(['user.id', 'tag.id', 'tag.name', 'u.id'])
+      .andWhereInQuery('user.id', filter)
+      .orderByObject('user', sort)
+      .skip(page * size)
+      .take(size)
+      .getMany();
+
+    const c = this.createQueryBuilder('user')
+      .select(['user.id'])
+      .andWhereInQuery('user.id', filter)
+      .getCount();
+
+    return Promise.all([b, c]).then(([content, totalElements]) => ({
+      content,
+      totalElements
+    }));
+  },
+
+  findByIdIn({ ids }) {
+    return this.createQueryBuilder('user')
+      .leftJoin('user.tags', 'tag')
+      .leftJoin('user.user', 'u')
+      .select(['user', 'tag', 'u.id'])
+      .andWhereIn('user.id', ids)
+      .getMany();
+  },
+
+  withActiveRoles(id) {
+    return this.createQueryBuilder('user')
+      .leftJoin('user.tags', 'tag')
+      .select(['user.id', 'tag.name'])
+      .andWhereEqual('user.id', id)
+      .andWhereActiveTags()
+      .getOneOrFail();
+  }
+};
