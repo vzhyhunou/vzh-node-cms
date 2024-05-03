@@ -1,10 +1,12 @@
 import { Test } from '@nestjs/testing';
-import { TypeOrmModule, getDataSourceToken } from '@nestjs/typeorm';
+import { getDataSourceToken } from '@nestjs/typeorm';
 import request from 'supertest';
 import { UsersModule } from '../../src/users/users.module';
 import { user } from './user.fixture';
 import { tag } from '../fixture/tag.fixture';
 import { User } from '../../src/users/user.entity';
+import { DatabaseModule } from '../../src/database/database.module';
+import { ConfigModule } from '../../src/config/config.module';
 
 describe('UsersController (e2e)', () => {
   let manager;
@@ -12,16 +14,7 @@ describe('UsersController (e2e)', () => {
 
   beforeEach(async () => {
     const moduleFixture = await Test.createTestingModule({
-      imports: [
-        TypeOrmModule.forRoot({
-          type: 'sqlite',
-          database: ':memory:',
-          autoLoadEntities: true,
-          synchronize: true,
-          logging: true
-        }),
-        UsersModule
-      ]
+      imports: [ConfigModule, DatabaseModule, UsersModule]
     }).compile();
 
     manager = moduleFixture.get(getDataSourceToken()).manager;

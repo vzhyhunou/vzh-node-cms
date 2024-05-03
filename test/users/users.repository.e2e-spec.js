@@ -10,6 +10,8 @@ import customRepository from '../../src/users/users.repository';
 import { UserTag } from '../../src/users/user-tag.entity';
 import { user } from './user.fixture';
 import { delayedTag, expiredTag, tag } from '../fixture/tag.fixture';
+import { DatabaseModule } from '../../src/database/database.module';
+import { ConfigModule } from '../../src/config/config.module';
 
 describe('UsersRepository', () => {
   let manager;
@@ -18,13 +20,8 @@ describe('UsersRepository', () => {
   beforeEach(async () => {
     const module = await Test.createTestingModule({
       imports: [
-        TypeOrmModule.forRoot({
-          type: 'sqlite',
-          database: ':memory:',
-          autoLoadEntities: true,
-          synchronize: true,
-          logging: true
-        }),
+        ConfigModule,
+        DatabaseModule,
         TypeOrmModule.forFeature([User, UserTag])
       ],
       providers: [
