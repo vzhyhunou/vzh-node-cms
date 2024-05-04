@@ -1,6 +1,6 @@
 import { Dependencies, ValidationPipe } from '@nestjs/common';
 import { getDataSourceToken } from '@nestjs/typeorm';
-import { RESOURCE } from '../entity/item.entity';
+import { RESOURCE } from '../entity/constants';
 
 @Dependencies(getDataSourceToken())
 export class ParseEntityPipe extends ValidationPipe {
