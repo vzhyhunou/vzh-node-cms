@@ -5,13 +5,13 @@ import { AppService } from './app.service';
 describe('AppController', () => {
   let appController;
 
-  beforeEach(async () => {
-    const app = await Test.createTestingModule({
+  beforeAll(async () => {
+    const moduleFixture = await Test.createTestingModule({
       controllers: [AppController],
       providers: [AppService]
     }).compile();
 
-    appController = app.get(AppController);
+    appController = moduleFixture.get(AppController);
   });
 
   describe('root', () => {

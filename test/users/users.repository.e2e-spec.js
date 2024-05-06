@@ -18,7 +18,7 @@ describe('UsersRepository', () => {
   let subj;
 
   beforeEach(async () => {
-    const module = await Test.createTestingModule({
+    const moduleFixture = await Test.createTestingModule({
       imports: [
         ConfigModule,
         DatabaseModule,
@@ -33,8 +33,8 @@ describe('UsersRepository', () => {
       ]
     }).compile();
 
-    manager = module.get(getDataSourceToken()).manager;
-    subj = module.get(getCustomRepositoryToken(User));
+    manager = moduleFixture.get(getDataSourceToken()).manager;
+    subj = moduleFixture.get(getCustomRepositoryToken(User));
   });
 
   it('should be defined', () => {
