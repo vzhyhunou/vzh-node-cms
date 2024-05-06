@@ -8,10 +8,10 @@ import { RESOURCE } from '../common/entity/constants';
 
 @Entity()
 export class User extends Item {
-  @PrimaryColumn('varchar')
+  @PrimaryColumn({ type: String })
   id;
 
-  @Column('varchar')
+  @Column({ type: String })
   @Expose({ groups: [RESOURCE] })
   @MinLength(5)
   password;

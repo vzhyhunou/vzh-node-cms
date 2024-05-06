@@ -1,19 +1,18 @@
 import { Column, PrimaryGeneratedColumn, Index } from 'typeorm';
 import { IsNotEmpty } from 'class-validator';
-import { DateColumn } from '../decorator/date-column.decorator';
 
 export class Tag {
   @PrimaryGeneratedColumn()
   id;
 
-  @Column('varchar')
+  @Column({ type: String })
   @Index()
   @IsNotEmpty()
   name;
 
-  @DateColumn({ nullable: true })
+  @Column({ type: Date, nullable: true })
   start;
 
-  @DateColumn({ nullable: true })
+  @Column({ type: Date, nullable: true })
   end;
 }
