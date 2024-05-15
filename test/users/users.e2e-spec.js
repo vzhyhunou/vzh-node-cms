@@ -1,5 +1,5 @@
 import { Test } from '@nestjs/testing';
-import { getDataSourceToken } from '@nestjs/typeorm';
+import { getEntityManagerToken } from '@nestjs/typeorm';
 import request from 'supertest';
 import { UsersModule } from '../../src/users/users.module';
 import { user } from './user.fixture';
@@ -17,7 +17,7 @@ describe('UsersController (e2e)', () => {
       imports: [ConfigModule, DatabaseModule, UsersModule]
     }).compile();
 
-    manager = moduleFixture.get(getDataSourceToken()).manager;
+    manager = moduleFixture.get(getEntityManagerToken());
     app = moduleFixture.createNestApplication();
 
     await app.init();

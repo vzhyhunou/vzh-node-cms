@@ -10,6 +10,12 @@ export class Item {
   @IdResolve(() => User, 'userId')
   user;
 
+  files = [];
+
+  getParents() {
+    return [];
+  }
+
   @VersionColumn()
   version;
 }

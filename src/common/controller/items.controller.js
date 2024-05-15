@@ -1,5 +1,6 @@
-import { Get, Param, Bind } from '@nestjs/common';
+import { Get, Param, Bind, SerializeOptions } from '@nestjs/common';
 import { BaseController } from './base.controller';
+import { REFERENCE } from '../entity/constants';
 
 export class ItemsController extends BaseController {
   constructor(repository, resource) {
@@ -20,6 +21,9 @@ export class ItemsController extends BaseController {
   }
   */
   @Get(':id')
+  @SerializeOptions({
+    groups: [REFERENCE]
+  })
   @Bind(Param('id'))
   async getById(id) {
     return await this.repository.findOne({

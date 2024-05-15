@@ -7,8 +7,10 @@ import {
   Patch,
   Body,
   Delete,
-  Param
+  Param,
+  SerializeOptions
 } from '@nestjs/common';
+import { REFERENCE } from '../entity/constants';
 
 @UseInterceptors(ClassSerializerInterceptor)
 export class BaseController {
@@ -46,6 +48,9 @@ export class BaseController {
   }
   */
   @Get()
+  @SerializeOptions({
+    groups: [REFERENCE]
+  })
   @Bind(Query())
   async findAll(query) {
     const { content, totalElements } = await this.repository.findAll(query);
@@ -88,6 +93,9 @@ export class BaseController {
   }
   */
   @Get('search/list')
+  @SerializeOptions({
+    groups: [REFERENCE]
+  })
   @Bind(Query())
   async list({ page, size, sort, ...rest }) {
     const { content, totalElements } = await this.repository.list(rest, {
@@ -190,6 +198,9 @@ export class BaseController {
   }
   */
   @Get('search/findByIdIn')
+  @SerializeOptions({
+    groups: [REFERENCE]
+  })
   @Bind(Query())
   async findByIdIn(query) {
     const content = await this.repository.findByIdIn(query);

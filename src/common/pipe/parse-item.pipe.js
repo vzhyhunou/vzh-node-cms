@@ -1,14 +1,13 @@
 import { Dependencies, ValidationPipe } from '@nestjs/common';
-import { getDataSourceToken } from '@nestjs/typeorm';
-import { RESOURCE } from '../entity/constants';
+import { getEntityManagerToken } from '@nestjs/typeorm';
 
-@Dependencies(getDataSourceToken())
-export class ParseEntityPipe extends ValidationPipe {
-  constructor({ manager }, expectedType) {
+@Dependencies(getEntityManagerToken())
+export class ParseItemPipe extends ValidationPipe {
+  constructor(manager, expectedType, groups) {
     super({
       transform: true,
       expectedType,
-      transformOptions: { manager, groups: [RESOURCE] }
+      transformOptions: { manager, groups }
     });
   }
 }

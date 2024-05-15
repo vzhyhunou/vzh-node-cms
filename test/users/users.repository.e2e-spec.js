@@ -2,7 +2,7 @@ import { Test } from '@nestjs/testing';
 import {
   TypeOrmModule,
   getRepositoryToken,
-  getDataSourceToken,
+  getEntityManagerToken,
   getCustomRepositoryToken
 } from '@nestjs/typeorm';
 import { User } from '../../src/users/user.entity';
@@ -33,7 +33,7 @@ describe('UsersRepository', () => {
       ]
     }).compile();
 
-    manager = moduleFixture.get(getDataSourceToken()).manager;
+    manager = moduleFixture.get(getEntityManagerToken());
     subj = moduleFixture.get(getCustomRepositoryToken(User));
   });
 

@@ -5,8 +5,9 @@ import configuration from './configuration';
 @Module({
   imports: [
     NestConfigModule.forRoot({
-      envFilePath: `./${process.env.NODE_ENV}.env`,
-      load: [configuration]
+      envFilePath: [`./${process.env.NODE_ENV}.env`, './.env'],
+      load: [configuration],
+      expandVariables: true
     })
   ]
 })

@@ -6,16 +6,24 @@ import {
   Post,
   Bind
 } from '@nestjs/common';
-import { ParseUserPipe } from '../users/parse-user.pipe';
 import { getCustomRepositoryToken } from '@nestjs/typeorm';
 import { User } from './user.entity';
 import { ItemsController } from '../common/controller/items.controller';
+import { USERS } from './constants';
+import { ParseItemPipe } from '../common/pipe/parse-item.pipe';
+import { REFERENCE } from '../common/entity/constants';
 
-@Controller('users')
+class ParseUserPipe extends ParseItemPipe {
+  constructor(manager) {
+    super(manager, User, [REFERENCE]);
+  }
+}
+
+@Controller(USERS)
 @Dependencies(getCustomRepositoryToken(User))
 export class UsersController extends ItemsController {
   constructor(repository) {
-    super(repository, 'users');
+    super(repository, USERS);
   }
 
   @Post()
