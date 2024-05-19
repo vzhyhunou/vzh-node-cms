@@ -1,7 +1,7 @@
 import { Injectable, Dependencies } from '@nestjs/common';
 import { getEntityManagerToken } from '@nestjs/typeorm';
 import fs from 'fs';
-import { plainToInstance } from 'class-transformer';
+import { deserialize } from 'class-transformer';
 import { MappingsService } from '../storage/mappings.service';
 
 @Injectable()
@@ -13,9 +13,8 @@ export class ObjectMapper {
     this.groups = groups;
   }
 
-  readValue(filepath, type) {
-    const item = JSON.parse(fs.readFileSync(filepath));
-    return plainToInstance(type, item, {
+  readValue(file, type) {
+    return deserialize(type, fs.readFileSync(file), {
       manager: this.manager,
       mappingsService: this.mappingsService,
       groups: this.groups

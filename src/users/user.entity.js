@@ -1,9 +1,8 @@
 import { Column, Entity, PrimaryColumn, OneToMany } from 'typeorm';
-import { Exclude } from 'class-transformer';
-import { MinLength } from 'class-validator';
+import { Exclude, Type } from 'class-transformer';
+import { MinLength, ValidateNested } from 'class-validator';
 import { Item } from '../common/entity/item.entity';
 import { UserTag } from './user-tag.entity';
-import { Valid } from '../common/decorator/valid.decorator';
 
 @Entity()
 export class User extends Item {
@@ -16,6 +15,7 @@ export class User extends Item {
   password;
 
   @OneToMany(() => UserTag, (tag) => tag.user, { eager: true, cascade: true })
-  @Valid(() => UserTag)
+  @Type(() => UserTag)
+  @ValidateNested()
   tags;
 }

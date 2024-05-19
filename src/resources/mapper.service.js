@@ -1,5 +1,5 @@
 import { Injectable, Dependencies, Logger } from '@nestjs/common';
-import { Transform } from 'class-transformer';
+import { Transform, plainToInstance } from 'class-transformer';
 import { ObjectMapper } from './object.mapper';
 import { REFERENCE } from '../common/entity/constants';
 
@@ -19,8 +19,10 @@ class Wrapper {
   '@class';
 
   @Transform(
-    ({ value, obj, options: { manager, mappingsService } }) =>
-      manager.create(mappingsService.findByName(obj['@class']).type, value),
+    ({ value, obj, options: { mappingsService } }) => {
+      const { type } = mappingsService.findByName(obj['@class']);
+      return plainToInstance(type, value);
+    },
     { toClassOnly: true }
   )
   item;
