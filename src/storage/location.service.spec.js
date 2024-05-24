@@ -8,23 +8,26 @@ class Item {
 }
 
 describe('LocationService', () => {
-  let manager;
+  let repository;
   let mappingsService;
   let subj;
 
   beforeAll(async () => {
-    manager = { getId: jest.fn() };
-    mappingsService = { findByType: jest.fn() };
-    subj = new LocationService(manager, mappingsService);
+    repository = { getId: jest.fn() };
+    mappingsService = { findByItem: jest.fn() };
+    subj = new LocationService(mappingsService);
   });
 
   it('location()', () => {
-    manager.getId.mockReturnValue('a.b');
-    mappingsService.findByType.mockReturnValue({ resource: 'resource' });
+    repository.getId.mockReturnValue('a.b');
+    mappingsService.findByItem.mockReturnValue({
+      resource: 'resource',
+      repository
+    });
     const item = new Item();
     const result = subj.location(item);
     expect(result).toBe(path.join('resource', '1', '2', '3', 'a', 'b'));
-    expect(manager.getId).toHaveBeenCalledWith(item);
-    expect(mappingsService.findByType).toHaveBeenCalledWith(Item);
+    expect(repository.getId).toHaveBeenCalledWith(item);
+    expect(mappingsService.findByItem).toHaveBeenCalledWith(item);
   });
 });

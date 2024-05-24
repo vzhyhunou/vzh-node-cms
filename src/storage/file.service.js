@@ -17,7 +17,22 @@ export class FileService {
   }
 
   read(location, addFiles) {
-    // todo
+    const dir = path.join(this.root, location);
+    const files = [];
+    if (!fs.existsSync(dir)) {
+      return files;
+    }
+    for (const name of fs.readdirSync(dir)) {
+      const file = { name };
+      if (addFiles) {
+        const filepath = path.join(dir, name);
+        this.logger.debug(`Read: ${filepath}`);
+        const b = fs.readFileSync(filepath);
+        file.data = Buffer.from(b).toString('base64');
+      }
+      files.push(file);
+    }
+    return files;
   }
 
   write(location, files) {

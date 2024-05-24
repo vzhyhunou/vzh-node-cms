@@ -1,6 +1,7 @@
-export const user = (id, tags = [], user) => ({
+export const user = (id, tags = [], user, date) => ({
   id,
   password: id,
   tags,
-  user
+  user,
+  date
 });

@@ -4,8 +4,8 @@ import { Injectable } from '@nestjs/common';
 export class MappingsService {
   map = [];
 
-  add(resource, type, name) {
-    this.map.push({ type, name, resource });
+  add(resource, type, name, repository) {
+    this.map.push({ type, name, resource, repository });
   }
 
   findByType(type) {
@@ -14,5 +14,13 @@ export class MappingsService {
 
   findByName(name) {
     return this.map.find((i) => i.name === name);
+  }
+
+  findByItem(item) {
+    return this.map.find((i) => i.type === item.constructor);
+  }
+
+  findAll() {
+    return this.map;
   }
 }

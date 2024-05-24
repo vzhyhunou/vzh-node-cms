@@ -1,20 +1,18 @@
 import { Dependencies, Injectable } from '@nestjs/common';
-import { getEntityManagerToken } from '@nestjs/typeorm';
 import path from 'path';
 import { MappingsService } from './mappings.service';
 
 @Injectable()
-@Dependencies(getEntityManagerToken(), MappingsService)
+@Dependencies(MappingsService)
 export class LocationService {
-  constructor(manager, mappingsService) {
-    this.manager = manager;
+  constructor(mappingsService) {
     this.mappingsService = mappingsService;
   }
 
   location(item) {
-    const { resource } = this.mappingsService.findByType(item.constructor);
+    const { resource, repository } = this.mappingsService.findByItem(item);
     const parents = item.getParents().flatMap((p) => String(p).split('.'));
-    const id = String(this.manager.getId(item)).split('.');
+    const id = String(repository.getId(item)).split('.');
     return path.join(resource, ...parents, ...id);
   }
 }

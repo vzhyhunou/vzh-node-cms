@@ -1,9 +1,9 @@
-import { UpdateDateColumn, VersionColumn, ManyToOne } from 'typeorm';
+import { Column, VersionColumn, ManyToOne } from 'typeorm';
 import { User } from '../../users/user.entity';
 import { IdResolve } from '../decorator/id-resolve.decorator';
 
 export class Item {
-  @UpdateDateColumn()
+  @Column({ type: Date, nullable: true })
   date;
 
   @ManyToOne(() => User)

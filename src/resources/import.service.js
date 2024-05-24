@@ -37,19 +37,19 @@ export class ImportService {
       return;
     }
     this.logger.log('Import items with id only');
-    await this.read(
+    await this.consume(
       this.root,
       async (f) =>
         await this.entityService.create(this.mapperService.unlinked(f))
     );
     this.logger.log('Import items');
-    await this.read(
+    await this.consume(
       this.root,
       async (f) =>
         await this.entityService.update(this.mapperService.resource(f))
     );
     this.logger.log('Import files');
-    await this.read(this.root, async (f) => {
+    await this.consume(this.root, async (f) => {
       const item = this.mapperService.resource(f);
       this.fileService.create(
         this.locationService.location(await this.entityService.find(item)),
@@ -59,12 +59,12 @@ export class ImportService {
     this.logger.log('End import');
   }
 
-  async read(dir, consumer) {
+  async consume(dir, consumer) {
     for (const file of fs.readdirSync(dir)) {
       const filepath = path.join(dir, file);
       const stat = fs.statSync(filepath);
       if (stat.isDirectory()) {
-        await this.read(filepath, consumer);
+        await this.consume(filepath, consumer);
       } else {
         await consumer(filepath);
       }

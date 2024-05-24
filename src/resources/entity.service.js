@@ -1,24 +1,46 @@
 import { Dependencies, Injectable } from '@nestjs/common';
-import { getEntityManagerToken } from '@nestjs/typeorm';
+import { MappingsService } from '../storage/mappings.service';
 
 @Injectable()
-@Dependencies(getEntityManagerToken())
+@Dependencies(MappingsService)
 export class EntityService {
-  constructor(manager) {
-    this.manager = manager;
+  constructor(mappingsService) {
+    this.mappingsService = mappingsService;
   }
 
   async find(item) {
-    const id = this.manager.getId(item);
-    return await this.manager.findOneBy(item.constructor, { id });
+    const { repository } = this.mappingsService.findByItem(item);
+    const id = repository.getId(item);
+    return await repository.findOneBy({ id });
   }
 
   async create(item) {
-    await this.manager.save(item);
+    const { repository } = this.mappingsService.findByItem(item);
+    await repository.save(item);
   }
 
   async update(item) {
     item.version = (await this.find(item)).version;
-    await this.manager.save(item);
+    const { repository } = this.mappingsService.findByItem(item);
+    await repository.save(item);
+  }
+
+  findAll(type, date) {
+    let index = 0;
+    const { repository } = this.mappingsService.findByType(type);
+    return {
+      [Symbol.asyncIterator]() {
+        return {
+          async next() {
+            const q = repository.createQueryBuilderWithRelations('item');
+            if (date) {
+              q.where('item.date > :date', { date });
+            }
+            const value = await q.skip(index++).take(1).getOne();
+            return { value, done: !value };
+          }
+        };
+      }
+    };
   }
 }

@@ -10,14 +10,7 @@ import { getCustomRepositoryToken } from '@nestjs/typeorm';
 import { User } from './user.entity';
 import { ItemsController } from '../common/controller/items.controller';
 import { USERS } from './constants';
-import { ParseItemPipe } from '../common/pipe/parse-item.pipe';
-import { REFERENCE } from '../common/entity/constants';
-
-class ParseUserPipe extends ParseItemPipe {
-  constructor(manager) {
-    super(manager, User, [REFERENCE]);
-  }
-}
+import { ParseUserPipe } from './configuration';
 
 @Controller(USERS)
 @Dependencies(getCustomRepositoryToken(User))

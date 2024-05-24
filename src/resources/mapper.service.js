@@ -1,27 +1,26 @@
 import { Injectable, Dependencies, Logger } from '@nestjs/common';
 import { Transform, plainToInstance } from 'class-transformer';
-import { ObjectMapper } from './object.mapper';
-import { REFERENCE } from '../common/entity/constants';
-
-export class UnlinkedMapper extends ObjectMapper {
-  constructor(manager, mappingsService) {
-    super(manager, mappingsService, []);
-  }
-}
-
-export class ResourceMapper extends ObjectMapper {
-  constructor(manager, mappingsService) {
-    super(manager, mappingsService, [REFERENCE]);
-  }
-}
+import path from 'path';
+import fs from 'fs';
+import { ResourceMapper, UnlinkedMapper } from './configuration';
 
 class Wrapper {
+  @Transform(
+    ({ obj: { item }, options: { mappingsService } }) => {
+      const { name } = mappingsService.findByItem(item);
+      return name;
+    },
+    { toPlainOnly: true }
+  )
   '@class';
 
   @Transform(
     ({ value, obj, options: { mappingsService } }) => {
-      const { type } = mappingsService.findByName(obj['@class']);
-      return plainToInstance(type, value);
+      const {
+        type,
+        repository: { manager }
+      } = mappingsService.findByName(obj['@class']);
+      return plainToInstance(type, value, { manager });
     },
     { toClassOnly: true }
   )
@@ -49,6 +48,10 @@ export class MapperService {
   }
 
   write(file, item) {
-    // todo
+    this.logger.debug(`Write: ${file}`);
+    fs.mkdirSync(path.dirname(file), { recursive: true });
+    const wrapper = new Wrapper();
+    wrapper.item = item;
+    this.resourceMapper.writeValue(file, wrapper);
   }
 }

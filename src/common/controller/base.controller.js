@@ -4,8 +4,6 @@ import {
   Bind,
   UseInterceptors,
   ClassSerializerInterceptor,
-  Patch,
-  Body,
   Delete,
   Param,
   SerializeOptions
@@ -111,63 +109,6 @@ export class BaseController {
         totalElements
       }
     };
-  }
-
-  /*
-  POST http://localhost:3010/api/users
-  {"id":"test","password":"12345","tags":[{"name":"MANAGER","start":"2024-04-19T17:40:00.000Z","end":"2024-04-28T17:40:00.000Z"}],"files":[]}
-  {
-    "id" : "test",
-    "date" : "2024-04-19T17:40:54.900+00:00",
-    "tags" : [ {
-      "name" : "MANAGER",
-      "start" : "2024-04-19T17:40:00.000+00:00",
-      "end" : "2024-04-28T17:40:00.000+00:00"
-    } ],
-    "userId" : "admin"
-  }
-  */
-  async create(entity) {
-    return await this.repository.save(entity);
-  }
-
-  /*
-  PUT http://localhost:3010/api/users/manager
-  {"id":"manager","tags":[{"name":"MANAGER","start":"2024-04-13T17:44:00.000Z","end":"2024-04-28T17:44:00.000Z"}],"password":"12345","files":[]}
-  {
-    "id" : "manager",
-    "date" : "2024-04-19T17:44:56.242+00:00",
-    "tags" : [ {
-      "name" : "MANAGER",
-      "start" : "2024-04-13T17:44:00.000+00:00",
-      "end" : "2024-04-28T17:44:00.000+00:00"
-    } ],
-    "userId" : "admin"
-  }
-  */
-  async update(entity) {
-    return await this.repository.save(entity);
-  }
-
-  /*
-  PATCH http://localhost:3010/api/users/editor
-  {"tags":[{"name":"PAGES_EDITOR"},{"name":"MANAGER"}]}
-  {
-    "id" : "editor",
-    "date" : "2024-04-24T17:34:47.164+00:00",
-    "tags" : [ {
-      "name" : "PAGES_EDITOR"
-    }, {
-      "name" : "MANAGER"
-    } ]
-  }
-  */
-  @Patch(':id')
-  @Bind(Param('id'), Body())
-  async patch(id, dto) {
-    let entity = await this.repository.findOneBy({ id });
-    entity = this.repository.create({ ...entity, ...dto });
-    return await this.repository.save(entity);
   }
 
   /*

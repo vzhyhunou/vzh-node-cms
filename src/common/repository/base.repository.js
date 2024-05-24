@@ -48,6 +48,6 @@ SelectQueryBuilder.prototype.andWhereEqual = function (expression, field) {
 SelectQueryBuilder.prototype.andWhereActive = function (start, end) {
   return this.andWhere(
     `(${start} is null or ${start} < :current) and (${end} is null or :current < ${end})`,
-    { current: Date.now() }
+    { current: new Date() }
   );
 };

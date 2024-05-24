@@ -1,11 +1,17 @@
-import '../common/repository/tagged.repository';
+import repository from '../common/repository/tagged.repository';
 
 export default {
+  ...repository,
+
+  createQueryBuilderWithRelations(selection) {
+    return this.createQueryBuilder(selection)
+      .leftJoin(`${selection}.tags`, 'tag')
+      .leftJoin(`${selection}.user`, 'u')
+      .select([selection, 'tag', 'u.id']);
+  },
+
   findAll({ page = 0, size = 20, sort }) {
-    const b = this.createQueryBuilder('user')
-      .leftJoin('user.tags', 'tag')
-      .leftJoin('user.user', 'u')
-      .select(['user', 'tag', 'u.id'])
+    const b = this.createQueryBuilderWithRelations('user')
       .orderByObject('user', sort)
       .skip(page * size)
       .take(size)
@@ -48,10 +54,7 @@ export default {
   },
 
   findByIdIn({ ids }) {
-    return this.createQueryBuilder('user')
-      .leftJoin('user.tags', 'tag')
-      .leftJoin('user.user', 'u')
-      .select(['user', 'tag', 'u.id'])
+    return this.createQueryBuilderWithRelations('user')
       .andWhereIn('user.id', ids)
       .getMany();
   },
