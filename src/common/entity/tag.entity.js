@@ -1,8 +1,10 @@
 import { Column, PrimaryGeneratedColumn, Index } from 'typeorm';
 import { IsNotEmpty } from 'class-validator';
+import { Exclude } from 'class-transformer';
 
 export class Tag {
   @PrimaryGeneratedColumn()
+  @Exclude({ toPlainOnly: true })
   id;
 
   @Column({ type: String })

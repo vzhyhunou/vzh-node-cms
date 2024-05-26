@@ -9,9 +9,12 @@ import { EntityService } from './entity.service';
 import { ExportScheduler } from './export.scheduler';
 import { ExportService } from './export.service';
 import { ResourceMapper, UnlinkedMapper } from './configuration';
+import { ImportController } from './import.controller';
+import { ExportController } from './export.controller';
 
 @Module({
   imports: [ConfigModule, ScheduleModule.forRoot(), StorageModule],
+  controllers: [ImportController, ExportController],
   providers: [
     ImportService,
     ImportInitializer,
