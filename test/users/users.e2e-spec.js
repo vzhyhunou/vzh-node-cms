@@ -29,7 +29,7 @@ describe('UsersController (e2e)', () => {
     const entity2 = manager.create(User, user('manager', [tag('b')], entity));
     await manager.save(entity2);
     return request(app.getHttpServer())
-      .get('/users?page=0&size=10&sort=id%2CASC')
+      .get('/api/users?page=0&size=10&sort=id%2CASC')
       .expect(200)
       .expect(({ body }) => {
         expect(body).toMatchObject({
@@ -53,7 +53,7 @@ describe('UsersController (e2e)', () => {
     const entity2 = manager.create(User, user('manager', [tag('b')], entity));
     await manager.save(entity2);
     return request(app.getHttpServer())
-      .get('/users/search/list?id=a&page=0&size=10&sort=id%2CASC&tags=b')
+      .get('/api/users/search/list?id=a&page=0&size=10&sort=id%2CASC&tags=b')
       .expect(200)
       .expect(({ body }) => {
         expect(body).toMatchObject({
@@ -74,7 +74,7 @@ describe('UsersController (e2e)', () => {
     const entity2 = manager.create(User, user('manager', [tag('b')], entity));
     await manager.save(entity2);
     return request(app.getHttpServer())
-      .get('/users/manager')
+      .get('/api/users/manager')
       .expect(200)
       .expect(({ body }) => {
         expect(body).toMatchObject({
@@ -92,7 +92,10 @@ describe('UsersController (e2e)', () => {
         id: 'manager',
         password: 'pass'
       };
-      await request(app.getHttpServer()).post('/users').send(dto).expect(400);
+      await request(app.getHttpServer())
+        .post('/api/users')
+        .send(dto)
+        .expect(400);
     });
 
     it('should validate tags', async () => {
@@ -101,7 +104,10 @@ describe('UsersController (e2e)', () => {
         password: 'password',
         tags: [{ name: '' }]
       };
-      await request(app.getHttpServer()).post('/users').send(dto).expect(400);
+      await request(app.getHttpServer())
+        .post('/api/users')
+        .send(dto)
+        .expect(400);
     });
 
     it('should save user', async () => {
@@ -119,7 +125,10 @@ describe('UsersController (e2e)', () => {
         ],
         userId: 'admin'
       };
-      await request(app.getHttpServer()).post('/users').send(dto).expect(201);
+      await request(app.getHttpServer())
+        .post('/api/users')
+        .send(dto)
+        .expect(201);
       const result = await manager.findOne(User, {
         relations: { user: true },
         where: { id: 'manager' }
@@ -150,7 +159,7 @@ describe('UsersController (e2e)', () => {
       tags: []
     };
     await request(app.getHttpServer())
-      .put('/users/manager')
+      .put('/api/users/manager')
       .send(dto)
       .expect(200);
     const result = await manager.findOne(User, {
@@ -173,7 +182,7 @@ describe('UsersController (e2e)', () => {
       tags: [{ name: 'c' }]
     };
     await request(app.getHttpServer())
-      .patch('/users/manager')
+      .patch('/api/users/manager')
       .send(dto)
       .expect(200);
     const result = await manager.findOne(User, {
@@ -193,7 +202,7 @@ describe('UsersController (e2e)', () => {
     const entity2 = manager.create(User, user('manager', [tag('b')], entity));
     await manager.save(entity2);
     return request(app.getHttpServer())
-      .get('/users/search/findByIdIn?ids=manager')
+      .get('/api/users/search/findByIdIn?ids=manager')
       .expect(200)
       .expect(({ body }) => {
         expect(body).toMatchObject({
