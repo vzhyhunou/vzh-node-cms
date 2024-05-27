@@ -12,7 +12,7 @@ import { ItemsController } from '../common/controller/items.controller';
 import { USERS } from './constants';
 import { ParseUserPipe } from './configuration';
 
-@Controller(USERS)
+@Controller(`api/${USERS}`)
 @Dependencies(getCustomRepositoryToken(User))
 export class UsersController extends ItemsController {
   constructor(repository) {
