@@ -4,7 +4,7 @@ import { REFERENCE } from '../entity/constants';
 
 export function IdResolve(type, name) {
   return applyDecorators(
-    Expose({ name, groups: [REFERENCE] }),
+    Expose({ name }),
     /*
       move to manager.findOneBy after next issues resolving:
       https://github.com/typeorm/typeorm/issues/2276
@@ -13,8 +13,11 @@ export function IdResolve(type, name) {
     Transform(
       ({ value, options: { manager } }) =>
         value && manager.create(type(), { id: value }),
-      { toClassOnly: true }
+      { toClassOnly: true, groups: [REFERENCE] }
     ),
-    Transform(({ value }) => value?.id, { toPlainOnly: true })
+    Transform(({ value }) => value?.id, {
+      toPlainOnly: true,
+      groups: [REFERENCE]
+    })
   );
 }
