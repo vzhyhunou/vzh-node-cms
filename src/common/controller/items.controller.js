@@ -71,7 +71,7 @@ export class ItemsController extends BaseController {
     "userId" : "admin"
   }
   */
-  async update(entity) {
+  async save(entity) {
     return await this.repository.saveItem(entity);
   }
 
