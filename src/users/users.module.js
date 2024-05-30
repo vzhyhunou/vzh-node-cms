@@ -10,7 +10,6 @@ import customRepository from './users.repository';
 import { UserTag } from './user-tag.entity';
 import { UsersInitializer } from './users.initializer';
 import { StorageModule } from '../storage/storage.module';
-import { UsersHandler } from './users.handler';
 
 @Module({
   imports: [TypeOrmModule.forFeature([User, UserTag]), StorageModule],
@@ -21,8 +20,7 @@ import { UsersHandler } from './users.handler';
       inject: [getRepositoryToken(User)],
       useFactory: (repository) => repository.extend(customRepository)
     },
-    UsersInitializer,
-    UsersHandler
+    UsersInitializer
   ]
 })
 export class UsersModule {}
