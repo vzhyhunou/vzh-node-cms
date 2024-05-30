@@ -1,6 +1,6 @@
 import { Column, Entity, PrimaryColumn, OneToMany } from 'typeorm';
 import { Expose, Type } from 'class-transformer';
-import { MinLength, ValidateNested } from 'class-validator';
+import { IsOptional, MinLength, ValidateNested } from 'class-validator';
 import { Item } from '../common/entity/item.entity';
 import { UserTag } from './user-tag.entity';
 import { RESOURCE } from '../common/entity/constants';
@@ -12,6 +12,7 @@ export class User extends Item {
 
   @Column({ type: String })
   @Expose({ groups: [RESOURCE] })
+  @IsOptional()
   @MinLength(5)
   password;
 
