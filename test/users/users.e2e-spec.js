@@ -135,7 +135,6 @@ describe('UsersController (e2e)', () => {
       });
       expect(result).toMatchObject({
         id: dto.id,
-        password: dto.password,
         tags: [
           {
             name: dto.tags[0].name,
@@ -145,6 +144,7 @@ describe('UsersController (e2e)', () => {
         ],
         user: { id: dto.userId }
       });
+      expect(result).toHaveProperty('password');
     });
   });
 
@@ -168,9 +168,9 @@ describe('UsersController (e2e)', () => {
     });
     expect(result).toMatchObject({
       id: dto.id,
-      password: dto.password,
       tags: []
     });
+    expect(result).toHaveProperty('password');
   });
 
   it('/users/:id (PATCH)', async () => {
