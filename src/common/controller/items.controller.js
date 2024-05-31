@@ -14,8 +14,9 @@ import { ItemsInterceptor } from '../../storage/items.interceptor';
 
 @UseInterceptors(ClassSerializerInterceptor, ItemsInterceptor)
 export class ItemsController extends BaseController {
-  constructor(repository, resource) {
+  constructor(repository, resource, handler) {
     super(repository, resource);
+    this.handler = handler;
   }
 
   /*
@@ -58,7 +59,9 @@ export class ItemsController extends BaseController {
   }
   */
   async create(entity) {
-    return await this.repository.saveItem(entity);
+    const item = await this.repository.saveItem(entity);
+    this.handler.create(entity);
+    return item;
   }
 
   /*
@@ -75,8 +78,11 @@ export class ItemsController extends BaseController {
     "userId" : "admin"
   }
   */
-  async save(entity) {
-    return await this.repository.saveItem(entity);
+  async save(id, entity) {
+    const old = await this.repository.findOneBy({ id });
+    const item = await this.repository.saveItem(entity);
+    this.handler.save(old, entity);
+    return item;
   }
 
   /*

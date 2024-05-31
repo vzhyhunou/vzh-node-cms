@@ -13,7 +13,39 @@ export class FileService {
   }
 
   create(location, files) {
-    this.write(location, files);
+    try {
+      this.write(location, files);
+    } catch (e) {
+      this.clean(location, []);
+      throw e;
+    }
+  }
+
+  update(oldLocation, newLocation, newFiles) {
+    //collect all files
+    const oldFiles = this.read(oldLocation, true);
+
+    //clean removed files
+    this.clean(oldLocation, newFiles);
+
+    //collect exist files
+    const keepFiles = this.read(oldLocation, true);
+
+    //clean exist files
+    this.clean(oldLocation, []);
+
+    //add exist files
+    const names = keepFiles.map(({ name }) => name);
+    newFiles = newFiles.filter(({ name }) => !names.includes(name));
+    newFiles = [...newFiles, ...keepFiles];
+
+    try {
+      this.write(newLocation, newFiles);
+    } catch (e) {
+      this.clean(newLocation, []);
+      this.write(oldLocation, oldFiles);
+      throw e;
+    }
   }
 
   read(location, addFiles) {
@@ -33,6 +65,22 @@ export class FileService {
       files.push(file);
     }
     return files;
+  }
+
+  clean(location, files) {
+    const dir = path.join(this.root, location);
+    if (!fs.existsSync(dir)) {
+      return;
+    }
+    const names = files.map(({ name }) => name);
+    for (const name of fs.readdirSync(dir)) {
+      if (!names.includes(name)) {
+        fs.rmSync(path.join(dir, name));
+      }
+    }
+    if (fs.readdirSync(dir).length === 0) {
+      fs.rmSync(dir);
+    }
   }
 
   write(location, files) {
