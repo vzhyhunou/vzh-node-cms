@@ -21,13 +21,13 @@ export class UsersController extends ItemsController {
 
   @Post()
   @Bind(Body(ParseUserPipe))
-  create(entity) {
-    return super.create(entity);
+  async create(entity) {
+    return await super.create(entity);
   }
 
   @Put(':id')
   @Bind(Body(ParseUserPipe))
-  update(entity) {
-    return super.save(entity);
+  async save(entity) {
+    return await super.save(entity);
   }
 }
