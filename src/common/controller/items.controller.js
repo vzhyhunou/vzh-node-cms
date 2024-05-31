@@ -4,11 +4,15 @@ import {
   Bind,
   SerializeOptions,
   Patch,
-  Body
+  Body,
+  UseInterceptors,
+  ClassSerializerInterceptor
 } from '@nestjs/common';
 import { BaseController } from './base.controller';
 import { REFERENCE } from '../entity/constants';
+import { ItemsInterceptor } from '../../storage/items.interceptor';
 
+@UseInterceptors(ClassSerializerInterceptor, ItemsInterceptor)
 export class ItemsController extends BaseController {
   constructor(repository, resource) {
     super(repository, resource);

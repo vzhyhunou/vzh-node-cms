@@ -2,15 +2,12 @@ import {
   Get,
   Query,
   Bind,
-  UseInterceptors,
-  ClassSerializerInterceptor,
   Delete,
   Param,
   SerializeOptions
 } from '@nestjs/common';
 import { REFERENCE } from '../entity/constants';
 
-@UseInterceptors(ClassSerializerInterceptor)
 export class BaseController {
   constructor(repository, resource) {
     this.repository = repository;
