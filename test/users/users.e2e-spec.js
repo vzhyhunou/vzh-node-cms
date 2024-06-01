@@ -24,10 +24,10 @@ describe('UsersController (e2e)', () => {
   });
 
   it('/users (GET)', async () => {
-    const entity = manager.create(User, user('admin', [tag('a')]));
+    let entity = manager.create(User, user('admin', [tag('a')]));
     await manager.save(entity);
-    const entity2 = manager.create(User, user('manager', [tag('b')], entity));
-    await manager.save(entity2);
+    entity = manager.create(User, user('manager', [tag('b')], entity));
+    await manager.save(entity);
     return request(app.getHttpServer())
       .get('/api/users?page=0&size=10&sort=id%2CASC')
       .expect(200)
@@ -48,10 +48,10 @@ describe('UsersController (e2e)', () => {
   });
 
   it('/users/search/list (GET)', async () => {
-    const entity = manager.create(User, user('admin', [tag('a')]));
+    let entity = manager.create(User, user('admin', [tag('a')]));
     await manager.save(entity);
-    const entity2 = manager.create(User, user('manager', [tag('b')], entity));
-    await manager.save(entity2);
+    entity = manager.create(User, user('manager', [tag('b')], entity));
+    await manager.save(entity);
     return request(app.getHttpServer())
       .get('/api/users/search/list?id=a&page=0&size=10&sort=id%2CASC&tags=b')
       .expect(200)
@@ -69,10 +69,10 @@ describe('UsersController (e2e)', () => {
   });
 
   it('/users/:id (GET)', async () => {
-    const entity = manager.create(User, user('admin', [tag('a')]));
+    let entity = manager.create(User, user('admin', [tag('a')]));
     await manager.save(entity);
-    const entity2 = manager.create(User, user('manager', [tag('b')], entity));
-    await manager.save(entity2);
+    entity = manager.create(User, user('manager', [tag('b')], entity));
+    await manager.save(entity);
     return request(app.getHttpServer())
       .get('/api/users/manager')
       .expect(200)
@@ -151,12 +151,16 @@ describe('UsersController (e2e)', () => {
   it('/users/:id (PUT)', async () => {
     let entity = manager.create(User, user('admin', [tag('a')]));
     await manager.save(entity);
-    entity = manager.create(User, user('manager', [tag('b')]));
+    entity = manager.create(User, user('manager'));
     await manager.save(entity);
     const dto = {
       id: 'manager',
-      password: 'password',
-      tags: []
+      tags: [
+        {
+          name: 'b'
+        }
+      ],
+      userId: 'admin'
     };
     await request(app.getHttpServer())
       .put('/api/users/manager')
@@ -168,9 +172,14 @@ describe('UsersController (e2e)', () => {
     });
     expect(result).toMatchObject({
       id: dto.id,
-      tags: []
+      password: 'manager',
+      tags: [
+        {
+          name: dto.tags[0].name
+        }
+      ],
+      user: { id: dto.userId }
     });
-    expect(result).toHaveProperty('password');
   });
 
   it('/users/:id (PATCH)', async () => {
@@ -197,10 +206,10 @@ describe('UsersController (e2e)', () => {
   });
 
   it('/users/search/findByIdIn (GET)', async () => {
-    const entity = manager.create(User, user('admin', [tag('a')]));
+    let entity = manager.create(User, user('admin', [tag('a')]));
     await manager.save(entity);
-    const entity2 = manager.create(User, user('manager', [tag('b')], entity));
-    await manager.save(entity2);
+    entity = manager.create(User, user('manager', [tag('b')], entity));
+    await manager.save(entity);
     return request(app.getHttpServer())
       .get('/api/users/search/findByIdIn?ids=manager')
       .expect(200)

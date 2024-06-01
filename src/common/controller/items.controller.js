@@ -60,6 +60,7 @@ export class ItemsController extends BaseController {
   }
   */
   async create(entity) {
+    this.handler.beforeCreate(entity);
     const item = await this.repository.saveItem(entity);
     this.handler.afterCreate(entity);
     return item;
@@ -81,6 +82,7 @@ export class ItemsController extends BaseController {
   */
   async save(id, entity) {
     const old = await this.repository.findOneBy({ id });
+    this.handler.beforeSave(old, entity);
     const item = await this.repository.saveItem(entity);
     this.handler.afterSave(old, entity);
     return item;
