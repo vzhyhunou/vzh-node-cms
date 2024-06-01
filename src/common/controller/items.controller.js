@@ -1,5 +1,6 @@
 import {
   Get,
+  Delete,
   Param,
   Bind,
   SerializeOptions,
@@ -60,7 +61,7 @@ export class ItemsController extends BaseController {
   */
   async create(entity) {
     const item = await this.repository.saveItem(entity);
-    this.handler.create(entity);
+    this.handler.afterCreate(entity);
     return item;
   }
 
@@ -81,7 +82,7 @@ export class ItemsController extends BaseController {
   async save(id, entity) {
     const old = await this.repository.findOneBy({ id });
     const item = await this.repository.saveItem(entity);
-    this.handler.save(old, entity);
+    this.handler.afterSave(old, entity);
     return item;
   }
 
@@ -104,5 +105,16 @@ export class ItemsController extends BaseController {
     let entity = await this.repository.findOneBy({ id });
     entity = this.repository.create({ ...entity, ...dto });
     return await this.repository.saveItem(entity);
+  }
+
+  /*
+  DELETE http://localhost:3010/api/users/editor
+  */
+  @Delete(':id')
+  @Bind(Param('id'))
+  async delete(id) {
+    const old = await this.repository.findOneBy({ id });
+    await this.repository.delete(id);
+    this.handler.afterDelete(old);
   }
 }

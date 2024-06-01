@@ -10,15 +10,19 @@ export class ItemsHandler {
     this.locationService = locationService;
   }
 
-  create(item) {
+  afterCreate(item) {
     this.fileService.create(this.locationService.location(item), item.files);
   }
 
-  save(oldItem, newItem) {
+  afterSave(oldItem, newItem) {
     this.fileService.update(
       this.locationService.location(oldItem),
       this.locationService.location(newItem),
       newItem.files
     );
+  }
+
+  afterDelete(item) {
+    this.fileService.clean(this.locationService.location(item), []);
   }
 }

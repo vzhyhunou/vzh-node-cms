@@ -1,11 +1,4 @@
-import {
-  Get,
-  Query,
-  Bind,
-  Delete,
-  Param,
-  SerializeOptions
-} from '@nestjs/common';
+import { Get, Query, Bind, SerializeOptions } from '@nestjs/common';
 import { REFERENCE } from '../entity/constants';
 
 export class BaseController {
@@ -106,15 +99,6 @@ export class BaseController {
         totalElements
       }
     };
-  }
-
-  /*
-  DELETE http://localhost:3010/api/users/editor
-  */
-  @Delete(':id')
-  @Bind(Param('id'))
-  async remove(id) {
-    await this.repository.delete(id);
   }
 
   /*

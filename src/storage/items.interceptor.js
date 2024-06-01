@@ -21,14 +21,17 @@ export class ItemsInterceptor {
   intercept(context, next) {
     return next.handle().pipe(
       map((data) => {
-        if (data._embedded) {
-          for (const items of Object.values(data._embedded)) {
-            for (const item of items) {
-              this.process(item);
+        if (data) {
+          const { _embedded } = data;
+          if (_embedded) {
+            for (const items of Object.values(_embedded)) {
+              for (const item of items) {
+                this.process(item);
+              }
             }
+          } else {
+            this.process(data);
           }
-        } else {
-          this.process(data);
         }
         return data;
       })
