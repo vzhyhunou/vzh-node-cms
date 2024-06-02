@@ -15,9 +15,9 @@ import { ItemsInterceptor } from '../../storage/items.interceptor';
 
 @UseInterceptors(ClassSerializerInterceptor, ItemsInterceptor)
 export class ItemsController extends BaseController {
-  constructor(repository, resource, handler) {
+  constructor(repository, resource, eventService) {
     super(repository, resource);
-    this.handler = handler;
+    this.eventService = eventService;
   }
 
   /*
@@ -60,9 +60,9 @@ export class ItemsController extends BaseController {
   }
   */
   async create(entity) {
-    this.handler.beforeCreate(entity);
+    this.eventService.beforeCreate(entity);
     const item = await this.repository.saveItem(entity);
-    this.handler.afterCreate(entity);
+    this.eventService.afterCreate(entity);
     return item;
   }
 
@@ -82,9 +82,9 @@ export class ItemsController extends BaseController {
   */
   async save(id, entity) {
     const old = await this.repository.findOneBy({ id });
-    this.handler.beforeSave(old, entity);
+    this.eventService.beforeSave(old, entity);
     const item = await this.repository.saveItem(entity);
-    this.handler.afterSave(old, entity);
+    this.eventService.afterSave(old, entity);
     return item;
   }
 
@@ -117,6 +117,6 @@ export class ItemsController extends BaseController {
   async delete(id) {
     const old = await this.repository.findOneBy({ id });
     await this.repository.delete(id);
-    this.handler.afterDelete(old);
+    this.eventService.afterDelete(old);
   }
 }

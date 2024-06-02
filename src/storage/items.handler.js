@@ -10,13 +10,9 @@ export class ItemsHandler {
     this.locationService = locationService;
   }
 
-  beforeCreate() {}
-
   afterCreate(item) {
     this.fileService.create(this.locationService.location(item), item.files);
   }
-
-  beforeSave() {}
 
   afterSave(oldItem, newItem) {
     this.fileService.update(

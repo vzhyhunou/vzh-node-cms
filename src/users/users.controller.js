@@ -12,13 +12,13 @@ import { User } from './user.entity';
 import { ItemsController } from '../common/controller/items.controller';
 import { USERS } from './constants';
 import { ParseUserPipe } from './configuration';
-import { UsersHandler } from './users.handler';
+import { EventService } from '../storage/event.service';
 
 @Controller(`api/${USERS}`)
-@Dependencies(getCustomRepositoryToken(User), UsersHandler)
+@Dependencies(getCustomRepositoryToken(User), EventService)
 export class UsersController extends ItemsController {
-  constructor(repository, handler) {
-    super(repository, USERS, handler);
+  constructor(repository, eventService) {
+    super(repository, USERS, eventService);
   }
 
   @Post()

@@ -1,11 +1,8 @@
+import { Injectable } from '@nestjs/common';
 import bcrypt from 'bcrypt';
-import { ItemsHandler } from '../storage/items.handler';
 
-export class UsersHandler extends ItemsHandler {
-  constructor(fileService, locationService) {
-    super(fileService, locationService);
-  }
-
+@Injectable()
+export class UsersHandler {
   beforeCreate(item) {
     item.password = bcrypt.hashSync(item.password, 10);
   }
