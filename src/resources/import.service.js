@@ -25,7 +25,7 @@ export class ImportService {
     fileService,
     locationService
   ) {
-    this.root = configService.get('cms.imp.path');
+    this.root = configService.get('imp.path');
     this.mapperService = mapperService;
     this.entityService = entityService;
     this.fileService = fileService;

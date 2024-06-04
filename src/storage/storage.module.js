@@ -6,9 +6,10 @@ import { MappingsService } from './mappings.service';
 import { ItemsHandler } from './items.handler';
 import { EventService } from './event.service';
 import { StorageInitializer } from './storage.initializer';
+import { config } from './configuration';
 
 @Module({
-  imports: [ConfigModule],
+  imports: [ConfigModule.forFeature(config)],
   providers: [
     FileService,
     LocationService,

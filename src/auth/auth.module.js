@@ -9,10 +9,11 @@ import { BasicStrategy } from './basic.strategy';
 import { JwtStrategy } from './jwt.strategy';
 import { UsersModule } from '../users/users.module';
 import { JwtGuard } from './jwt.guard';
+import { config } from './configuration';
 
 @Module({
   imports: [
-    ConfigModule,
+    ConfigModule.forFeature(config),
     UsersModule,
     PassportModule,
     JwtModule.registerAsync({

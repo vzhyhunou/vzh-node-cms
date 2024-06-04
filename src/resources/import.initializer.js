@@ -6,7 +6,7 @@ import { ImportService } from './import.service';
 @Dependencies(ConfigService, ImportService)
 export class ImportInitializer {
   constructor(configService, importService) {
-    if (configService.get('cms.imp.init')) {
+    if (configService.get('imp.init')) {
       this.importService = importService;
     }
   }

@@ -8,8 +8,8 @@ import { ExportService } from './export.service';
 @Dependencies(ConfigService, SchedulerRegistry, ExportService)
 export class ExportScheduler {
   constructor(configService, schedulerRegistry, exportService) {
-    this.full = configService.get('cms.exp.full.cron');
-    this.inc = configService.get('cms.exp.inc.cron');
+    this.full = configService.get('exp.full.cron');
+    this.inc = configService.get('exp.inc.cron');
     this.schedulerRegistry = schedulerRegistry;
     this.exportService = exportService;
   }
