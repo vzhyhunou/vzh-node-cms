@@ -12,7 +12,6 @@ export default () => ({
     roles: process.env.JWT_ROLES
   },
   cms: {
-    resources: process.env.CMS_RESOURCES,
     imp: {
       init: process.env.CMS_IMP_INIT === 'true',
       path: process.env.CMS_IMP_PATH
