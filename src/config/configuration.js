@@ -6,6 +6,11 @@ export default () => ({
     autoLoadEntities: process.env.DATASOURCE_AUTO_LOAD_ENTITIES === 'true',
     synchronize: process.env.DATASOURCE_SYNCHRONIZE === 'true'
   },
+  jwt: {
+    expiration: parseInt(process.env.JWT_EXPIRATION, 10),
+    secret: process.env.JWT_SECRET,
+    roles: process.env.JWT_ROLES
+  },
   cms: {
     resources: process.env.CMS_RESOURCES,
     imp: {

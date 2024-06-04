@@ -23,6 +23,7 @@ import { UsersHandler } from './users.handler';
     },
     UsersInitializer,
     UsersHandler
-  ]
+  ],
+  exports: [getCustomRepositoryToken(User)]
 })
 export class UsersModule {}

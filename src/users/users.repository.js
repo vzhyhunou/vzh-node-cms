@@ -62,9 +62,9 @@ export default {
   withActiveRoles(id) {
     return this.createQueryBuilder('user')
       .leftJoin('user.tags', 'tag')
-      .select(['user.id', 'tag.name'])
+      .select(['user.id', 'user.password', 'tag.name'])
       .andWhereEqual('user.id', id)
       .andWhereActiveTags()
-      .getOneOrFail();
+      .getOne();
   }
 };
