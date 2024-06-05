@@ -4,6 +4,7 @@ import { DatabaseModule } from './database/database.module';
 import { ConfigModule } from './config/config.module';
 import { ResourcesModule } from './resources/resources.module';
 import { AuthModule } from './auth/auth.module';
+
 @Module({
   imports: [
     ConfigModule,
