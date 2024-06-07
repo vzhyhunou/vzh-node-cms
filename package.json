@@ -2,11 +2,12 @@
   "name": "@vzhyhunou/vzh-node-cms",
   "version": "0.0.1",
   "scripts": {
-    "format": "prettier --write \"**/*.js\"",
-    "build": "babel src -d dist",
+    "clean": "rimraf dist",
+    "format": "prettier --write '**/*.{js,json}'",
+    "build": "babel src -d dist --ignore '**/*.spec.js'",
     "start": "babel-node index.js",
     "start:dev": "cross-env NODE_ENV=development nodemon",
-    "lint": "eslint \"{src,test}/**/*.js\"",
+    "lint": "eslint '{src,test}/**/*.js'",
     "test": "cross-env NODE_ENV=development jest",
     "test:cov": "cross-env NODE_ENV=development jest --coverage",
     "test:e2e": "cross-env NODE_ENV=development jest --config ./test/jest-e2e.json",
@@ -18,13 +19,14 @@
     "@nestjs/common": "^10.3.2",
     "@nestjs/core": "^10.3.2",
     "@nestjs/platform-express": "^10.3.2",
+    "@nestjs/typeorm": "^10.0.1",
     "@nestjs/config": "^3.2.2",
     "@nestjs/schedule": "^4.0.2",
     "@nestjs/jwt": "^10.2.0",
     "@nestjs/passport": "^10.0.3",
+    "@nestjs/serve-static": "^4.0.2",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.1",
-    "@nestjs/typeorm": "^10.0.1",
     "reflect-metadata": "^0.2.1",
     "rxjs": "^7.8.1",
     "sqlite3": "^5.1.7",
@@ -50,19 +52,11 @@
     "nodemon": "^3.0.3",
     "prettier": "^3.2.5",
     "supertest": "^6.3.4",
-    "cross-env": "^7.0.3"
+    "cross-env": "^7.0.3",
+    "rimraf": "^5.0.7"
   },
   "files": [
     "package.json",
     "dist"
-  ],
-  "jest": {
-    "moduleFileExtensions": [
-      "js",
-      "json"
-    ],
-    "rootDir": "src",
-    "testRegex": ".spec.js$",
-    "coverageDirectory": "../coverage"
-  }
+  ]
 }
