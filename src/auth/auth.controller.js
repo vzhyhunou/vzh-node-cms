@@ -14,7 +14,7 @@ import { ConfigService } from '@nestjs/config';
 @Dependencies(ConfigService, JwtService)
 export class AuthController {
   constructor(configService, jwtService) {
-    this.roles = configService.get('jwt.roles');
+    this.roles = configService.get('auth.roles');
     this.jwtService = jwtService;
   }
 

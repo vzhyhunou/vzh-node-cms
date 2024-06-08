@@ -1,5 +1,5 @@
 export const config = () => ({
-  files: {
-    path: process.env.CMS_FILES_PATH
+  storage: {
+    origin: process.env.STORAGE_ORIGIN
   }
 });

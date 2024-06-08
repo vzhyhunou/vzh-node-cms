@@ -10,9 +10,9 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       ignoreExpiration: false,
-      secretOrKey: configService.get('jwt.secret')
+      secretOrKey: configService.get('auth.secret')
     });
-    this.roles = configService.get('jwt.roles');
+    this.roles = configService.get('auth.roles');
   }
 
   validate(payload) {

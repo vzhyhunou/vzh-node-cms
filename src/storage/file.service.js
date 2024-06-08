@@ -9,7 +9,7 @@ export class FileService {
   logger = new Logger(FileService.name);
 
   constructor(configService) {
-    this.root = configService.get('files.path');
+    this.root = configService.get('storage.origin');
   }
 
   create(location, files) {

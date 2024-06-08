@@ -8,18 +8,21 @@ import { ExportService } from './export.service';
 @Dependencies(ConfigService, SchedulerRegistry, ExportService)
 export class ExportScheduler {
   constructor(configService, schedulerRegistry, exportService) {
-    this.full = configService.get('exp.full.cron');
-    this.inc = configService.get('exp.inc.cron');
+    this.properties = configService.get('resources.exp');
     this.schedulerRegistry = schedulerRegistry;
     this.exportService = exportService;
   }
 
   onModuleInit() {
-    let job = new CronJob(this.full, () => this.exportService.export(false));
+    let job = new CronJob(this.properties.full.cron, () =>
+      this.exportService.export(false)
+    );
     this.schedulerRegistry.addCronJob('full', job);
     job.start();
 
-    job = new CronJob(this.inc, () => this.exportService.export(true));
+    job = new CronJob(this.properties.inc.cron, () =>
+      this.exportService.export(true)
+    );
     this.schedulerRegistry.addCronJob('inc', job);
     job.start();
   }

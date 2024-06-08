@@ -1,5 +1,5 @@
 export const config = () => ({
-  database: {
+  datasource: {
     type: process.env.DATASOURCE_TYPE,
     database: process.env.DATASOURCE_DATABASE,
     logging: process.env.DATASOURCE_LOGGING === 'true',

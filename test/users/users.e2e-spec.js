@@ -5,7 +5,7 @@ import { UsersModule } from '../../src/users/users.module';
 import { user } from './user.fixture';
 import { tag } from '../fixture/tag.fixture';
 import { User } from '../../src/users/user.entity';
-import { DatabaseModule } from '../../src/database/database.module';
+import { DatasourceModule } from '../../src/datasource/datasource.module';
 import { ConfigModule } from '../../src/config/config.module';
 
 describe('UsersController (e2e)', () => {
@@ -14,7 +14,7 @@ describe('UsersController (e2e)', () => {
 
   beforeEach(async () => {
     const moduleFixture = await Test.createTestingModule({
-      imports: [ConfigModule, DatabaseModule, UsersModule]
+      imports: [ConfigModule, DatasourceModule, UsersModule]
     }).compile();
 
     manager = moduleFixture.get(getEntityManagerToken());

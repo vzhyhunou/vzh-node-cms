@@ -29,7 +29,7 @@ export class ExportService {
     fileService,
     locationService
   ) {
-    this.properties = configService.get('exp');
+    this.properties = configService.get('resources.exp');
     this.ext = this.properties.inc.ext;
     this.mappingsService = mappingsService;
     this.mapperService = mapperService;

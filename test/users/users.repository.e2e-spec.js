@@ -10,7 +10,7 @@ import customRepository from '../../src/users/users.repository';
 import { UserTag } from '../../src/users/user-tag.entity';
 import { user } from './user.fixture';
 import { delayedTag, expiredTag, tag } from '../fixture/tag.fixture';
-import { DatabaseModule } from '../../src/database/database.module';
+import { DatasourceModule } from '../../src/datasource/datasource.module';
 import { ConfigModule } from '../../src/config/config.module';
 
 describe('UsersRepository', () => {
@@ -21,7 +21,7 @@ describe('UsersRepository', () => {
     const moduleFixture = await Test.createTestingModule({
       imports: [
         ConfigModule,
-        DatabaseModule,
+        DatasourceModule,
         TypeOrmModule.forFeature([User, UserTag])
       ],
       providers: [

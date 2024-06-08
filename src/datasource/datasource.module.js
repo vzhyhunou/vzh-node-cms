@@ -8,8 +8,8 @@ import { config } from './configuration';
     TypeOrmModule.forRootAsync({
       inject: [ConfigService],
       imports: [ConfigModule.forFeature(config)],
-      useFactory: (configService) => configService.get('database')
+      useFactory: (configService) => configService.get('datasource')
     })
   ]
 })
-export class DatabaseModule {}
+export class DatasourceModule {}

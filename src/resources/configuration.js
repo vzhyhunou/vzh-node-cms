@@ -14,20 +14,22 @@ export class ResourceMapper extends ObjectMapper {
 }
 
 export const config = () => ({
-  imp: {
-    init: process.env.CMS_IMP_INIT === 'true',
-    path: process.env.CMS_IMP_PATH
-  },
-  exp: {
-    path: process.env.CMS_EXP_PATH,
-    full: {
-      cron: process.env.CMS_EXP_FULL_CRON
+  resources: {
+    imp: {
+      init: process.env.RESOURCES_IMP_INIT === 'true',
+      path: process.env.RESOURCES_IMP_PATH
     },
-    inc: {
-      cron: process.env.CMS_EXP_INC_CRON,
-      ext: process.env.CMS_EXP_INC_EXT
-    },
-    pattern: process.env.CMS_EXP_PATTERN,
-    limit: parseInt(process.env.CMS_EXP_LIMIT, 10)
+    exp: {
+      path: process.env.RESOURCES_EXP_PATH,
+      full: {
+        cron: process.env.RESOURCES_EXP_FULL_CRON
+      },
+      inc: {
+        cron: process.env.RESOURCES_EXP_INC_CRON,
+        ext: process.env.RESOURCES_EXP_INC_EXT
+      },
+      pattern: process.env.RESOURCES_EXP_PATTERN,
+      limit: parseInt(process.env.RESOURCES_EXP_LIMIT, 10)
+    }
   }
 });
