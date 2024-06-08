@@ -4,6 +4,7 @@ import { DatasourceModule } from './datasource/datasource.module';
 import { ConfigModule } from './config/config.module';
 import { ResourcesModule } from './resources/resources.module';
 import { AuthModule } from './auth/auth.module';
+import { StaticModule } from './static/static.module';
 
 @Module({
   imports: [
@@ -11,7 +12,8 @@ import { AuthModule } from './auth/auth.module';
     DatasourceModule,
     UsersModule,
     ResourcesModule,
-    AuthModule
+    AuthModule,
+    StaticModule
   ]
 })
 export class AppModule {}
