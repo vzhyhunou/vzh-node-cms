@@ -20,6 +20,8 @@ jobs:
     - name: Install client with NPM
       working-directory: client
       run: npm i
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     - name: Test client with NPM
       working-directory: client
       run: npm run test
