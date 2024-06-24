@@ -6,6 +6,10 @@ export default (({REACT_APP_SRC, REACT_APP_BASE}) => ({
         ru: 'Русский'
     },
     tags: {
+        pages: {
+            MENU: 'MENU',
+            PUBLISHED: 'PUBLISHED'
+        },
         users: {
             ADMIN: 'ADMIN',
             MANAGER: 'MANAGER',

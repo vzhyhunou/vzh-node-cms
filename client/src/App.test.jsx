@@ -14,10 +14,10 @@ const renderWithHistory = (route = '/') => render(
 describe('App', () => {
 
     it('should render home page', async () => {
-        //renderWithHistory()
-        //expect(await screen.findByText('Sample page 1')).toBeDefined()
-        //expect(await screen.findByText('Home page')).toBeDefined()
-        //expect(document.title).toEqual('Home page')
+        renderWithHistory()
+        expect(await screen.findByText('Sample page 1')).toBeDefined()
+        expect(await screen.findByText('Home page')).toBeDefined()
+        expect(document.title).toEqual('Home page')
     })
 
     it('should render login page', async () => {
