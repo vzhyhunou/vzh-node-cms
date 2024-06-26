@@ -1,12 +1,9 @@
-import { Column, PrimaryGeneratedColumn, Index } from 'typeorm';
+import { Column, Index } from 'typeorm';
 import { IsNotEmpty } from 'class-validator';
-import { Exclude } from 'class-transformer';
 
-export class Tag {
-  @PrimaryGeneratedColumn()
-  @Exclude({ toPlainOnly: true })
-  id;
+import { Element } from './element.entity';
 
+export class Tag extends Element {
   @Column({ type: String })
   @Index()
   @IsNotEmpty()

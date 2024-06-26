@@ -53,7 +53,7 @@ export default {
     }));
   },
 
-  findByIdIn({ ids }) {
+  findByIdIn(ids) {
     return this.createQueryBuilderWithRelations('user')
       .andWhereIn('user.id', ids)
       .getMany();

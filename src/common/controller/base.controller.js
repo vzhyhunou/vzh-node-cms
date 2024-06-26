@@ -124,8 +124,8 @@ export class BaseController {
     groups: [REFERENCE]
   })
   @Bind(Query())
-  async findByIdIn(query) {
-    const content = await this.repository.findByIdIn(query);
+  async findByIdIn({ ids }) {
+    const content = await this.repository.findByIdIn(ids);
     return {
       _embedded: {
         [this.resource]: content

@@ -5,6 +5,7 @@ import {
   getEntityManagerToken,
   getCustomRepositoryToken
 } from '@nestjs/typeorm';
+
 import { User } from '../../src/users/user.entity';
 import customRepository from '../../src/users/users.repository';
 import { UserTag } from '../../src/users/user-tag.entity';
@@ -91,7 +92,7 @@ describe('UsersRepository', () => {
 
   describe('list()', () => {
     it('should return an empty array of users', async () => {
-      const entities = manager.create(User, [user('admin'), user('manager')]);
+      const entities = manager.create(User, [user('admin')]);
       await manager.save(entities);
       const result = await subj.list({ id: 'b' }, { page: 0, size: 1 });
       expect(result).toMatchObject({ content: [], totalElements: 0 });
