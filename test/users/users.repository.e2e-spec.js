@@ -101,24 +101,12 @@ describe('UsersRepository', () => {
     it('should return a filtered array of users', async () => {
       const entities = manager.create(User, [user('admin'), user('manager')]);
       await manager.save(entities);
-      let result = await subj.list({ id: 'D' }, { page: 0, size: 1 });
+      let result = await subj.list({ id: 'dM' }, { page: 0, size: 1 });
       expect(result).toMatchObject({
         content: [{ id: 'admin' }],
         totalElements: 1
       });
-      result = await subj.list({ id: 'D' }, { page: 1, size: 1 });
-      expect(result).toMatchObject({ content: [], totalElements: 1 });
-    });
-
-    it('should return a filtered array of users', async () => {
-      const entities = manager.create(User, [user('ADMIN'), user('MANAGER')]);
-      await manager.save(entities);
-      let result = await subj.list({ id: 'd' }, { page: 0, size: 1 });
-      expect(result).toMatchObject({
-        content: [{ id: 'ADMIN' }],
-        totalElements: 1
-      });
-      result = await subj.list({ id: 'd' }, { page: 1, size: 1 });
+      result = await subj.list({ id: 'dM' }, { page: 1, size: 1 });
       expect(result).toMatchObject({ content: [], totalElements: 1 });
     });
 
