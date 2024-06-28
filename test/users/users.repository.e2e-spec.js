@@ -78,11 +78,17 @@ describe('UsersRepository', () => {
 
   describe('findAll()', () => {
     it('should return an array of users', async () => {
-      const entities = manager.create(User, [user('admin'), user('manager')]);
+      const entities = manager.create(User, [
+        user('admin', [tag('a'), tag('b')]),
+        user('manager', [tag('c'), tag('d')])
+      ]);
       await manager.save(entities);
       let result = await subj.findAll({ page: 0, size: 2 });
       expect(result).toMatchObject({
-        content: [{ id: 'admin' }, { id: 'manager' }],
+        content: [
+          { id: 'admin', tags: [{ name: 'a' }, { name: 'b' }] },
+          { id: 'manager', tags: [{ name: 'c' }, { name: 'd' }] }
+        ],
         totalElements: 2
       });
       result = await subj.findAll({ page: 1, size: 2 });
