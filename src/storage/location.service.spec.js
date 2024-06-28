@@ -12,7 +12,7 @@ describe('LocationService', () => {
   let mappingsService;
   let subj;
 
-  beforeAll(async () => {
+  beforeAll(() => {
     repository = { getId: jest.fn() };
     mappingsService = { findByItem: jest.fn() };
     subj = new LocationService(mappingsService);
