@@ -1,5 +1,5 @@
 {
-  "name": "@vzhyhunou/vzh-node-cms",
+  "name": "@vzhyhunou/vzh-node-cms-client",
   "version": "0.0.1",
   "dependencies": {
     "@vzhyhunou/vzh-cms": "^0.0.1",
