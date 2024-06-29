@@ -48,9 +48,7 @@ describe('UsersController (e2e)', () => {
   });
 
   it('/users/search/list (GET)', async () => {
-    let entity = manager.create(User, user('admin', [tag('a')]));
-    await manager.save(entity);
-    entity = manager.create(User, user('manager', [tag('b')], entity));
+    const entity = manager.create(User, user('manager', [tag('b')]));
     await manager.save(entity);
     return request(app.getHttpServer())
       .get('/api/users/search/list?id=a&page=0&size=10&sort=id%2CASC&tags=b')
@@ -58,7 +56,7 @@ describe('UsersController (e2e)', () => {
       .expect(({ body }) => {
         expect(body).toMatchObject({
           _embedded: {
-            users: [{ id: 'manager', tags: [{ name: 'b' }], userId: 'admin' }]
+            users: [{ id: 'manager', tags: [{ name: 'b' }] }]
           },
           page: { totalElements: 1 }
         });

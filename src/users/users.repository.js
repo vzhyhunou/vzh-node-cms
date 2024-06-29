@@ -34,8 +34,7 @@ export default {
 
     const b = this.createQueryBuilder('user')
       .leftJoin('user.tags', 'tag')
-      .leftJoin('user.user', 'u')
-      .select(['user.id', 'tag.id', 'tag.name', 'u.id'])
+      .select(['user.id', 'tag.id', 'tag.name'])
       .andWhereInQuery('user.id', filter)
       .orderByObject('user', sort)
       .skip(page * size)
