@@ -154,11 +154,8 @@ describe('UsersRepository', () => {
     });
 
     it('should return an empty array of users', async () => {
-      const entities = manager.create(User, [
-        user('admin', [tag('a')]),
-        user('manager', [tag('c')])
-      ]);
-      await manager.save(entities);
+      const entity = manager.create(User, [user('admin', [tag('a')])]);
+      await manager.save(entity);
       const result = await subj.list(
         { id: 'g', tags: ['a'] },
         { page: 0, size: 1 }
