@@ -98,8 +98,8 @@ describe('UsersRepository', () => {
 
   describe('list()', () => {
     it('should return an empty array of users', async () => {
-      const entities = manager.create(User, [user('admin')]);
-      await manager.save(entities);
+      const entity = manager.create(User, user('admin'));
+      await manager.save(entity);
       const result = await subj.list({ id: 'b' }, { page: 0, size: 1 });
       expect(result).toMatchObject({ content: [], totalElements: 0 });
     });
