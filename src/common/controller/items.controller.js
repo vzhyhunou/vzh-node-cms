@@ -13,11 +13,10 @@ import { BaseController } from './base.controller';
 import { REFERENCE } from '../entity/constants';
 import { ItemsInterceptor } from '../../storage/items.interceptor';
 
-@UseInterceptors(ClassSerializerInterceptor, ItemsInterceptor)
+@UseInterceptors(ClassSerializerInterceptor, ItemsInterceptor) // todo move to methods
 export class ItemsController extends BaseController {
-  constructor(repository, resource, eventService) {
+  constructor(repository, resource) {
     super(repository, resource);
-    this.eventService = eventService;
   }
 
   /*
@@ -60,10 +59,7 @@ export class ItemsController extends BaseController {
   }
   */
   async create(entity) {
-    this.eventService.beforeCreate(entity);
-    const item = await this.repository.saveItem(entity);
-    this.eventService.afterCreate(entity);
-    return item;
+    return await this.repository.saveItem(entity);
   }
 
   /*
@@ -80,12 +76,8 @@ export class ItemsController extends BaseController {
     "userId" : "admin"
   }
   */
-  async save(id, entity) {
-    const old = await this.repository.findOneBy({ id });
-    this.eventService.beforeSave(old, entity);
-    const item = await this.repository.saveItem(entity);
-    this.eventService.afterSave(old, entity);
-    return item;
+  async save(entity) {
+    return await this.repository.saveItem(entity);
   }
 
   /*
@@ -115,8 +107,6 @@ export class ItemsController extends BaseController {
   @Delete(':id')
   @Bind(Param('id'))
   async delete(id) {
-    const old = await this.repository.findOneBy({ id });
     await this.repository.delete(id);
-    this.eventService.afterDelete(old);
   }
 }

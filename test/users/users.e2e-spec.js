@@ -170,7 +170,7 @@ describe('UsersController (e2e)', () => {
     });
     expect(result).toMatchObject({
       id: dto.id,
-      password: 'manager',
+      password: entity.password,
       tags: [
         {
           name: dto.tags[0].name
@@ -199,7 +199,8 @@ describe('UsersController (e2e)', () => {
     expect(result).toMatchObject({
       id: entity.id,
       password: entity.password,
-      tags: [{ name: dto.tags[0].name }]
+      tags: [{ name: dto.tags[0].name }],
+      user: { id: entity.user.id }
     });
   });
 
