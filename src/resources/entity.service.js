@@ -25,9 +25,8 @@ export class EntityService {
     await repository.saveItem(item);
   }
 
-  findAll(type, date) {
+  findAll(repository, date) {
     let index = 0;
-    const { repository } = this.mappingsService.findByType(type);
     return {
       [Symbol.asyncIterator]() {
         return {

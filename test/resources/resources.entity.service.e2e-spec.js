@@ -1,5 +1,8 @@
 import { Test } from '@nestjs/testing';
-import { getEntityManagerToken } from '@nestjs/typeorm';
+import {
+  getEntityManagerToken,
+  getCustomRepositoryToken
+} from '@nestjs/typeorm';
 import { DatasourceModule } from '../../src/datasource/datasource.module';
 import { ConfigModule } from '../../src/config/config.module';
 import { EntityService } from '../../src/resources/entity.service';
@@ -10,6 +13,7 @@ import { UsersModule } from '../../src/users/users.module';
 
 describe('EntityService (e2e)', () => {
   let manager;
+  let repository;
   let mappingsService;
   let subj;
 
@@ -19,6 +23,7 @@ describe('EntityService (e2e)', () => {
     }).compile();
 
     manager = moduleFixture.get(getEntityManagerToken());
+    repository = moduleFixture.get(getCustomRepositoryToken(User));
     mappingsService = moduleFixture.get(MappingsService);
     subj = new EntityService(mappingsService);
   });
@@ -27,7 +32,7 @@ describe('EntityService (e2e)', () => {
     it('should find users', async () => {
       const entity = manager.create(User, user('admin'));
       await manager.save(entity);
-      const result = subj.findAll(User);
+      const result = subj.findAll(repository);
       const iterator = result[Symbol.asyncIterator]();
       let next = await iterator.next();
       expect(next).toMatchObject({ value: { id: 'admin' }, done: false });
@@ -40,7 +45,7 @@ describe('EntityService (e2e)', () => {
       await manager.save(entity);
       entity = manager.create(User, user('manager', [], null, new Date(2)));
       await manager.save(entity);
-      const result = subj.findAll(User, new Date(1));
+      const result = subj.findAll(repository, new Date(1));
       const iterator = result[Symbol.asyncIterator]();
       let next = await iterator.next();
       expect(next).toMatchObject({ value: { id: 'manager' }, done: false });
