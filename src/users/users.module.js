@@ -4,6 +4,7 @@ import {
   getRepositoryToken,
   getCustomRepositoryToken
 } from '@nestjs/typeorm';
+
 import { User } from './user.entity';
 import { UsersController } from './users.controller';
 import customRepository from './users.repository';
