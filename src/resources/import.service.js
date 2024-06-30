@@ -50,7 +50,7 @@ export class ImportService {
     );
     this.logger.log('Import files');
     await this.consume(this.root, async (f) => {
-      const item = this.mapperService.resource(f);
+      const item = this.mapperService.read(f);
       this.fileService.create(
         this.locationService.location(await this.entityService.find(item)),
         item.files

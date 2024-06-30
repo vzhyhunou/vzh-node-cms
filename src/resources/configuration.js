@@ -1,15 +1,15 @@
 import { ObjectMapper } from './object.mapper';
-import { RESOURCE, REFERENCE } from '../common/entity/constants';
+import { RESOURCE, REFERENCE, NO_FILES } from '../common/entity/constants';
 
 export class UnlinkedMapper extends ObjectMapper {
   constructor(mappingsService) {
-    super(mappingsService, [RESOURCE]);
+    super(mappingsService, [RESOURCE, NO_FILES]);
   }
 }
 
 export class ResourceMapper extends ObjectMapper {
   constructor(mappingsService) {
-    super(mappingsService, [RESOURCE, REFERENCE]);
+    super(mappingsService, [RESOURCE, REFERENCE, NO_FILES]);
   }
 }
 

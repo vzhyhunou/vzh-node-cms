@@ -2,7 +2,9 @@ import { Injectable, Dependencies, Logger } from '@nestjs/common';
 import { Transform, plainToInstance } from 'class-transformer';
 import path from 'path';
 import fs from 'fs';
+
 import { ResourceMapper, UnlinkedMapper } from './configuration';
+import { ObjectMapper } from './object.mapper';
 
 class Wrapper {
   @Transform(
@@ -28,13 +30,14 @@ class Wrapper {
 }
 
 @Injectable()
-@Dependencies(UnlinkedMapper, ResourceMapper)
+@Dependencies(UnlinkedMapper, ResourceMapper, ObjectMapper)
 export class MapperService {
   logger = new Logger(MapperService.name);
 
-  constructor(unlinkedMapper, resourceMapper) {
+  constructor(unlinkedMapper, resourceMapper, objectMapper) {
     this.unlinkedMapper = unlinkedMapper;
     this.resourceMapper = resourceMapper;
+    this.objectMapper = objectMapper;
   }
 
   unlinked(file) {
@@ -45,6 +48,11 @@ export class MapperService {
   resource(file) {
     this.logger.debug(`Read: ${file}`);
     return this.resourceMapper.readValue(file, Wrapper).item;
+  }
+
+  read(file) {
+    this.logger.debug(`Read: ${file}`);
+    return this.objectMapper.readValue(file, Wrapper).item;
   }
 
   write(file, item) {

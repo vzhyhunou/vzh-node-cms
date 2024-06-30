@@ -11,6 +11,7 @@ import { ExportService } from './export.service';
 import { ResourceMapper, UnlinkedMapper, config } from './configuration';
 import { ImportController } from './import.controller';
 import { ExportController } from './export.controller';
+import { ObjectMapper } from './object.mapper';
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { ExportController } from './export.controller';
     ExportScheduler,
     UnlinkedMapper,
     ResourceMapper,
+    ObjectMapper,
     MapperService,
     EntityService
   ]
