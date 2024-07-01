@@ -56,6 +56,15 @@ describe('UsersRepository', () => {
       const result = await manager.find(UserTag);
       expect(result).toMatchObject([{ name: 'a' }]);
     });
+
+    it('should update tags', async () => {
+      let entity = manager.create(User, user('admin', [tag('a')]));
+      await subj.save(entity);
+      entity = manager.create(User, user('admin', [tag('b')]));
+      await subj.save(entity);
+      const result = await manager.find(UserTag);
+      expect(result).toMatchObject([{ name: 'b' }]);
+    });
   });
 
   describe('delete()', () => {
