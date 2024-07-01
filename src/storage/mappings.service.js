@@ -2,25 +2,13 @@ import { Injectable } from '@nestjs/common';
 
 @Injectable()
 export class MappingsService {
-  map = [];
-
-  add(resource, type, name, repository) {
-    this.map.push({ type, name, resource, repository });
-  }
-
-  findByType(type) {
-    return this.map.find((i) => i.type === type);
-  }
+  resources = [];
 
   findByName(name) {
-    return this.map.find((i) => i.name === name);
+    return this.resources.find((i) => i.name === name);
   }
 
   findByItem(item) {
-    return this.map.find((i) => i.type === item.constructor);
-  }
-
-  findAll() {
-    return this.map;
+    return this.resources.find((i) => i.type === item.constructor);
   }
 }

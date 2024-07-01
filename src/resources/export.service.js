@@ -42,7 +42,7 @@ export class ExportService {
     const last = incremental && this.last();
     const dir = this.folder(!!last);
     this.logger.log(`Start export ${dir} ...`);
-    for (const { repository } of this.mappingsService.findAll()) {
+    for (const { repository } of this.mappingsService.resources) {
       for await (const item of this.entityService.findAll(repository, last)) {
         const location = this.locationService.location(item);
         item.files = this.fileService.read(location, true);

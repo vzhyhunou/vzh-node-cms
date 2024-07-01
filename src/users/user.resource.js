@@ -7,8 +7,13 @@ import { MappingsService } from '../storage/mappings.service';
 
 @Injectable()
 @Dependencies(MappingsService, getCustomRepositoryToken(User))
-export class UsersInitializer {
+export class UserResource {
   constructor(mappingsService, repository) {
-    mappingsService.add(USERS, User, 'vzh.cms.model.User', repository);
+    mappingsService.resources.push({
+      resource: USERS,
+      type: User,
+      name: 'vzh.cms.model.User',
+      repository
+    });
   }
 }
