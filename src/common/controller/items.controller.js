@@ -9,11 +9,12 @@ import {
   UseInterceptors,
   ClassSerializerInterceptor
 } from '@nestjs/common';
+
 import { BaseController } from './base.controller';
 import { REFERENCE } from '../entity/constants';
-import { ItemsInterceptor } from '../../storage/items.interceptor';
+import { ItemInterceptor } from '../interceptor/item.interceptor';
 
-@UseInterceptors(ClassSerializerInterceptor, ItemsInterceptor) // todo move to methods
+@UseInterceptors(ClassSerializerInterceptor)
 export class ItemsController extends BaseController {
   constructor(repository, resource) {
     super(repository, resource);
@@ -37,6 +38,7 @@ export class ItemsController extends BaseController {
     groups: [REFERENCE]
   })
   @Bind(Param('id'))
+  @UseInterceptors(ItemInterceptor)
   async getById(id) {
     return await this.repository.findOne({
       relations: { user: true },

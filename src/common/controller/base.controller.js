@@ -1,5 +1,13 @@
-import { Get, Query, Bind, SerializeOptions } from '@nestjs/common';
+import {
+  Get,
+  Query,
+  Bind,
+  SerializeOptions,
+  UseInterceptors
+} from '@nestjs/common';
+
 import { REFERENCE } from '../entity/constants';
+import { ItemsInterceptor } from '../interceptor/items.interceptor';
 
 export class BaseController {
   constructor(repository, resource) {
@@ -40,6 +48,7 @@ export class BaseController {
     groups: [REFERENCE]
   })
   @Bind(Query())
+  @UseInterceptors(ItemsInterceptor)
   async findAll(query) {
     const { content, totalElements } = await this.repository.findAll(query);
     return {
