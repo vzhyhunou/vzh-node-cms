@@ -63,7 +63,7 @@ export default {
       .leftJoin('user.tags', 'tag')
       .select(['user.id', 'user.password', 'tag.name'])
       .andWhereEqual('user.id', id)
-      .andWhereActiveTags()
+      .andWhereActiveTags('tag')
       .getOne();
   }
 };

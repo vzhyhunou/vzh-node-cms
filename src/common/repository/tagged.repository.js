@@ -1,8 +1,8 @@
 import { SelectQueryBuilder } from 'typeorm';
 import repository from './item.repository';
 
-SelectQueryBuilder.prototype.andWhereActiveTags = function () {
-  return this.andWhereActive('tag.start', 'tag.end');
+SelectQueryBuilder.prototype.andWhereActiveTags = function (expression) {
+  return this.andWhereActive(`${expression}.start`, `${expression}.end`);
 };
 
 export default repository;

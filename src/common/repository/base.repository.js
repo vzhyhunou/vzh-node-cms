@@ -19,8 +19,8 @@ SelectQueryBuilder.prototype.andWhereContains = function (expression, field) {
 
 SelectQueryBuilder.prototype.andWhereIn = function (expression, field) {
   field &&
-    this.andWhere(`${expression} in (:...${expression})`, {
-      [expression]: typeof field === 'string' ? [field] : field
+    this.andWhere(`${expression} in (:...fields)`, {
+      fields: typeof field === 'string' ? [field] : field
     });
   return this;
 };
