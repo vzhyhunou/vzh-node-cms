@@ -12,6 +12,9 @@ export class JwtGuard extends AuthGuard('jwt') {
   }
 
   async canActivate(context) {
+    const req = context.switchToHttp().getRequest();
+    req.isUserInRole = (role) =>
+      req.user && req.user.authorities.includes(role);
     if (process.env.NODE_ENV === 'development') {
       return true;
     }
@@ -19,11 +22,17 @@ export class JwtGuard extends AuthGuard('jwt') {
       context.getHandler(),
       context.getClass()
     ]);
-    if (!requiredRoles) {
-      return true;
+    try {
+      await super.canActivate(context);
+      if (!requiredRoles || !requiredRoles.length) {
+        return true;
+      }
+      return requiredRoles.some((role) => req.isUserInRole(role));
+    } catch (e) {
+      if (!requiredRoles || !requiredRoles.length) {
+        return true;
+      }
+      throw e;
     }
-    await super.canActivate(context);
-    const { user } = context.switchToHttp().getRequest();
-    return requiredRoles.some((role) => user.authorities.includes(role));
   }
 }

@@ -78,7 +78,7 @@ export class FileService {
         fs.rmSync(path.join(dir, name));
       }
     }
-    if (fs.readdirSync(dir).length === 0) {
+    if (!fs.readdirSync(dir).length) {
       fs.rmSync(dir, { recursive: true });
     }
   }
