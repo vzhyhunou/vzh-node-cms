@@ -36,7 +36,7 @@ export class ImportService {
     if (!fs.existsSync(this.root)) {
       return;
     }
-    this.logger.log('Import items with id only');
+    this.logger.log('Import items without relations');
     await this.consume(this.root, async (f) => {
       const item = this.mapperService.unlinked(f);
       item.files = [];

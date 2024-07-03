@@ -8,6 +8,6 @@ export class BaseInterceptor {
   }
 
   intercept(context, next) {
-    return next.handle().pipe(map((data) => this.process(data)));
+    return next.handle().pipe(map((data) => data && this.process(data)));
   }
 }

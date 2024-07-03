@@ -1,20 +1,17 @@
 import {
   Get,
-  Delete,
   Param,
   Bind,
-  SerializeOptions,
   Patch,
   Body,
   UseInterceptors,
-  ClassSerializerInterceptor
+  Request
 } from '@nestjs/common';
 
 import { BaseController } from './base.controller';
-import { REFERENCE } from '../entity/constants';
 import { ItemInterceptor } from '../interceptor/item.interceptor';
+import { User } from '../../users/user.entity';
 
-@UseInterceptors(ClassSerializerInterceptor)
 export class ItemsController extends BaseController {
   constructor(repository, resource) {
     super(repository, resource);
@@ -34,9 +31,6 @@ export class ItemsController extends BaseController {
   }
   */
   @Get(':id')
-  @SerializeOptions({
-    groups: [REFERENCE]
-  })
   @Bind(Param('id'))
   @UseInterceptors(ItemInterceptor)
   async getById(id) {
@@ -60,8 +54,9 @@ export class ItemsController extends BaseController {
     "userId" : "admin"
   }
   */
-  async create(entity) {
-    return await this.repository.saveItem(entity);
+  async create(entity, req) {
+    await this.fill(entity, req);
+    return await this.repository.save(entity);
   }
 
   /*
@@ -78,8 +73,9 @@ export class ItemsController extends BaseController {
     "userId" : "admin"
   }
   */
-  async save(entity) {
-    return await this.repository.saveItem(entity);
+  async save(entity, req) {
+    await this.fill(entity, req);
+    return await this.repository.save(entity);
   }
 
   /*
@@ -96,19 +92,18 @@ export class ItemsController extends BaseController {
   }
   */
   @Patch(':id')
-  @Bind(Param('id'), Body())
-  async patch(id, dto) {
+  @Bind(Param('id'), Body(), Request())
+  async patch(id, dto, req) {
     let entity = await this.repository.findOneBy({ id });
     entity = this.repository.create({ ...entity, ...dto });
-    return await this.repository.saveItem(entity);
+    await this.fill(entity, req);
+    return await this.repository.save(entity);
   }
 
-  /*
-  DELETE http://localhost:3010/api/users/editor
-  */
-  @Delete(':id')
-  @Bind(Param('id'))
-  async delete(id) {
-    await this.repository.delete(id);
+  async fill(item, req) {
+    item.date = new Date();
+    item.user = await this.repository.manager.findOneBy(User, {
+      id: req.getRemoteUser()
+    });
   }
 }

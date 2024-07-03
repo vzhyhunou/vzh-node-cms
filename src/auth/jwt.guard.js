@@ -15,6 +15,7 @@ export class JwtGuard extends AuthGuard('jwt') {
     const req = context.switchToHttp().getRequest();
     req.isUserInRole = (role) =>
       req.user && req.user.authorities.includes(role);
+    req.getRemoteUser = () => req.user && req.user.username;
     if (process.env.NODE_ENV === 'development') {
       return true;
     }

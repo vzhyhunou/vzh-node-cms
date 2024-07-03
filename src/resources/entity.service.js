@@ -16,13 +16,13 @@ export class EntityService {
 
   async create(item) {
     const { repository } = this.mappingsService.findByItem(item);
-    await repository.saveItem(item);
+    await repository.save(item);
   }
 
   async update(item) {
     item.version = (await this.find(item)).version;
     const { repository } = this.mappingsService.findByItem(item);
-    await repository.saveItem(item);
+    await repository.save(item);
   }
 
   findAll(repository, date) {

@@ -1,12 +1,14 @@
 import { Test } from '@nestjs/testing';
 import { getEntityManagerToken } from '@nestjs/typeorm';
 import request from 'supertest';
+
 import { UsersModule } from '../../src/users/users.module';
 import { user } from './user.fixture';
 import { tag } from '../fixture/tag.fixture';
 import { User } from '../../src/users/user.entity';
 import { DatasourceModule } from '../../src/datasource/datasource.module';
 import { ConfigModule } from '../../src/config/config.module';
+import { AuthModule } from '../../src/auth/auth.module';
 
 describe('UsersController (e2e)', () => {
   let manager;
@@ -14,7 +16,7 @@ describe('UsersController (e2e)', () => {
 
   beforeEach(async () => {
     const moduleFixture = await Test.createTestingModule({
-      imports: [ConfigModule, DatasourceModule, UsersModule]
+      imports: [ConfigModule, DatasourceModule, AuthModule, UsersModule]
     }).compile();
 
     manager = moduleFixture.get(getEntityManagerToken());

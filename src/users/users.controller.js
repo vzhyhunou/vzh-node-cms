@@ -4,7 +4,8 @@ import {
   Put,
   Body,
   Post,
-  Bind
+  Bind,
+  Request
 } from '@nestjs/common';
 import { getCustomRepositoryToken } from '@nestjs/typeorm';
 
@@ -23,14 +24,14 @@ export class UsersController extends ItemsController {
   }
 
   @Post()
-  @Bind(Body(ParseUserPipe))
-  async create(entity) {
-    return await super.create(entity);
+  @Bind(Body(ParseUserPipe), Request())
+  async create(entity, req) {
+    return await super.create(entity, req);
   }
 
   @Put(':id')
-  @Bind(Body(ParseUserPipe))
-  async save(entity) {
-    return await super.save(entity);
+  @Bind(Body(ParseUserPipe), Request())
+  async save(entity, req) {
+    return await super.save(entity, req);
   }
 }

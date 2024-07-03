@@ -1,14 +1,21 @@
 import {
   Get,
+  Delete,
+  Param,
   Query,
   Bind,
   SerializeOptions,
-  UseInterceptors
+  UseInterceptors,
+  ClassSerializerInterceptor
 } from '@nestjs/common';
 
 import { REFERENCE } from '../entity/constants';
 import { ItemsInterceptor } from '../interceptor/items.interceptor';
 
+@UseInterceptors(ClassSerializerInterceptor)
+@SerializeOptions({
+  groups: [REFERENCE]
+})
 export class BaseController {
   constructor(repository, resource) {
     this.repository = repository;
@@ -44,9 +51,6 @@ export class BaseController {
   }
   */
   @Get()
-  @SerializeOptions({
-    groups: [REFERENCE]
-  })
   @Bind(Query())
   @UseInterceptors(ItemsInterceptor)
   async findAll(query) {
@@ -90,9 +94,6 @@ export class BaseController {
   }
   */
   @Get('search/list')
-  @SerializeOptions({
-    groups: [REFERENCE]
-  })
   @Bind(Query())
   async list({ page, size, sort, ...rest }) {
     const { content, totalElements } = await this.repository.list(rest, {
@@ -129,9 +130,6 @@ export class BaseController {
   }
   */
   @Get('search/findByIdIn')
-  @SerializeOptions({
-    groups: [REFERENCE]
-  })
   @Bind(Query())
   async findByIdIn({ ids }) {
     const content = await this.repository.findByIdIn(ids);
@@ -140,5 +138,14 @@ export class BaseController {
         [this.resource]: content
       }
     };
+  }
+
+  /*
+  DELETE http://localhost:3010/api/users/editor
+  */
+  @Delete(':id')
+  @Bind(Param('id'))
+  async delete(id) {
+    await this.repository.delete(id);
   }
 }
