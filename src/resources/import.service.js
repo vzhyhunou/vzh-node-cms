@@ -37,20 +37,20 @@ export class ImportService {
       return;
     }
     this.logger.log('Import items with id only');
-    await this.consume(
-      this.root,
-      async (f) =>
-        await this.entityService.create(this.mapperService.unlinked(f))
-    );
+    await this.consume(this.root, async (f) => {
+      const item = this.mapperService.unlinked(f);
+      item.files = [];
+      await this.entityService.create(item);
+    });
     this.logger.log('Import items');
-    await this.consume(
-      this.root,
-      async (f) =>
-        await this.entityService.update(this.mapperService.resource(f))
-    );
+    await this.consume(this.root, async (f) => {
+      const item = this.mapperService.resource(f);
+      item.files = [];
+      await this.entityService.update(item);
+    });
     this.logger.log('Import files');
     await this.consume(this.root, async (f) => {
-      const item = this.mapperService.read(f);
+      const item = this.mapperService.resource(f);
       this.fileService.create(
         this.locationService.location(await this.entityService.find(item)),
         item.files

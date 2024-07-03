@@ -2,7 +2,6 @@ import { Column, VersionColumn, ManyToOne } from 'typeorm';
 
 import { User } from '../../users/user.entity';
 import { IdResolve } from '../decorator/id-resolve.decorator';
-import { FilesResolve } from '../decorator/files-resolve.decorator';
 
 export class Item {
   @Column({ type: Date, nullable: true })
@@ -12,7 +11,6 @@ export class Item {
   @IdResolve(() => User, 'userId')
   user;
 
-  @FilesResolve()
   files = [];
 
   getParents() {

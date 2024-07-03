@@ -4,7 +4,6 @@ import path from 'path';
 import fs from 'fs';
 
 import { ResourceMapper, UnlinkedMapper } from './configuration';
-import { ObjectMapper } from './object.mapper';
 
 class Wrapper {
   @Transform(
@@ -30,14 +29,13 @@ class Wrapper {
 }
 
 @Injectable()
-@Dependencies(UnlinkedMapper, ResourceMapper, ObjectMapper)
+@Dependencies(UnlinkedMapper, ResourceMapper)
 export class MapperService {
   logger = new Logger(MapperService.name);
 
-  constructor(unlinkedMapper, resourceMapper, objectMapper) {
+  constructor(unlinkedMapper, resourceMapper) {
     this.unlinkedMapper = unlinkedMapper;
     this.resourceMapper = resourceMapper;
-    this.objectMapper = objectMapper;
   }
 
   unlinked(file) {
@@ -48,11 +46,6 @@ export class MapperService {
   resource(file) {
     this.logger.debug(`Read: ${file}`);
     return this.resourceMapper.readValue(file, Wrapper).item;
-  }
-
-  read(file) {
-    this.logger.debug(`Read: ${file}`);
-    return this.objectMapper.readValue(file, Wrapper).item;
   }
 
   write(file, item) {
