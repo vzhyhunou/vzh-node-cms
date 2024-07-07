@@ -2,18 +2,19 @@ import {
   Controller,
   Dependencies,
   Put,
+  Patch,
   Body,
   Post,
-  Bind,
-  Request
+  Bind
 } from '@nestjs/common';
 import { getCustomRepositoryToken } from '@nestjs/typeorm';
 
 import { User } from './user.entity';
 import { ItemsController } from '../common/controller/items.controller';
 import { USERS, USER_TAG } from './constants';
-import { ParseUserPipe } from './configuration';
+import { ParseUserPipe, PatchUserPipe } from './configuration';
 import { Roles } from '../auth/roles.decorator';
+import { AuditItemPipe } from '../auth/audit-item.pipe';
 
 @Controller(`api/${USERS}`)
 @Roles(USER_TAG.MANAGER)
@@ -24,14 +25,20 @@ export class UsersController extends ItemsController {
   }
 
   @Post()
-  @Bind(Body(ParseUserPipe), Request())
-  async create(entity, req) {
-    return await super.create(entity, req);
+  @Bind(Body(ParseUserPipe, AuditItemPipe))
+  async create(entity) {
+    return await super.create(entity);
   }
 
   @Put(':id')
-  @Bind(Body(ParseUserPipe), Request())
-  async save(entity, req) {
-    return await super.save(entity, req);
+  @Bind(Body(ParseUserPipe, AuditItemPipe))
+  async save(entity) {
+    return await super.save(entity);
+  }
+
+  @Patch(':id')
+  @Bind(Body(PatchUserPipe, ParseUserPipe, AuditItemPipe))
+  async patch(entity) {
+    return await super.patch(entity);
   }
 }
