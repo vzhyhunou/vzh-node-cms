@@ -11,6 +11,7 @@ import {
 
 import { REFERENCE } from '../entity/constants';
 import { ItemsInterceptor } from '../interceptor/items.interceptor';
+import { ItemInterceptor } from '../interceptor/item.interceptor';
 
 @UseInterceptors(ClassSerializerInterceptor)
 @SerializeOptions({
@@ -200,5 +201,31 @@ export class BaseController {
   @Bind(Param('id'))
   async delete(id) {
     await this.repository.delete(id);
+  }
+
+  /*
+  GET http://localhost:3010/api/users/manager
+  {
+    "id" : "manager",
+    "date" : "2024-04-19T17:44:56.242+00:00",
+    "tags" : [ {
+      "name" : "MANAGER",
+      "start" : "2024-04-13T17:44:00.000+00:00",
+      "end" : "2024-04-28T17:44:00.000+00:00"
+    } ],
+    "userId" : "admin"
+  }
+  */
+  @Get(':id')
+  @Bind(Param('id'))
+  @UseInterceptors(ItemInterceptor)
+  async getById(id) {
+    const { relations, primaryColumns } = this.repository.metadata;
+    return await this.repository.findOne({
+      relations: Object.fromEntries(
+        relations.map(({ propertyName }) => [propertyName, true])
+      ),
+      where: { [primaryColumns[0].propertyName]: id }
+    });
   }
 }
