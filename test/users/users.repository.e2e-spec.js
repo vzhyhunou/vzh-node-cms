@@ -138,21 +138,6 @@ describe('UsersRepository', () => {
         user('manager', [tag('c'), tag('d')])
       ]);
       await manager.save(entities);
-      let result = await subj.list({ tags: 'a' }, { page: 0, size: 1 });
-      expect(result).toMatchObject({
-        content: [{ id: 'admin', tags: [{ name: 'a' }, { name: 'b' }] }],
-        totalElements: 1
-      });
-      result = await subj.list({ tags: 'a' }, { page: 1, size: 1 });
-      expect(result).toMatchObject({ content: [], totalElements: 1 });
-    });
-
-    it('should return a filtered array of users', async () => {
-      const entities = manager.create(User, [
-        user('admin', [tag('a'), tag('b')]),
-        user('manager', [tag('c'), tag('d')])
-      ]);
-      await manager.save(entities);
       let result = await subj.list({ tags: ['a'] }, { page: 0, size: 1 });
       expect(result).toMatchObject({
         content: [{ id: 'admin', tags: [{ name: 'a' }, { name: 'b' }] }],

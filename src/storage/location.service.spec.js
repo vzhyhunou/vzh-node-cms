@@ -1,4 +1,5 @@
 import path from 'path';
+
 import { LocationService } from './location.service';
 
 class Item {
@@ -8,26 +9,25 @@ class Item {
 }
 
 describe('LocationService', () => {
-  let repository;
+  let manager;
   let mappingsService;
   let subj;
 
   beforeAll(() => {
-    repository = { getId: jest.fn() };
+    manager = { getId: jest.fn() };
     mappingsService = { findByItem: jest.fn() };
-    subj = new LocationService(mappingsService);
+    subj = new LocationService(mappingsService, manager);
   });
 
   it('location()', () => {
-    repository.getId.mockReturnValue('a.b');
+    manager.getId.mockReturnValue('a.b');
     mappingsService.findByItem.mockReturnValue({
-      resource: 'resource',
-      repository
+      resource: 'resource'
     });
     const item = new Item();
     const result = subj.location(item);
     expect(result).toBe(path.join('resource', '1', '2', '3', 'a', 'b'));
-    expect(repository.getId).toHaveBeenCalledWith(item);
+    expect(manager.getId).toHaveBeenCalledWith(item);
     expect(mappingsService.findByItem).toHaveBeenCalledWith(item);
   });
 });

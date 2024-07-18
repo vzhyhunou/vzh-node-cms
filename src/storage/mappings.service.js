@@ -11,4 +11,8 @@ export class MappingsService {
   findByItem(item) {
     return this.resources.find((i) => i.type === item.constructor);
   }
+
+  findByType(type) {
+    return this.resources.find((i) => i.type === type);
+  }
 }

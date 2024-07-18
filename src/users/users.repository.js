@@ -3,28 +3,6 @@ import repository from '../common/repository/tagged.repository';
 export default {
   ...repository,
 
-  createQueryBuilderWithRelations(selection) {
-    return this.createQueryBuilder(selection)
-      .leftJoin(`${selection}.tags`, 'tag')
-      .leftJoin(`${selection}.user`, 'u')
-      .select([selection, 'tag', 'u.id']);
-  },
-
-  findAll({ page = 0, size = 20, sort }) {
-    const b = this.createQueryBuilderWithRelations('user')
-      .orderByObject('user', sort)
-      .skip(page * size)
-      .take(size)
-      .getMany();
-
-    const c = this.createQueryBuilder('user').select(['user.id']).getCount();
-
-    return Promise.all([b, c]).then(([content, totalElements]) => ({
-      content,
-      totalElements
-    }));
-  },
-
   list({ id, tags }, { page, size, sort }) {
     const filter = this.createQueryBuilder('user')
       .leftJoin('user.tags', 'tag')
@@ -50,12 +28,6 @@ export default {
       content,
       totalElements
     }));
-  },
-
-  findByIdIn(ids) {
-    return this.createQueryBuilderWithRelations('user')
-      .andWhereIn('user.id', ids)
-      .getMany();
   },
 
   withActiveRoles(id) {

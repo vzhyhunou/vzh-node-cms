@@ -53,8 +53,12 @@ export class ItemsController extends BaseController {
   @Get()
   @Bind(Query())
   @UseInterceptors(ItemsInterceptor)
-  async findAll(query) {
-    const { content, totalElements } = await this.repository.findAll(query);
+  async findAll({ page, size, sort }) {
+    const { content, totalElements } = await this.repository.findAll({
+      page,
+      size,
+      sort: sort && sort.split(',')
+    });
     return {
       _embedded: {
         [this.resource]: content
@@ -82,12 +86,87 @@ export class ItemsController extends BaseController {
   @Bind(Param('id'))
   @UseInterceptors(ItemInterceptor)
   async getById(id) {
-    const { relations, primaryColumns } = this.repository.metadata;
-    return await this.repository.findOne({
-      relations: Object.fromEntries(
-        relations.map(({ propertyName }) => [propertyName, true])
-      ),
-      where: { [primaryColumns[0].propertyName]: id }
-    });
+    return await this.repository.findById(id);
+  }
+
+  /*
+  GET http://localhost:3010/api/users/search/findByIdIn?ids=manager&ids=editor
+  {
+    "_embedded" : {
+      "users" : [ {
+        "id" : "editor",
+        "tags" : [ {
+          "name" : "PAGES_EDITOR"
+        } ]
+      }, {
+        "id" : "manager",
+        "tags" : [ {
+          "name" : "MANAGER"
+        } ]
+      } ]
+    }
+  }
+  */
+  @Get('search/findByIdIn')
+  @Bind(Query())
+  @UseInterceptors(ItemsInterceptor)
+  async findByIdIn({ ids }) {
+    const content = await this.repository.findByIdIn(
+      typeof ids === 'string' ? [ids] : ids
+    );
+    return {
+      _embedded: {
+        [this.resource]: content
+      }
+    };
+  }
+
+  /*
+  GET http://localhost:3010/api/users/search/list?id=a&page=0&size=10&sort=id%2CASC&tags=MANAGER
+  {
+    "_embedded" : {
+      "users" : [ {
+        "id" : "admin",
+        "tags" : [ {
+          "name" : "PAGES_EDITOR"
+        }, {
+          "name" : "MANAGER"
+        }, {
+          "name" : "ADMIN"
+        } ]
+      }, {
+        "id" : "manager",
+        "tags" : [ {
+          "name" : "MANAGER"
+        } ]
+      } ]
+    },
+    "page" : {
+      //"size" : 10,
+      "totalElements" : 2,
+      //"totalPages" : 1,
+      //"number" : 0
+    }
+  }
+  */
+  @Get('search/list')
+  @Bind(Query())
+  async list({ page, size, sort, tags, ...rest }) {
+    const { content, totalElements } = await this.repository.list(
+      { tags: tags && (typeof tags === 'string' ? [tags] : tags), ...rest },
+      {
+        page,
+        size,
+        sort: sort && sort.split(',')
+      }
+    );
+    return {
+      _embedded: {
+        [this.resource]: content
+      },
+      page: {
+        totalElements
+      }
+    };
   }
 }
