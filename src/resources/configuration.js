@@ -2,14 +2,14 @@ import { ObjectMapper } from './object.mapper';
 import { RESOURCE, REFERENCE } from '../common/entity/constants';
 
 export class UnlinkedMapper extends ObjectMapper {
-  constructor(mappingsService) {
-    super(mappingsService, [RESOURCE]);
+  constructor(manager, mappingsService) {
+    super(manager, mappingsService, [RESOURCE]);
   }
 }
 
 export class ResourceMapper extends ObjectMapper {
-  constructor(mappingsService) {
-    super(mappingsService, [RESOURCE, REFERENCE]);
+  constructor(manager, mappingsService) {
+    super(manager, mappingsService, [RESOURCE, REFERENCE]);
   }
 }
 

@@ -16,11 +16,8 @@ class Wrapper {
   '@class';
 
   @Transform(
-    ({ value, obj, options: { mappingsService, groups } }) => {
-      const {
-        type,
-        repository: { manager }
-      } = mappingsService.findByName(obj['@class']);
+    ({ value, obj, options: { manager, mappingsService, groups } }) => {
+      const { type } = mappingsService.findByName(obj['@class']);
       return plainToInstance(type, value, { manager, groups });
     },
     { toClassOnly: true }
