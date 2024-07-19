@@ -14,7 +14,7 @@ export default {
       .leftJoin('user.tags', 'tag')
       .select(['user.id', 'tag.id', 'tag.name'])
       .andWhereInQuery('user.id', filter)
-      .orderByObject('user', sort)
+      .orderByName('user', sort)
       .skip(page * size)
       .take(size)
       .getMany();

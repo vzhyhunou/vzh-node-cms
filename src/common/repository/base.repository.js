@@ -27,7 +27,7 @@ Repository.prototype.findByIdIn = function (ids) {
   });
 };
 
-Repository.prototype.findAll = function ({ page = 0, size = 20, sort }) {
+Repository.prototype.findAll = function ({ page, size, sort }) {
   return Promise.all([
     this.find({
       relations: Object.fromEntries(
@@ -75,7 +75,7 @@ SelectQueryBuilder.prototype.andWhereInQuery = function (expression, builder) {
   ).setParameters(builder.getParameters());
 };
 
-SelectQueryBuilder.prototype.orderByObject = function (resource, sort) {
+SelectQueryBuilder.prototype.orderByName = function (resource, sort) {
   sort &&
     (([field, order]) => this.orderBy(`${resource}.${field}`, order))(sort);
   return this;

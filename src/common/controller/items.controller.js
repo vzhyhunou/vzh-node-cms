@@ -53,7 +53,7 @@ export class ItemsController extends BaseController {
   @Get()
   @Bind(Query())
   @UseInterceptors(ItemsInterceptor)
-  async findAll({ page, size, sort }) {
+  async findAll({ page = 0, size = 20, sort }) {
     const { content, totalElements } = await this.repository.findAll({
       page,
       size,
