@@ -151,7 +151,7 @@ export class ItemsController extends BaseController {
   */
   @Get('search/list')
   @Bind(Query())
-  async list({ page, size, sort, tags, ...rest }) {
+  async list({ page = 0, size = 20, sort, tags, ...rest }) {
     const { content, totalElements } = await this.repository.list(
       { tags: tags && (typeof tags === 'string' ? [tags] : tags), ...rest },
       {
