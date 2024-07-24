@@ -1,6 +1,6 @@
 import { Repository, MoreThan } from 'typeorm';
 
-import repository from './base.repository';
+import './base.repository';
 
 Repository.prototype.findOneByIndex = function (index, date) {
   return this.findOne({
@@ -14,5 +14,3 @@ Repository.prototype.findOneByIndex = function (index, date) {
     }
   });
 };
-
-export default repository;

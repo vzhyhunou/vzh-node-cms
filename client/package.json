@@ -21,7 +21,7 @@
     "start": "cross-env REACT_APP_SRC=back vite",
     "start:fake": "cross-env REACT_APP_SRC=fake vite",
     "build": "cross-env BUILD_PATH=../dist/public REACT_APP_SRC=back vite build && rimraf ../dist/public/static/origin ../dist/public/static/images",
-    "build:fake": "cross-env BUILD_PATH=../dist/public REACT_APP_SRC=fake vite build",
+    "build:fake": "cross-env BUILD_PATH=../dist/public REACT_APP_SRC=fake vite build && rimraf ../docs && BUILD_PATH=../docs REACT_APP_SRC=fake REACT_APP_BASE=/vzh-node-cms vite build",
     "test": "cross-env REACT_APP_SRC=fake jest"
   }
 }

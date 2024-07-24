@@ -61,5 +61,8 @@
   "files": [
     "package.json",
     "dist"
-  ]
+  ],
+  "exports": {
+    ".": "./dist/index.js"
+  }
 }
