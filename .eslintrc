@@ -1,0 +1,9 @@
+{
+    "parser": "@babel/eslint-parser",
+    "extends": "eslint:recommended",
+    "env": {
+        "node": true,
+        "jest": true,
+        "es6": true
+    }
+}
