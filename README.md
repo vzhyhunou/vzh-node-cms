@@ -23,7 +23,7 @@ This project based on [vzh-cms](https://github.com/vzhyhunou/vzh-cms) and uses N
 
 ## Getting Started
 ### Running
-- Download and install Node v17.9.1
+- Download and install Node 17.9.1
 - Install packages: `npm install`
 - Build the project: `npm run build`
 - Run app: `node dist/main.js`
