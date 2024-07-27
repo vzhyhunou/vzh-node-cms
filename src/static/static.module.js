@@ -14,7 +14,7 @@ import { config } from './configuration';
           .get('static.locations')
           .split(',')
           .map((l) => ({
-            rootPath: join(__dirname, '..', '..', l),
+            rootPath: join(process.cwd(), l),
             exclude: ['/api/(.*)', '/static/(.*)', '/assets/(.*)']
           })),
       inject: [ConfigService]
