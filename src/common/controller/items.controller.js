@@ -18,30 +18,28 @@ import { BaseController } from './base.controller';
   groups: [REFERENCE]
 })
 export class ItemsController extends BaseController {
-  constructor(repository, resource) {
-    super(repository, resource);
+  constructor(repository) {
+    super(repository);
   }
 
   /*
   GET http://localhost:3010/api/users?page=0&size=10&sort=id%2CASC
   {
-    "_embedded" : {
-      "users" : [ {
-        "id" : "admin",
-        "tags" : [ {
-          "name" : "PAGES_EDITOR"
-        }, {
-          "name" : "MANAGER"
-        }, {
-          "name" : "ADMIN"
-        } ]
+    "content" : [ {
+      "id" : "admin",
+      "tags" : [ {
+        "name" : "PAGES_EDITOR"
       }, {
-        "id" : "manager",
-        "tags" : [ {
-          "name" : "MANAGER"
-        } ]
+        "name" : "MANAGER"
+      }, {
+        "name" : "ADMIN"
       } ]
-    },
+    }, {
+      "id" : "manager",
+      "tags" : [ {
+        "name" : "MANAGER"
+      } ]
+    } ],
     "page" : {
       //"size" : 10,
       "totalElements" : 2,
@@ -60,9 +58,7 @@ export class ItemsController extends BaseController {
       sort: sort && sort.split(',')
     });
     return {
-      _embedded: {
-        [this.resource]: content
-      },
+      content,
       page: {
         totalElements
       }
@@ -92,19 +88,17 @@ export class ItemsController extends BaseController {
   /*
   GET http://localhost:3010/api/users/search/findByIdIn?ids=manager&ids=editor
   {
-    "_embedded" : {
-      "users" : [ {
-        "id" : "editor",
-        "tags" : [ {
-          "name" : "PAGES_EDITOR"
-        } ]
-      }, {
-        "id" : "manager",
-        "tags" : [ {
-          "name" : "MANAGER"
-        } ]
+    "content" : [ {
+      "id" : "editor",
+      "tags" : [ {
+        "name" : "PAGES_EDITOR"
       } ]
-    }
+    }, {
+      "id" : "manager",
+      "tags" : [ {
+        "name" : "MANAGER"
+      } ]
+    } ]
   }
   */
   @Get('search/findByIdIn')
@@ -115,32 +109,28 @@ export class ItemsController extends BaseController {
       typeof ids === 'string' ? [ids] : ids
     );
     return {
-      _embedded: {
-        [this.resource]: content
-      }
+      content
     };
   }
 
   /*
   GET http://localhost:3010/api/users/search/list?id=a&page=0&size=10&sort=id%2CASC&tags=MANAGER
   {
-    "_embedded" : {
-      "users" : [ {
-        "id" : "admin",
-        "tags" : [ {
-          "name" : "PAGES_EDITOR"
-        }, {
-          "name" : "MANAGER"
-        }, {
-          "name" : "ADMIN"
-        } ]
+    "content" : [ {
+      "id" : "admin",
+      "tags" : [ {
+        "name" : "PAGES_EDITOR"
       }, {
-        "id" : "manager",
-        "tags" : [ {
-          "name" : "MANAGER"
-        } ]
+        "name" : "MANAGER"
+      }, {
+        "name" : "ADMIN"
       } ]
-    },
+    }, {
+      "id" : "manager",
+      "tags" : [ {
+        "name" : "MANAGER"
+      } ]
+    } ],
     "page" : {
       //"size" : 10,
       "totalElements" : 2,
@@ -161,9 +151,7 @@ export class ItemsController extends BaseController {
       }
     );
     return {
-      _embedded: {
-        [this.resource]: content
-      },
+      content,
       page: {
         totalElements
       }

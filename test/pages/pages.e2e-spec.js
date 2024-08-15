@@ -47,23 +47,21 @@ describe('PagesController (e2e)', () => {
       .expect(200)
       .expect(({ body }) => {
         expect(body).toMatchObject({
-          _embedded: {
-            pages: [
-              {
-                id: 'home',
-                tags: [{ name: 'a' }],
-                title: { en: 'home.en.title' },
-                content: { en: 'home.en.content' }
-              },
-              {
-                id: 'sample',
-                tags: [{ name: 'b' }],
-                title: { ru: 'sample.ru.title' },
-                content: { ru: 'sample.ru.content' },
-                userId: 'admin'
-              }
-            ]
-          },
+          content: [
+            {
+              id: 'home',
+              tags: [{ name: 'a' }],
+              title: { en: 'home.en.title' },
+              content: { en: 'home.en.content' }
+            },
+            {
+              id: 'sample',
+              tags: [{ name: 'b' }],
+              title: { ru: 'sample.ru.title' },
+              content: { ru: 'sample.ru.content' },
+              userId: 'admin'
+            }
+          ],
           page: { totalElements: 2 }
         });
       });
@@ -78,15 +76,13 @@ describe('PagesController (e2e)', () => {
       .expect(200)
       .expect(({ body }) => {
         expect(body).toMatchObject({
-          _embedded: {
-            pages: [
-              {
-                id: 'home',
-                tags: [{ name: 'b' }],
-                title: { ru: 'home.ru.title' }
-              }
-            ]
-          },
+          content: [
+            {
+              id: 'home',
+              tags: [{ name: 'b' }],
+              title: { ru: 'home.ru.title' }
+            }
+          ],
           page: { totalElements: 1 }
         });
       });
@@ -265,17 +261,15 @@ describe('PagesController (e2e)', () => {
       .expect(200)
       .expect(({ body }) => {
         expect(body).toMatchObject({
-          _embedded: {
-            pages: [
-              {
-                id: 'sample',
-                tags: [{ name: 'b' }],
-                title: { ru: 'sample.ru.title' },
-                content: { ru: 'sample.ru.content' },
-                userId: 'admin'
-              }
-            ]
-          }
+          content: [
+            {
+              id: 'sample',
+              tags: [{ name: 'b' }],
+              title: { ru: 'sample.ru.title' },
+              content: { ru: 'sample.ru.content' },
+              userId: 'admin'
+            }
+          ]
         });
       });
   });

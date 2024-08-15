@@ -1,9 +1,8 @@
 import { Delete, Param, Bind } from '@nestjs/common';
 
 export class BaseController {
-  constructor(repository, resource) {
+  constructor(repository) {
     this.repository = repository;
-    this.resource = resource;
   }
 
   /*

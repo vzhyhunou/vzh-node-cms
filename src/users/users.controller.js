@@ -21,7 +21,7 @@ import { ItemsController } from '../common/controller/items.controller';
 @Dependencies(getCustomRepositoryToken(User))
 export class UsersController extends ItemsController {
   constructor(repository) {
-    super(repository, USERS);
+    super(repository);
   }
 
   @Post()
