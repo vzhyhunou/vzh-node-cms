@@ -2,9 +2,7 @@
   "name": "@vzhyhunou/vzh-node-cms-client",
   "version": "0.0.1",
   "dependencies": {
-    "@vzhyhunou/vzh-cms": "^0.0.1",
-    "react-helmet": "^6.1.0",
-    "react-router-hash-link": "^2.4.3"
+    "@vzhyhunou/vzh-cms": "^0.0.1"
   },
   "devDependencies": {
     "vite": "^4.5.3",
