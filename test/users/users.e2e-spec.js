@@ -34,17 +34,13 @@ describe('UsersController (e2e)', () => {
       .expect(200)
       .expect(({ body }) => {
         expect(body).toMatchObject({
-          _embedded: {
-            users: [
-              { id: 'admin', tags: [{ name: 'a' }] },
-              { id: 'manager', tags: [{ name: 'b' }], userId: 'admin' }
-            ]
-          },
+          content: [
+            { id: 'admin', tags: [{ name: 'a' }] },
+            { id: 'manager', tags: [{ name: 'b' }], userId: 'admin' }
+          ],
           page: { totalElements: 2 }
         });
-        body._embedded.users.forEach((u) =>
-          expect(u).not.toHaveProperty('password')
-        );
+        body.content.forEach((u) => expect(u).not.toHaveProperty('password'));
       });
   });
 
@@ -56,14 +52,10 @@ describe('UsersController (e2e)', () => {
       .expect(200)
       .expect(({ body }) => {
         expect(body).toMatchObject({
-          _embedded: {
-            users: [{ id: 'manager', tags: [{ name: 'b' }] }]
-          },
+          content: [{ id: 'manager', tags: [{ name: 'b' }] }],
           page: { totalElements: 1 }
         });
-        body._embedded.users.forEach((u) =>
-          expect(u).not.toHaveProperty('password')
-        );
+        body.content.forEach((u) => expect(u).not.toHaveProperty('password'));
       });
   });
 
@@ -215,13 +207,9 @@ describe('UsersController (e2e)', () => {
       .expect(200)
       .expect(({ body }) => {
         expect(body).toMatchObject({
-          _embedded: {
-            users: [{ id: 'manager', tags: [{ name: 'b' }], userId: 'admin' }]
-          }
+          content: [{ id: 'manager', tags: [{ name: 'b' }], userId: 'admin' }]
         });
-        body._embedded.users.forEach((u) =>
-          expect(u).not.toHaveProperty('password')
-        );
+        body.content.forEach((u) => expect(u).not.toHaveProperty('password'));
       });
   });
 

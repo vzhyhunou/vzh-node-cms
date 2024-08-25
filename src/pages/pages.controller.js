@@ -29,7 +29,7 @@ import { MenuPageInterceptor } from './menu.page.interceptor';
 @Dependencies(getCustomRepositoryToken(Page))
 export class PagesController extends ItemsController {
   constructor(repository) {
-    super(repository, PAGES);
+    super(repository);
   }
 
   @Post()

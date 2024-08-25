@@ -6,10 +6,8 @@ export class ItemsInterceptor extends ItemInterceptor {
   }
 
   process(data) {
-    for (const items of Object.values(data._embedded)) {
-      for (const item of items) {
-        super.process(item);
-      }
+    for (const item of data.content) {
+      super.process(item);
     }
     return data;
   }

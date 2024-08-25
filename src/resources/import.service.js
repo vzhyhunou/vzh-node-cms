@@ -65,7 +65,7 @@ export class ImportService {
       const stat = fs.statSync(filepath);
       if (stat.isDirectory()) {
         await this.consume(filepath, consumer);
-      } else {
+      } else if (filepath.endsWith('.json')) {
         await consumer(filepath);
       }
     }

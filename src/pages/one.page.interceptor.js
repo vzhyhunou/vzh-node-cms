@@ -8,7 +8,7 @@ export class OnePageInterceptor extends BaseInterceptor {
       id,
       title: t,
       content: c,
-      files: files.map(({ name }) => name).filter((n) => c.includes(n))
+      files: files.filter(({ name }) => c.includes(name))
     };
   }
 }

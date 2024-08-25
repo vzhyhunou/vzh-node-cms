@@ -7,6 +7,6 @@ export class PageContent extends Translatable {
   @ManyToOne(() => Page, { onDelete: 'CASCADE', orphanedRowAction: 'delete' })
   page;
 
-  @Column({ type: String, nullable: true })
+  @Column({ type: 'text', nullable: true })
   content;
 }
