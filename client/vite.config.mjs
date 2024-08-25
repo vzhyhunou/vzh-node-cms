@@ -22,7 +22,8 @@ const config = {
     useFormContext has been imported from react-hook-form/dist/index.esm.mjs */
     resolve: {
         alias: {
-            'react-hook-form': require.resolve('react-hook-form')
+            'react-hook-form': require.resolve('react-hook-form'),
+            '@tanstack/react-query': require.resolve('@tanstack/react-query')
         }
     }
 };
@@ -37,6 +38,12 @@ const srcConfig = {
                     target: 'http://localhost:8093'
                 },
                 '/login': {
+                    target: 'http://localhost:8093'
+                },
+                '/static/origin': {
+                    target: 'http://localhost:8093'
+                },
+                '/static/images': {
                     target: 'http://localhost:8093'
                 }
             }
