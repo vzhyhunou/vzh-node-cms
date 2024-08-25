@@ -40,10 +40,7 @@ const srcConfig = {
                 '/login': {
                     target: 'http://localhost:8093'
                 },
-                '/static/origin': {
-                    target: 'http://localhost:8093'
-                },
-                '/static/images': {
+                '/static': {
                     target: 'http://localhost:8093'
                 }
             }
