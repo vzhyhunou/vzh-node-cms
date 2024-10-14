@@ -7,3 +7,4 @@ export * from './pages';
 export * from './resources';
 export * from './static';
 export * from './users';
+export * from './storage';
