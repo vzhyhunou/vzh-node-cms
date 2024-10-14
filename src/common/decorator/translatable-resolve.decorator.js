@@ -1,7 +1,7 @@
 import { Transform } from 'class-transformer';
 import { applyDecorators } from '@nestjs/common';
 
-export function TranslatableResolve(type, name, column) {
+export function TranslatableResolve(type, column) {
   return applyDecorators(
     Transform(
       ({ value, options: { manager } }) =>
