@@ -1,6 +1,7 @@
 import { Entity, PrimaryColumn, OneToMany } from 'typeorm';
 import { Type } from 'class-transformer';
 import { ValidateNested } from 'class-validator';
+
 import { Item } from '../common/entity/item.entity';
 import { PageTag } from './page-tag.entity';
 import { PageTitle } from './page-title.entity';
@@ -22,7 +23,7 @@ export class Page extends Item {
     cascade: true
   })
   @ValidateNested()
-  @TranslatableResolve(() => PageTitle, 'title', 'title')
+  @TranslatableResolve(() => PageTitle, 'title')
   title;
 
   @OneToMany(() => PageContent, (content) => content.page, {
@@ -30,6 +31,6 @@ export class Page extends Item {
     cascade: true
   })
   @ValidateNested()
-  @TranslatableResolve(() => PageContent, 'content', 'content')
+  @TranslatableResolve(() => PageContent, 'content')
   content;
 }
