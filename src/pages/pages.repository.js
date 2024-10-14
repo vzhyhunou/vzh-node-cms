@@ -22,9 +22,6 @@ export default {
       .leftJoin('page.title', 'title', 'title.lang = :lang', {
         lang: I18nContext.current().lang
       })
-      .leftJoin('page.content', 'content', 'content.lang = :lang', {
-        lang: I18nContext.current().lang
-      })
       .select(['page.id', 'tag.id', 'tag.name', 'title.lang', 'title.title'])
       .andWhereInQuery('page.id', filter)
       .orderByName('page', sort)
