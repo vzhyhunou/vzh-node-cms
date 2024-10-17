@@ -1,5 +1,6 @@
 import { Transform, Expose } from 'class-transformer';
 import { applyDecorators } from '@nestjs/common';
+import { In } from 'typeorm';
 
 import { REFERENCE } from '../entity/constants';
 
@@ -8,12 +9,19 @@ export function IdResolve(type, name) {
     Expose({ name }),
     Transform(
       ({ value, options: { manager } }) =>
-        value && manager.findOneBy(type(), { id: value }),
+        value &&
+        (Array.isArray(value)
+          ? manager.findBy(type(), { id: In(value) })
+          : manager.findOneBy(type(), { id: value })),
       { toClassOnly: true, groups: [REFERENCE] }
     ),
-    Transform(({ value }) => value?.id, {
-      toPlainOnly: true,
-      groups: [REFERENCE]
-    })
+    Transform(
+      ({ value }) =>
+        value && (Array.isArray(value) ? value.map(({ id }) => id) : value.id),
+      {
+        toPlainOnly: true,
+        groups: [REFERENCE]
+      }
+    )
   );
 }

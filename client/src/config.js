@@ -1,4 +1,4 @@
-import {PageComponent} from '@vzhyhunou/vzh-cms';
+import { PageComponent } from '@vzhyhunou/vzh-cms';
 
 export default (({REACT_APP_SRC, REACT_APP_BASE}) => ({
     locales: {
