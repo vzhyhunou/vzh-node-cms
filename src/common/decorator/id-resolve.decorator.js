@@ -8,20 +8,22 @@ export function IdResolve(type, name) {
   return applyDecorators(
     Expose({ name }),
     Transform(
-      ({ value, options: { manager } }) =>
-        value &&
-        (Array.isArray(value)
-          ? manager.findBy(type(), { id: In(value) })
-          : manager.findOneBy(type(), { id: value })),
-      { toClassOnly: true, groups: [REFERENCE] }
+      ({ value, options: { manager, groups } }) =>
+        groups.includes(REFERENCE) && value
+          ? Array.isArray(value)
+            ? manager.findBy(type(), { id: In(value) })
+            : manager.findOneBy(type(), { id: value })
+          : undefined,
+      { toClassOnly: true }
     ),
     Transform(
-      ({ value }) =>
-        value && (Array.isArray(value) ? value.map(({ id }) => id) : value.id),
-      {
-        toPlainOnly: true,
-        groups: [REFERENCE]
-      }
+      ({ value, options: { groups } }) =>
+        groups.includes(REFERENCE) && value
+          ? Array.isArray(value)
+            ? value.map(({ id }) => id)
+            : value.id
+          : undefined,
+      { toPlainOnly: true }
     )
   );
 }
