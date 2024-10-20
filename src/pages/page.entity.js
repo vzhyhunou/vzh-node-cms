@@ -23,7 +23,7 @@ export class Page extends Item {
     cascade: true
   })
   @ValidateNested()
-  @TranslatableResolve(() => PageTitle, 'title')
+  @TranslatableResolve(() => PageTitle)
   title;
 
   @OneToMany(() => PageContent, (content) => content.page, {
@@ -31,6 +31,6 @@ export class Page extends Item {
     cascade: true
   })
   @ValidateNested()
-  @TranslatableResolve(() => PageContent, 'content')
+  @TranslatableResolve(() => PageContent)
   content;
 }

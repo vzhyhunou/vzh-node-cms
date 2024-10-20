@@ -4,7 +4,7 @@ export class MenuPageInterceptor extends BaseInterceptor {
   process(items) {
     return items.map(({ id, title }) => ({
       id,
-      title: title[0].title
+      title: title[0].value
     }));
   }
 }

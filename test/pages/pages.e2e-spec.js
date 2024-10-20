@@ -156,13 +156,13 @@ describe('PagesController (e2e)', () => {
             end: new Date(dto.tags[0].end)
           }
         ],
-        title: Object.entries(dto.title).map(([k, v]) => ({
-          lang: k,
-          title: v
+        title: Object.entries(dto.title).map(([lang, value]) => ({
+          lang,
+          value
         })),
-        content: Object.entries(dto.content).map(([k, v]) => ({
-          lang: k,
-          content: v
+        content: Object.entries(dto.content).map(([lang, value]) => ({
+          lang,
+          value
         })),
         user: { id: dto.userId }
       });
@@ -202,13 +202,13 @@ describe('PagesController (e2e)', () => {
           name: dto.tags[0].name
         }
       ],
-      title: Object.entries(dto.title).map(([k, v]) => ({
-        lang: k,
-        title: v
+      title: Object.entries(dto.title).map(([lang, value]) => ({
+        lang,
+        value
       })),
-      content: Object.entries(dto.content).map(([k, v]) => ({
-        lang: k,
-        content: v
+      content: Object.entries(dto.content).map(([lang, value]) => ({
+        lang,
+        value
       })),
       user: { id: dto.userId }
     });
@@ -237,13 +237,13 @@ describe('PagesController (e2e)', () => {
     expect(result).toMatchObject({
       id: entity.id,
       tags: [{ name: dto.tags[0].name }],
-      title: Object.entries(dto.title).map(([k, v]) => ({
-        lang: k,
-        title: v
+      title: Object.entries(dto.title).map(([lang, value]) => ({
+        lang,
+        value
       })),
-      content: Object.entries(dto.content).map(([k, v]) => ({
-        lang: k,
-        content: v
+      content: Object.entries(dto.content).map(([lang, value]) => ({
+        lang,
+        value
       })),
       user: { id: entity.user.id }
     });
