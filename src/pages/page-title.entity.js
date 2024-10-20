@@ -1,12 +1,9 @@
-import { Column, Entity, ManyToOne } from 'typeorm';
-import { Translatable } from '../common/entity/translatable.entity';
-import { Page } from './page.entity';
+import { Column, Entity } from 'typeorm';
+
+import { PageTranslatable } from './page-translatable.entity';
 
 @Entity()
-export class PageTitle extends Translatable {
-  @ManyToOne(() => Page, { onDelete: 'CASCADE', orphanedRowAction: 'delete' })
-  page;
-
+export class PageTitle extends PageTranslatable {
   @Column({ type: String, nullable: true })
-  title;
+  value;
 }

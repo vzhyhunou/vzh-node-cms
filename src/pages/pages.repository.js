@@ -14,15 +14,15 @@ export default {
       .select('page.id')
       .andWhereContains('page.id', id)
       .andWhereIn('tag.name', tags)
-      .andWhereContains('title.title', title)
-      .andWhereContains('content.content', content);
+      .andWhereContains('title.value', title)
+      .andWhereContains('content.value', content);
 
     const b = this.createQueryBuilder('page')
       .leftJoin('page.tags', 'tag')
       .leftJoin('page.title', 'title', 'title.lang = :lang', {
         lang: I18nContext.current().lang
       })
-      .select(['page.id', 'tag.id', 'tag.name', 'title.lang', 'title.title'])
+      .select(['page.id', 'tag.id', 'tag.name', 'title.lang', 'title.value'])
       .andWhereInQuery('page.id', filter)
       .orderByName('page', sort)
       .skip(page * size)
@@ -53,7 +53,7 @@ export default {
       .innerJoin('page.content', 'content', 'content.lang = :lang', {
         lang: I18nContext.current().lang
       })
-      .select(['page.id', 'title.title', 'content.content'])
+      .select(['page.id', 'title.value', 'content.value'])
       .andWhere('page.id = :id', { id })
       .andWhereInQuery('page.id', filter)
       .getOne();
@@ -66,9 +66,9 @@ export default {
       .innerJoin('page.title', 'title', 'title.lang = :lang', {
         lang: I18nContext.current().lang
       })
-      .select(['page.id', 'title.title'])
+      .select(['page.id', 'title.value'])
       .andWhereInQuery('page.id', filter)
-      .orderBy('title.title')
+      .orderBy('title.value')
       .getMany();
   }
 };

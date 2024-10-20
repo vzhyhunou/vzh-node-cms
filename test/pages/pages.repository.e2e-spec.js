@@ -87,7 +87,7 @@ describe('PagesRepository', () => {
       const entity = manager.create(Page, page('home', [], ['en']));
       await subj.save(entity);
       const result = await manager.find(PageTitle);
-      expect(result).toMatchObject([{ lang: 'en', title: 'home.en.title' }]);
+      expect(result).toMatchObject([{ lang: 'en', value: 'home.en.title' }]);
     });
 
     it('should update titles', async () => {
@@ -96,16 +96,14 @@ describe('PagesRepository', () => {
       entity = manager.create(Page, page('home', [], ['ru']));
       await subj.save(entity);
       const result = await manager.find(PageTitle);
-      expect(result).toMatchObject([{ lang: 'ru', title: 'home.ru.title' }]);
+      expect(result).toMatchObject([{ lang: 'ru', value: 'home.ru.title' }]);
     });
 
     it('should create contents', async () => {
       const entity = manager.create(Page, page('home', [], ['en']));
       await subj.save(entity);
       const result = await manager.find(PageContent);
-      expect(result).toMatchObject([
-        { lang: 'en', content: 'home.en.content' }
-      ]);
+      expect(result).toMatchObject([{ lang: 'en', value: 'home.en.content' }]);
     });
 
     it('should update contents', async () => {
@@ -114,9 +112,7 @@ describe('PagesRepository', () => {
       entity = manager.create(Page, page('home', [], ['ru']));
       await subj.save(entity);
       const result = await manager.find(PageContent);
-      expect(result).toMatchObject([
-        { lang: 'ru', content: 'home.ru.content' }
-      ]);
+      expect(result).toMatchObject([{ lang: 'ru', value: 'home.ru.content' }]);
     });
   });
 
@@ -168,24 +164,24 @@ describe('PagesRepository', () => {
             id: 'home',
             tags: [{ name: 'a' }, { name: 'b' }],
             title: [
-              { lang: 'en', title: 'home.en.title' },
-              { lang: 'ru', title: 'home.ru.title' }
+              { lang: 'en', value: 'home.en.title' },
+              { lang: 'ru', value: 'home.ru.title' }
             ],
             content: [
-              { lang: 'en', content: 'home.en.content' },
-              { lang: 'ru', content: 'home.ru.content' }
+              { lang: 'en', value: 'home.en.content' },
+              { lang: 'ru', value: 'home.ru.content' }
             ]
           },
           {
             id: 'sample',
             tags: [{ name: 'c' }, { name: 'd' }],
             title: [
-              { lang: 'en', title: 'sample.en.title' },
-              { lang: 'ru', title: 'sample.ru.title' }
+              { lang: 'en', value: 'sample.en.title' },
+              { lang: 'ru', value: 'sample.ru.title' }
             ],
             content: [
-              { lang: 'en', content: 'sample.en.content' },
-              { lang: 'ru', content: 'sample.ru.content' }
+              { lang: 'en', value: 'sample.en.content' },
+              { lang: 'ru', value: 'sample.ru.content' }
             ]
           }
         ],
@@ -254,7 +250,7 @@ describe('PagesRepository', () => {
       let result = await subj.list({ title: 'mE.E' }, { page: 0, size: 1 });
       expect(result).toMatchObject({
         content: [
-          { id: 'home', title: [{ lang: 'en', title: 'home.en.title' }] }
+          { id: 'home', title: [{ lang: 'en', value: 'home.en.title' }] }
         ],
         totalElements: 1
       });
@@ -278,7 +274,7 @@ describe('PagesRepository', () => {
       let result = await subj.list({ content: 'mE.E' }, { page: 0, size: 1 });
       expect(result).toMatchObject({
         content: [
-          { id: 'home', title: [{ lang: 'en', title: 'home.en.title' }] }
+          { id: 'home', title: [{ lang: 'en', value: 'home.en.title' }] }
         ],
         totalElements: 1
       });
@@ -331,8 +327,8 @@ describe('PagesRepository', () => {
       const result = await subj.one('home', true);
       expect(result).toMatchObject({
         id: 'home',
-        title: [{ title: 'home.en.title' }],
-        content: [{ content: 'home.en.content' }]
+        title: [{ value: 'home.en.title' }],
+        content: [{ value: 'home.en.content' }]
       });
     });
 
@@ -345,8 +341,8 @@ describe('PagesRepository', () => {
       const result = await subj.one('home', true);
       expect(result).toMatchObject({
         id: 'home',
-        title: [{ title: 'home.en.title' }],
-        content: [{ content: 'home.en.content' }]
+        title: [{ value: 'home.en.title' }],
+        content: [{ value: 'home.en.content' }]
       });
     });
 
@@ -359,8 +355,8 @@ describe('PagesRepository', () => {
       const result = await subj.one('home', false);
       expect(result).toMatchObject({
         id: 'home',
-        title: [{ title: 'home.en.title' }],
-        content: [{ content: 'home.en.content' }]
+        title: [{ value: 'home.en.title' }],
+        content: [{ value: 'home.en.content' }]
       });
     });
 
@@ -395,7 +391,7 @@ describe('PagesRepository', () => {
       expect(result).toMatchObject([
         {
           id: 'home',
-          title: [{ title: 'home.en.title' }]
+          title: [{ value: 'home.en.title' }]
         }
       ]);
     });
@@ -413,11 +409,11 @@ describe('PagesRepository', () => {
       expect(result).toMatchObject([
         {
           id: 'sample',
-          title: [{ title: 'sample.en.title' }]
+          title: [{ value: 'sample.en.title' }]
         },
         {
           id: 'test',
-          title: [{ title: 'test.en.title' }]
+          title: [{ value: 'test.en.title' }]
         }
       ]);
     });
