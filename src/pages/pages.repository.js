@@ -19,10 +19,10 @@ export default {
 
     const b = this.createQueryBuilder('page')
       .leftJoin('page.tags', 'tag')
-      .leftJoin('page.title', 'title', 'title.lang = :lang', {
+      .leftJoin('page.title', 'title', 'title.key = :lang', {
         lang: I18nContext.current().lang
       })
-      .select(['page.id', 'tag.id', 'tag.name', 'title.lang', 'title.value'])
+      .select(['page.id', 'tag.id', 'tag.name', 'title.key', 'title.value'])
       .andWhereInQuery('page.id', filter)
       .orderByName('page', sort)
       .skip(page * size)
@@ -47,10 +47,10 @@ export default {
     );
 
     return this.createQueryBuilder('page')
-      .leftJoin('page.title', 'title', 'title.lang = :lang', {
+      .leftJoin('page.title', 'title', 'title.key = :lang', {
         lang: I18nContext.current().lang
       })
-      .innerJoin('page.content', 'content', 'content.lang = :lang', {
+      .innerJoin('page.content', 'content', 'content.key = :lang', {
         lang: I18nContext.current().lang
       })
       .select(['page.id', 'title.value', 'content.value'])
@@ -63,7 +63,7 @@ export default {
     const filter = this.createActiveTagNamesBuilder('page', [PAGE_TAG.MENU]);
 
     return this.createQueryBuilder('page')
-      .innerJoin('page.title', 'title', 'title.lang = :lang', {
+      .innerJoin('page.title', 'title', 'title.key = :lang', {
         lang: I18nContext.current().lang
       })
       .select(['page.id', 'title.value'])

@@ -6,7 +6,7 @@ import { Item } from '../common/entity/item.entity';
 import { PageTag } from './page-tag.entity';
 import { PageTitle } from './page-title.entity';
 import { PageContent } from './page-content.entity';
-import { TranslatableResolve } from '../common/decorator/translatable-resolve.decorator';
+import { PairResolve } from '../common/decorator/pair-resolve.decorator';
 
 @Entity()
 export class Page extends Item {
@@ -23,7 +23,7 @@ export class Page extends Item {
     cascade: true
   })
   @ValidateNested()
-  @TranslatableResolve(() => PageTitle)
+  @PairResolve(() => PageTitle)
   title;
 
   @OneToMany(() => PageContent, (content) => content.page, {
@@ -31,6 +31,6 @@ export class Page extends Item {
     cascade: true
   })
   @ValidateNested()
-  @TranslatableResolve(() => PageContent)
+  @PairResolve(() => PageContent)
   content;
 }
