@@ -1,2 +1,2 @@
 export * from './id-resolve.decorator';
-export * from './translatable-resolve.decorator';
+export * from './pair-resolve.decorator';
