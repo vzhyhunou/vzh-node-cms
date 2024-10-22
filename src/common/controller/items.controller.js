@@ -9,7 +9,7 @@ import {
 } from '@nestjs/common';
 
 import { REFERENCE } from '../entity/constants';
-import { ItemsInterceptor } from '../interceptor/items.interceptor';
+import { ContentInterceptor } from '../interceptor/content.interceptor';
 import { ItemInterceptor } from '../interceptor/item.interceptor';
 import { BaseController } from './base.controller';
 
@@ -50,7 +50,7 @@ export class ItemsController extends BaseController {
   */
   @Get()
   @Bind(Query())
-  @UseInterceptors(ItemsInterceptor)
+  @UseInterceptors(ContentInterceptor)
   async findAll({ page = 0, size = 20, sort }) {
     const { content, totalElements } = await this.repository.findAll({
       page,
@@ -103,7 +103,7 @@ export class ItemsController extends BaseController {
   */
   @Get('search/findByIdIn')
   @Bind(Query())
-  @UseInterceptors(ItemsInterceptor)
+  @UseInterceptors(ContentInterceptor)
   async findByIdIn({ ids }) {
     const content = await this.repository.findByIdIn(
       typeof ids === 'string' ? [ids] : ids
