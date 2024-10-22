@@ -40,9 +40,15 @@ export class MapperService {
     return this.unlinkedMapper.readValue(file, Wrapper).item;
   }
 
-  resource(file) {
+  async resource(file) {
     this.logger.debug(`Read: ${file}`);
-    return this.resourceMapper.readValue(file, Wrapper).item;
+    const result = this.resourceMapper.readValue(file, Wrapper).item;
+    for (const k of Object.keys(result).filter(
+      (k) => result[k] instanceof Promise
+    )) {
+      result[k] = await result[k];
+    }
+    return result;
   }
 
   write(file, item) {
