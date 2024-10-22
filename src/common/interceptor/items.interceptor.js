@@ -6,7 +6,7 @@ export class ItemsInterceptor extends ItemInterceptor {
   }
 
   process(data) {
-    for (const item of data.content) {
+    for (const item of data) {
       super.process(item);
     }
     return data;
