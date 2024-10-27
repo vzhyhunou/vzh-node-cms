@@ -9,20 +9,22 @@ export function IdResolve(type, name) {
     Expose({ name }),
     Transform(
       ({ value, options: { manager, groups } }) =>
-        groups.includes(REFERENCE) && value
-          ? Array.isArray(value)
-            ? manager.findBy(type(), { id: In(value) })
-            : manager.findOneBy(type(), { id: value })
-          : undefined,
+        groups.includes(REFERENCE) &&
+        value &&
+        (Array.isArray(value)
+          ? (async () =>
+              ((items) =>
+                value.map((id) => items.find((item) => id === item.id)))(
+                await manager.findBy(type(), { id: In(value) })
+              ))()
+          : manager.findOneBy(type(), { id: value })),
       { toClassOnly: true }
     ),
     Transform(
       ({ value, options: { groups } }) =>
-        groups.includes(REFERENCE) && value
-          ? Array.isArray(value)
-            ? value.map(({ id }) => id)
-            : value.id
-          : undefined,
+        groups.includes(REFERENCE) &&
+        value &&
+        (Array.isArray(value) ? value.map(({ id }) => id) : value.id),
       { toPlainOnly: true }
     )
   );
