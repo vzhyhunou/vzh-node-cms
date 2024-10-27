@@ -17,7 +17,7 @@ export function IdResolve(type, name) {
                   await manager.findBy(type(), { id: In(value) })
                 ))()
             : manager.findOneBy(type(), { id: value })
-          : value,
+          : undefined,
       { toClassOnly: true }
     ),
     Transform(
@@ -26,7 +26,7 @@ export function IdResolve(type, name) {
           ? Array.isArray(value)
             ? value.map(({ id }) => id)
             : value.id
-          : value,
+          : undefined,
       { toPlainOnly: true }
     )
   );
