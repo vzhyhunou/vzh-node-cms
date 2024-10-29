@@ -1,5 +1,10 @@
 {
     "parser": "@babel/eslint-parser",
+    "parserOptions": {
+        "babelOptions": {
+            //"configFile": "./base/.babelrc"
+        }
+    },
     "extends": "eslint:recommended",
     "env": {
         "node": true,
