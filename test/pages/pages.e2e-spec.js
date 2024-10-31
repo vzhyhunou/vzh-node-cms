@@ -214,38 +214,67 @@ describe('PagesController (e2e)', () => {
     });
   });
 
-  it('/pages/:id (PATCH)', async () => {
-    let entity = manager.create(Page, page('home', [tag('a')]));
-    await manager.save(entity);
-    entity = manager.create(User, user('admin'));
-    await manager.save(entity);
-    entity = manager.create(Page, page('sample', [tag('b')], [], entity));
-    await manager.save(entity);
-    const dto = {
-      tags: [{ name: 'c' }],
-      title: { ru: 'd' },
-      content: { ru: 'e' }
-    };
-    await request(app.getHttpServer())
-      .patch('/api/pages/sample')
-      .send(dto)
-      .expect(200);
-    const result = await manager.findOne(Page, {
-      relations: { user: true },
-      where: { id: 'sample' }
+  describe('/pages/:id (PATCH)', () => {
+    it('should update page', async () => {
+      let entity = manager.create(Page, page('home', [tag('a')]));
+      await manager.save(entity);
+      entity = manager.create(User, user('admin'));
+      await manager.save(entity);
+      entity = manager.create(Page, page('sample', [tag('b')], [], entity));
+      await manager.save(entity);
+      const dto = {
+        tags: [{ name: 'c' }],
+        title: { ru: 'd' },
+        content: { ru: 'e' }
+      };
+      await request(app.getHttpServer())
+        .patch('/api/pages/sample')
+        .send(dto)
+        .expect(200);
+      const result = await manager.findOne(Page, {
+        relations: { user: true },
+        where: { id: 'sample' }
+      });
+      expect(result).toMatchObject({
+        id: entity.id,
+        tags: [{ name: dto.tags[0].name }],
+        title: Object.entries(dto.title).map(([key, value]) => ({
+          key,
+          value
+        })),
+        content: Object.entries(dto.content).map(([key, value]) => ({
+          key,
+          value
+        })),
+        user: { id: entity.user.id }
+      });
     });
-    expect(result).toMatchObject({
-      id: entity.id,
-      tags: [{ name: dto.tags[0].name }],
-      title: Object.entries(dto.title).map(([key, value]) => ({
-        key,
-        value
-      })),
-      content: Object.entries(dto.content).map(([key, value]) => ({
-        key,
-        value
-      })),
-      user: { id: entity.user.id }
+
+    it('should update page', async () => {
+      let entity = manager.create(Page, page('home', [tag('a')]));
+      await manager.save(entity);
+      entity = manager.create(User, user('admin'));
+      await manager.save(entity);
+      entity = manager.create(Page, page('sample', [tag('b')], ['ru'], entity));
+      await manager.save(entity);
+      const dto = {
+        tags: [{ name: 'c' }]
+      };
+      await request(app.getHttpServer())
+        .patch('/api/pages/sample')
+        .send(dto)
+        .expect(200);
+      const result = await manager.findOne(Page, {
+        relations: { user: true },
+        where: { id: 'sample' }
+      });
+      expect(result).toMatchObject({
+        id: entity.id,
+        tags: [{ name: dto.tags[0].name }],
+        title: [{ key: 'ru', value: 'sample.ru.title' }],
+        content: [{ key: 'ru', value: 'sample.ru.content' }],
+        user: { id: entity.user.id }
+      });
     });
   });
 
