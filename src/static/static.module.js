@@ -6,9 +6,8 @@ import { config } from './configuration';
 
 @Module({
   imports: [
-    ConfigModule.forFeature(config),
     ServeStaticModule.forRootAsync({
-      imports: [ConfigModule],
+      imports: [ConfigModule.forFeature(config)],
       useFactory: (configService) =>
         configService
           .get('static.locations')
