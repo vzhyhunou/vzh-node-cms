@@ -30,7 +30,7 @@ export class ObjectMapper {
           mappingsService: this.mappingsService,
           groups: this.groups
         }),
-        null,
+        (key, value) => value ? value : undefined,
         2
       )
     );
