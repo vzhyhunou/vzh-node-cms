@@ -4,6 +4,7 @@ import {
   Get,
   Put,
   Patch,
+  Delete,
   Body,
   Post,
   Bind,
@@ -48,6 +49,12 @@ export class PagesController extends ItemsController {
   @Bind(Body(PatchPagePipe, ParsePagePipe, AuditItemPipe))
   async patch(entity) {
     return await super.patch(entity);
+  }
+
+  @Delete(':id')
+  @Bind(Param('id'))
+  async remove(id) {
+    return await super.remove(id);
   }
 
   @Get('search/one/:id')
