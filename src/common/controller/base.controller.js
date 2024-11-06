@@ -63,7 +63,7 @@ export class BaseController {
   */
   @Delete(':id')
   @Bind(Param('id'))
-  async delete(id) {
-    await this.repository.delete(id);
+  async remove(id) {
+    await this.repository.remove({ id });
   }
 }
