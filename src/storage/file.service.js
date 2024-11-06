@@ -79,7 +79,7 @@ export class FileService {
       }
     }
     if (!fs.readdirSync(dir).length) {
-      fs.rmSync(dir, { recursive: true });
+      fs.rmdirSync(dir);
     }
   }
 
