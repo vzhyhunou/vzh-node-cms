@@ -3,9 +3,11 @@ import {
   Dependencies,
   Put,
   Patch,
+  Delete,
   Body,
   Post,
-  Bind
+  Bind,
+  Param
 } from '@nestjs/common';
 import { getCustomRepositoryToken } from '@nestjs/typeorm';
 
@@ -40,5 +42,11 @@ export class UsersController extends ItemsController {
   @Bind(Body(PatchUserPipe, ParseUserPipe, AuditItemPipe))
   async patch(entity) {
     return await super.patch(entity);
+  }
+
+  @Delete(':id')
+  @Bind(Param('id'))
+  async remove(id) {
+    return await super.remove(id);
   }
 }

@@ -1,5 +1,3 @@
-import { Delete, Param, Bind } from '@nestjs/common';
-
 export class BaseController {
   constructor(repository) {
     this.repository = repository;
@@ -61,8 +59,6 @@ export class BaseController {
   /*
   DELETE http://localhost:3010/api/users/editor
   */
-  @Delete(':id')
-  @Bind(Param('id'))
   async remove(id) {
     await this.repository.remove({ id });
   }
