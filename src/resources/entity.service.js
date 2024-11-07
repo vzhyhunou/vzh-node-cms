@@ -14,7 +14,8 @@ export class EntityService {
   async find(item) {
     const { type } = this.mappingsService.findByItem(item);
     const id = this.manager.getId(item);
-    return await this.manager.findOneBy(type, { id });
+    const repository = this.manager.getRepository(type);
+    return await repository.findById(id);
   }
 
   async create(item) {
@@ -33,7 +34,7 @@ export class EntityService {
       [Symbol.asyncIterator]() {
         return {
           async next() {
-            const value = await repository.findOneByIndex(index++, date);
+            const value = await repository.findByIndex(index++, date);
             return { value, done: !value };
           }
         };
