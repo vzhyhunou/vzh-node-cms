@@ -1,34 +1,33 @@
 import { Dependencies, Injectable } from '@nestjs/common';
-import { getEntityManagerToken } from '@nestjs/typeorm';
 
 import { MappingsService } from '../storage/mappings.service';
 
 @Injectable()
-@Dependencies(MappingsService, getEntityManagerToken())
+@Dependencies(MappingsService)
 export class EntityService {
-  constructor(mappingsService, manager) {
+  constructor(mappingsService) {
     this.mappingsService = mappingsService;
-    this.manager = manager;
   }
 
   async find(item) {
-    const { type } = this.mappingsService.findByItem(item);
-    const id = this.manager.getId(item);
-    const repository = this.manager.getRepository(type);
+    const { repository } = this.mappingsService.findByItem(item);
+    const id = repository.getId(item);
     return await repository.findById(id);
   }
 
   async create(item) {
-    await this.manager.save(item);
+    const { repository } = this.mappingsService.findByItem(item);
+    await repository.save(item);
   }
 
   async update(item) {
     item.version = (await this.find(item)).version;
-    await this.manager.save(item);
+    const { repository } = this.mappingsService.findByItem(item);
+    await repository.save(item);
   }
 
   findAll(type, date) {
-    const repository = this.manager.getRepository(type);
+    const { repository } = this.mappingsService.findByType(type);
     let index = 0;
     return {
       [Symbol.asyncIterator]() {
