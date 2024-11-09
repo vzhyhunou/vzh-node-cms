@@ -19,18 +19,20 @@ export class ItemSubscriber {
   }
 
   afterInsert({ entity }) {
-    !entity.init && this.fileService.create(
-      this.locationService.location(entity),
-      entity.files
-    );
+    !entity.init &&
+      this.fileService.create(
+        this.locationService.location(entity),
+        entity.files
+      );
   }
 
   afterUpdate({ databaseEntity, entity }) {
-    !entity.init && this.fileService.update(
-      this.locationService.location(databaseEntity),
-      this.locationService.location(entity),
-      entity.files
-    );
+    !entity.init &&
+      this.fileService.update(
+        this.locationService.location(databaseEntity),
+        this.locationService.location(entity),
+        entity.files
+      );
   }
 
   afterRemove({ databaseEntity }) {
