@@ -17,6 +17,7 @@ export class ItemInterceptor extends BaseInterceptor {
       this.locationService.location(item),
       false
     );
+    item.parents = item.getParents();
     return item;
   }
 }
