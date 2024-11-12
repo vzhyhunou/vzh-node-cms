@@ -75,7 +75,9 @@ export class FileService {
     const names = files.map(({ name }) => name);
     for (const name of fs.readdirSync(dir)) {
       if (!names.includes(name)) {
-        fs.rmSync(path.join(dir, name));
+        const filepath = path.join(dir, name);
+        this.logger.debug(`Remove: ${filepath}`);
+        fs.rmSync(filepath);
       }
     }
     if (!fs.readdirSync(dir).length) {
