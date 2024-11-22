@@ -14,16 +14,20 @@ export class ExportScheduler {
   }
 
   onModuleInit() {
-    let job = new CronJob(this.properties.full.cron, () =>
-      this.exportService.export(false)
-    );
-    this.schedulerRegistry.addCronJob('full', job);
-    job.start();
+    if (this.properties.full.cron) {
+      const job = new CronJob(this.properties.full.cron, () =>
+        this.exportService.export(false)
+      );
+      this.schedulerRegistry.addCronJob('full', job);
+      job.start();
+    }
 
-    job = new CronJob(this.properties.inc.cron, () =>
-      this.exportService.export(true)
-    );
-    this.schedulerRegistry.addCronJob('inc', job);
-    job.start();
+    if (this.properties.inc.cron) {
+      const job = new CronJob(this.properties.inc.cron, () =>
+        this.exportService.export(true)
+      );
+      this.schedulerRegistry.addCronJob('inc', job);
+      job.start();
+    }
   }
 }
