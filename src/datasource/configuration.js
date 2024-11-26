@@ -9,6 +9,9 @@ export const config = () => ({
     logging: process.env.DATASOURCE_LOGGING === 'true',
     autoLoadEntities: process.env.DATASOURCE_AUTO_LOAD_ENTITIES === 'true',
     synchronize: process.env.DATASOURCE_SYNCHRONIZE === 'true',
-    charset: process.env.DATASOURCE_CHARSET
+    charset: process.env.DATASOURCE_CHARSET,
+    extra: {
+      supportBigNumbers: process.env.DATASOURCE_SUPPORT_BIG_NUMBERS === 'true'
+    }
   }
 });
