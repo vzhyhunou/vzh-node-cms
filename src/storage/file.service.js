@@ -83,8 +83,11 @@ export class FileService {
     for (const name of fs.readdirSync(dir)) {
       if (!names.includes(name)) {
         const filepath = path.join(dir, name);
-        this.logger.debug(`Remove: ${filepath}`);
-        fs.rmSync(filepath);
+        const stat = fs.statSync(filepath);
+        if (stat.isFile()) {
+          this.logger.debug(`Remove: ${filepath}`);
+          fs.rmSync(filepath);
+        }
       }
     }
     for (const name of this.parents(location)) {
