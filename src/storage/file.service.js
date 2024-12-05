@@ -55,16 +55,23 @@ export class FileService {
       return files;
     }
     for (const name of fs.readdirSync(dir)) {
-      const file = { name };
-      if (addFiles) {
-        const filepath = path.join(dir, name);
-        this.logger.debug(`Read: ${filepath}`);
-        const b = fs.readFileSync(filepath);
-        file.data = Buffer.from(b).toString('base64');
+      const filepath = path.join(dir, name);
+      const stat = fs.statSync(filepath);
+      if (stat.isFile()) {
+        const file = { name };
+        if (addFiles) {
+          this.logger.debug(`Read: ${filepath}`);
+          const b = fs.readFileSync(filepath);
+          file.data = Buffer.from(b).toString('base64');
+        }
+        files.push(file);
       }
-      files.push(file);
     }
     return files;
+  }
+
+  parents(location) {
+    return location.split(path.sep).reduce((sum, current) => sum.concat(sum.length ? path.join(sum[sum.length - 1], current) : current), []).reverse();
   }
 
   clean(location, files) {
@@ -80,8 +87,13 @@ export class FileService {
         fs.rmSync(filepath);
       }
     }
-    if (!fs.readdirSync(dir).length) {
-      fs.rmdirSync(dir);
+    for (const name of this.parents(location)) {
+      const filepath = path.join(this.root, name);
+      if (fs.readdirSync(filepath).length) {
+        return;
+      }
+      this.logger.debug(`Remove dir: ${filepath}`);
+      fs.rmdirSync(filepath);
     }
   }
 
