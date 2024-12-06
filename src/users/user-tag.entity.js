@@ -4,6 +4,10 @@ import { User } from './user.entity';
 
 @Entity()
 export class UserTag extends Tag {
-  @ManyToOne(() => User, { onDelete: 'CASCADE', orphanedRowAction: 'delete' })
+  @ManyToOne(() => User, {
+    onDelete: 'CASCADE',
+    orphanedRowAction: 'delete',
+    nullable: false
+  })
   user;
 }

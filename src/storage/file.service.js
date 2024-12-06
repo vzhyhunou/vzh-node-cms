@@ -71,7 +71,16 @@ export class FileService {
   }
 
   parents(location) {
-    return location.split(path.sep).reduce((sum, current) => sum.concat(sum.length ? path.join(sum[sum.length - 1], current) : current), []).reverse();
+    return location
+      .split(path.sep)
+      .reduce(
+        (sum, current) =>
+          sum.concat(
+            sum.length ? path.join(sum[sum.length - 1], current) : current
+          ),
+        []
+      )
+      .reverse();
   }
 
   clean(location, files) {
