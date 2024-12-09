@@ -10,6 +10,7 @@ export function PairResolve(type) {
           repository: { manager }
         }
       }) =>
+        value &&
         Object.entries(value).map(([key, value]) =>
           manager.create(type(), { key, value })
         ),
