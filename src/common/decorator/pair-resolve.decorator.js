@@ -4,7 +4,12 @@ import { applyDecorators } from '@nestjs/common';
 export function PairResolve(type) {
   return applyDecorators(
     Transform(
-      ({ value, options: { manager } }) =>
+      ({
+        value,
+        options: {
+          repository: { manager }
+        }
+      }) =>
         Object.entries(value).map(([key, value]) =>
           manager.create(type(), { key, value })
         ),
