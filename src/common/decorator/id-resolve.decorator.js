@@ -8,7 +8,13 @@ export function IdResolve(type, name) {
   return applyDecorators(
     Expose({ name }),
     Transform(
-      ({ value, options: { manager, groups } }) =>
+      ({
+        value,
+        options: {
+          repository: { manager },
+          groups
+        }
+      }) =>
         groups.includes(REFERENCE) && value
           ? Array.isArray(value)
             ? (async () =>
