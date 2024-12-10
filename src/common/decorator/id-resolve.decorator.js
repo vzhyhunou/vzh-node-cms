@@ -17,11 +17,10 @@ export function IdResolve(type, name) {
       }) =>
         groups.includes(REFERENCE) && value
           ? Array.isArray(value)
-            ? (async () =>
-                ((items) =>
-                  value.map((id) => items.find((item) => id === item.id)))(
-                  await manager.findBy(type(), { id: In(value) })
-                ))()
+            ? (async () => {
+                const items = await manager.findBy(type(), { id: In(value) });
+                return value.map((id) => items.find((item) => id === item.id));
+              })()
             : manager.findOneBy(type(), { id: value })
           : undefined,
       { toClassOnly: true }

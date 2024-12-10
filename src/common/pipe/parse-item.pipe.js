@@ -16,7 +16,7 @@ export class ParseItemPipe extends ValidationPipe {
     for (const k of Object.keys(result).filter(
       (k) => result[k] instanceof Promise
     )) {
-      result[k] = await this.transform(await result[k], metadata);
+      result[k] = await result[k];
     }
     return result;
   }
