@@ -18,7 +18,9 @@ export function IdResolve(type, name) {
         groups.includes(REFERENCE) && value
           ? Array.isArray(value)
             ? (async () => {
-                const items = await manager.findBy(type(), { id: In(value) });
+                const items = await manager.findBy(type(), {
+                  id: In(value.map((v) => (typeof v === 'object' ? v.id : v)))
+                });
                 return value.map((id) => items.find((item) => id === item.id));
               })()
             : manager.findOneBy(
