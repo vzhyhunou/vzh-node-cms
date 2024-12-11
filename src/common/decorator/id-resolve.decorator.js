@@ -21,7 +21,10 @@ export function IdResolve(type, name) {
                 const items = await manager.findBy(type(), { id: In(value) });
                 return value.map((id) => items.find((item) => id === item.id));
               })()
-            : manager.findOneBy(type(), { id: value })
+            : manager.findOneBy(
+                type(),
+                typeof value === 'object' ? value : { id: value }
+              )
           : undefined,
       { toClassOnly: true }
     ),
