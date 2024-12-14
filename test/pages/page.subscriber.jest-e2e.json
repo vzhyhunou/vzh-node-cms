@@ -1,0 +1,5 @@
+{
+  "moduleFileExtensions": ["js", "json"],
+  "rootDir": "../..",
+  "testRegex": "page.subscriber.e2e-spec.js$"
+}
