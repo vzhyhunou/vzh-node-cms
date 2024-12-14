@@ -120,7 +120,7 @@ describe('PagesRepository', () => {
     it('should delete a page', async () => {
       const entity = manager.create(Page, page('home'));
       await manager.save(entity);
-      await subj.delete(entity.id);
+      await subj.remove(entity);
       const result = await manager.find(Page);
       expect(result).toHaveLength(0);
     });
@@ -128,7 +128,7 @@ describe('PagesRepository', () => {
     it('should delete tags', async () => {
       const entity = manager.create(Page, page('home', [tag('a')]));
       await manager.save(entity);
-      await subj.delete(entity.id);
+      await subj.remove(entity);
       const result = await manager.find(PageTag);
       expect(result).toHaveLength(0);
     });
@@ -136,7 +136,7 @@ describe('PagesRepository', () => {
     it('should delete titles', async () => {
       const entity = manager.create(Page, page('home', [], ['en']));
       await manager.save(entity);
-      await subj.delete(entity.id);
+      await subj.remove(entity);
       const result = await manager.find(PageTitle);
       expect(result).toHaveLength(0);
     });
@@ -144,7 +144,7 @@ describe('PagesRepository', () => {
     it('should delete contents', async () => {
       const entity = manager.create(Page, page('home', [], ['en']));
       await manager.save(entity);
-      await subj.delete(entity.id);
+      await subj.remove(entity);
       const result = await manager.find(PageContent);
       expect(result).toHaveLength(0);
     });
