@@ -76,7 +76,7 @@ describe('PagesRepository', () => {
 
     it('should update tags', async () => {
       let entity = manager.create(Page, page('home', [tag('a')]));
-      await subj.save(entity);
+      await manager.save(entity);
       entity = manager.create(Page, page('home', [tag('b')]));
       await subj.save(entity);
       const result = await manager.find(PageTag);
@@ -92,7 +92,7 @@ describe('PagesRepository', () => {
 
     it('should update titles', async () => {
       let entity = manager.create(Page, page('home', [], ['en']));
-      await subj.save(entity);
+      await manager.save(entity);
       entity = manager.create(Page, page('home', [], ['ru']));
       await subj.save(entity);
       const result = await manager.find(PageTitle);
@@ -108,7 +108,7 @@ describe('PagesRepository', () => {
 
     it('should update contents', async () => {
       let entity = manager.create(Page, page('home', [], ['en']));
-      await subj.save(entity);
+      await manager.save(entity);
       entity = manager.create(Page, page('home', [], ['ru']));
       await subj.save(entity);
       const result = await manager.find(PageContent);

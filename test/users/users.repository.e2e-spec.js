@@ -59,7 +59,7 @@ describe('UsersRepository', () => {
 
     it('should update tags', async () => {
       let entity = manager.create(User, user('admin', [tag('a')]));
-      await subj.save(entity);
+      await manager.save(entity);
       entity = manager.create(User, user('admin', [tag('b')]));
       await subj.save(entity);
       const result = await manager.find(UserTag);

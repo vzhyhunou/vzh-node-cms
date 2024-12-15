@@ -22,7 +22,7 @@ import { LocationService } from '../../src/storage/location.service';
 import { MappingsService } from '../../src/storage/mappings.service';
 import { PageResource } from '../../src/pages/page.resource';
 
-describe('PagesSubscriber', () => {
+describe('PageSubscriber', () => {
   let manager;
   let fileService;
   let subj;
@@ -81,8 +81,8 @@ describe('PagesSubscriber', () => {
   describe('update()', () => {
     it('should update a page', async () => {
       let entity = manager.create(Page, page('home'));
-      await subj.save(entity);
-      entity = await manager.findOneBy(Page, { id: 'home' });
+      await manager.save(entity);
+      entity = manager.create(Page, page('home'));
       entity.date = new Date();
       await subj.save(entity);
       expect(fileService.update).toHaveBeenCalledWith(
