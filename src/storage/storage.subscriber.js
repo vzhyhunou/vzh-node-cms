@@ -49,29 +49,4 @@ export class StorageSubscriber {
       queryRunner.item = undefined;
     }
   }
-
-  async beforeInsert(e) {
-    const { entity } = e;
-    const { init } = entity;
-    if (init) {
-      return;
-    }
-    await this.save(e, entity);
-  }
-
-  async beforeUpdate(e) {
-    const {
-      entity: { init },
-      databaseEntity
-    } = e;
-    if (init) {
-      return;
-    }
-    await this.save(e, databaseEntity);
-  }
-
-  async beforeRemove(e) {
-    const { databaseEntity } = e;
-    await this.save(e, databaseEntity);
-  }
 }

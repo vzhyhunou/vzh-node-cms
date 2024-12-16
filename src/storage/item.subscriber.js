@@ -6,6 +6,15 @@ export class ItemSubscriber extends StorageSubscriber {
     super(dataSource, fileService, locationService, mappingsService, Item);
   }
 
+  async beforeInsert(e) {
+    const { entity } = e;
+    const { init } = entity;
+    if (init) {
+      return;
+    }
+    await this.save(e, entity);
+  }
+
   afterInsert(e) {
     const item = this.restore(e);
     if (!item) {
@@ -13,6 +22,17 @@ export class ItemSubscriber extends StorageSubscriber {
     }
     const { entity } = e;
     this.fileService.create(this.locationService.location(item), entity.files);
+  }
+
+  async beforeUpdate(e) {
+    const {
+      entity: { init },
+      databaseEntity
+    } = e;
+    if (init) {
+      return;
+    }
+    await this.save(e, databaseEntity);
   }
 
   afterUpdate(e) {
@@ -26,6 +46,11 @@ export class ItemSubscriber extends StorageSubscriber {
       this.locationService.location(entity),
       entity.files
     );
+  }
+
+  async beforeRemove(e) {
+    const { databaseEntity } = e;
+    await this.save(e, databaseEntity);
   }
 
   afterRemove(e) {
