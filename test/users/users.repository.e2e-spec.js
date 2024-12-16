@@ -59,7 +59,7 @@ describe('UsersRepository', () => {
 
     it('should update tags', async () => {
       let entity = manager.create(User, user('admin', [tag('a')]));
-      await subj.save(entity);
+      await manager.save(entity);
       entity = manager.create(User, user('admin', [tag('b')]));
       await subj.save(entity);
       const result = await manager.find(UserTag);
@@ -71,7 +71,7 @@ describe('UsersRepository', () => {
     it('should delete a user', async () => {
       const entity = manager.create(User, user('admin'));
       await manager.save(entity);
-      await subj.delete(entity.id);
+      await subj.remove(entity);
       const result = await manager.find(User);
       expect(result).toHaveLength(0);
     });
@@ -79,7 +79,7 @@ describe('UsersRepository', () => {
     it('should delete tags', async () => {
       const entity = manager.create(User, user('admin', [tag('a')]));
       await manager.save(entity);
-      await subj.delete(entity.id);
+      await subj.remove(entity);
       const result = await manager.find(UserTag);
       expect(result).toHaveLength(0);
     });

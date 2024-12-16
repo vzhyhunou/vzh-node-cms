@@ -1,86 +1,60 @@
-import { Dependencies, Injectable } from '@nestjs/common';
-import { DataSource } from 'typeorm';
-import { plainToInstance } from 'class-transformer';
-
 import { Item } from '../common/entity/item.entity';
-import { FileService } from './file.service';
-import { LocationService } from './location.service';
-import { MappingsService } from './mappings.service';
-import { REFERENCE, RESOURCE } from '../common/entity/constants';
+import { StorageSubscriber } from './storage.subscriber';
 
-@Injectable()
-@Dependencies(DataSource, FileService, LocationService, MappingsService)
-export class ItemSubscriber {
+export class ItemSubscriber extends StorageSubscriber {
   constructor(dataSource, fileService, locationService, mappingsService) {
-    dataSource.subscribers.push(this);
-    this.fileService = fileService;
-    this.locationService = locationService;
-    this.mappingsService = mappingsService;
+    super(dataSource, fileService, locationService, mappingsService, Item);
   }
 
-  listenTo() {
-    return Item;
-  }
-
-  async before(e, databaseEntity) {
-    const { repository, type } =
-      this.mappingsService.findByItem(databaseEntity);
-    const result = plainToInstance(type, databaseEntity, {
-      repository,
-      groups: [RESOURCE, REFERENCE]
-    });
-    for (const k of Object.keys(result).filter(
-      (k) => result[k] instanceof Promise
-    )) {
-      result[k] = await result[k];
-    }
-    e.location = this.locationService.location(result);
-  }
-
-  afterInsert({ entity }) {
+  async beforeInsert(e) {
+    const { entity } = e;
     const { init } = entity;
     if (init) {
       return;
     }
-    this.fileService.create(
-      this.locationService.location(entity),
-      entity.files
-    );
+    await this.save(e, entity);
   }
 
-  async beforeUpdate({ entity: { init }, databaseEntity, queryRunner }) {
+  afterInsert(e) {
+    const item = this.restore(e);
+    if (!item) {
+      return;
+    }
+    const { entity } = e;
+    this.fileService.create(this.locationService.location(item), entity.files);
+  }
+
+  async beforeUpdate(e) {
+    const {
+      entity: { init },
+      databaseEntity
+    } = e;
     if (init) {
       return;
     }
-    await this.before(queryRunner, databaseEntity);
+    await this.save(e, databaseEntity);
   }
 
-  afterUpdate({ entity, queryRunner }) {
-    const { location } = queryRunner;
-    if (!location) {
+  afterUpdate(e) {
+    const item = this.restore(e);
+    if (!item) {
       return;
     }
+    const { entity } = e;
     this.fileService.update(
-      location,
+      this.locationService.location(item),
       this.locationService.location(entity),
       entity.files
     );
-    queryRunner.location = undefined;
   }
 
-  async beforeRemove({ entity: { init }, databaseEntity, queryRunner }) {
-    if (init) {
-      return;
-    }
-    await this.before(queryRunner, databaseEntity);
+  async beforeRemove(e) {
+    const { databaseEntity } = e;
+    await this.save(e, databaseEntity);
   }
 
-  afterRemove({ queryRunner }) {
-    const { location } = queryRunner;
-    if (!location) {
-      return;
-    }
-    this.fileService.clean(location, []);
-    queryRunner.location = undefined;
+  afterRemove(e) {
+    const item = this.restore(e);
+    this.fileService.clean(this.locationService.location(item), []);
   }
 }
