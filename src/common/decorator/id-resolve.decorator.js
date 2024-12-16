@@ -23,10 +23,9 @@ export function IdResolve(type, name) {
                 });
                 return value.map((id) => items.find((item) => id === item.id));
               })()
-            : manager.findOneBy(
-                type(),
-                typeof value === 'object' ? value : { id: value }
-              )
+            : manager.findOneBy(type(), {
+                id: typeof value === 'object' ? value.id : value
+              })
           : undefined,
       { toClassOnly: true }
     ),
