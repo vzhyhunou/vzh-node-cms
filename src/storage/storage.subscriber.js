@@ -36,10 +36,16 @@ export class StorageSubscriber {
     return result;
   }
 
+  async transformMany(items) {
+    return await Promise.all(
+      items.map(async (item) => await this.transform(item))
+    );
+  }
+
   async save({ queryRunner }, item) {
-    queryRunner.item = await (Array.isArray(item)
-      ? Promise.all(item.map(this.transform))
-      : this.transform(item));
+    queryRunner.item = Array.isArray(item)
+      ? await this.transformMany(item)
+      : await this.transform(item);
   }
 
   restore({ queryRunner }) {
