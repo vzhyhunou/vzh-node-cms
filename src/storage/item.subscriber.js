@@ -42,8 +42,8 @@ export class ItemSubscriber extends StorageSubscriber {
   }
 
   async beforeRemove(e) {
-    const { databaseEntity } = e;
-    this.save(e, await this.transform(databaseEntity));
+    const { entity } = e;
+    this.save(e, await this.transform(entity));
   }
 
   afterRemove(e) {
