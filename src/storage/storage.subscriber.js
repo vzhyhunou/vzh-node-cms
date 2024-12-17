@@ -44,14 +44,14 @@ export class StorageSubscriber {
   }
 
   save({ queryRunner }, item) {
-    queryRunner[this] = item;
+    queryRunner[this.type.name] = item;
   }
 
   restore({ queryRunner }) {
     try {
-      return queryRunner[this];
+      return queryRunner[this.type.name];
     } finally {
-      queryRunner[this] = undefined;
+      queryRunner[this.type.name] = undefined;
     }
   }
 }
