@@ -22,11 +22,12 @@ export class StorageSubscriber {
     return this.type;
   }
 
-  async transform(item) {
+  async transform(item, options = {}) {
     const { repository, type } = this.mappingsService.findByItem(item);
     const result = plainToInstance(type, item, {
       repository,
-      groups: [RESOURCE, REFERENCE]
+      groups: [RESOURCE, REFERENCE],
+      ...options
     });
     for (const k of Object.keys(result).filter(
       (k) => result[k] instanceof Promise
@@ -36,9 +37,9 @@ export class StorageSubscriber {
     return result;
   }
 
-  async transformMany(items) {
+  async transformMany(items, options) {
     return await Promise.all(
-      items.map(async (item) => await this.transform(item))
+      items.map(async (item) => await this.transform(item, options))
     );
   }
 
