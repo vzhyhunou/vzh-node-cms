@@ -42,10 +42,8 @@ export class StorageSubscriber {
     );
   }
 
-  async save({ queryRunner }, item) {
-    queryRunner.item = Array.isArray(item)
-      ? await this.transformMany(item)
-      : await this.transform(item);
+  save({ queryRunner }, item) {
+    queryRunner.item = item;
   }
 
   restore({ queryRunner }) {
