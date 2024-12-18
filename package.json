@@ -1,6 +1,6 @@
 {
   "name": "@vzhyhunou/vzh-node-cms",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "scripts": {
     "clean": "rimraf dist",
     "format": "prettier --write '{src,test}/**/*.{js,json}'",
