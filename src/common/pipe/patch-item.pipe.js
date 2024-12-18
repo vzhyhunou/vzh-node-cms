@@ -11,12 +11,7 @@ export class PatchItemPipe {
   }
 
   async transform(value) {
-    const entity = await this.repository.findOne({
-      relations: Object.fromEntries(
-        this.repository.getRelationNames().map((name) => [name, true])
-      ),
-      where: this.request.params
-    });
+    const entity = await this.repository.findById(this.request.params.id);
     return {
       ...instanceToPlain(entity, { groups: [RESOURCE, REFERENCE] }),
       ...value
