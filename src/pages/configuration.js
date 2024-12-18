@@ -5,6 +5,8 @@ import { REQUEST } from '@nestjs/core';
 import { ParseItemPipe } from '../common/pipe/parse-item.pipe';
 import { PatchItemPipe } from '../common/pipe/patch-item.pipe';
 import { Page } from './page.entity';
+import { FileService } from '../storage/file.service';
+import { LocationService } from '../storage/location.service';
 
 @Dependencies(getCustomRepositoryToken(Page))
 export class ParsePagePipe extends ParseItemPipe {
@@ -13,9 +15,14 @@ export class ParsePagePipe extends ParseItemPipe {
   }
 }
 
-@Dependencies(getCustomRepositoryToken(Page), REQUEST)
+@Dependencies(
+  getCustomRepositoryToken(Page),
+  FileService,
+  LocationService,
+  REQUEST
+)
 export class PatchPagePipe extends PatchItemPipe {
-  constructor(repository, request) {
-    super(repository, request);
+  constructor(repository, fileService, locationService, request) {
+    super(repository, fileService, locationService, request);
   }
 }
