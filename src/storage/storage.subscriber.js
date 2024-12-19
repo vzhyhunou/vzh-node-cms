@@ -50,12 +50,12 @@ export class StorageSubscriber {
     queryRunner.q.push(call);
   }
 
-  afterTransactionCommit({ queryRunner }) {
+  async afterTransactionCommit({ queryRunner }) {
     if (!queryRunner.q) {
       return;
     }
     while (queryRunner.q.length) {
-      queryRunner.q.shift()();
+      await queryRunner.q.shift()();
     }
   }
 
