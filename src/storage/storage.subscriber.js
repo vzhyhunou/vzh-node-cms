@@ -43,14 +43,23 @@ export class StorageSubscriber {
     );
   }
 
-  save({ queryRunner }, item) {
-    if (!queryRunner.item) {
-      queryRunner.item = [];
+  push({ queryRunner }, call) {
+    if (!queryRunner.q) {
+      queryRunner.q = [];
     }
-    queryRunner.item.push(item);
+    queryRunner.q.push(call);
   }
 
-  restore({ queryRunner }) {
-    return queryRunner.item.shift();
+  afterTransactionCommit({ queryRunner }) {
+    if (!queryRunner.q) {
+      return;
+    }
+    while (queryRunner.q.length) {
+      queryRunner.q.shift()();
+    }
+  }
+
+  afterTransactionRollback({ queryRunner }) {
+    queryRunner.q = undefined;
   }
 }
