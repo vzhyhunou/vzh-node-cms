@@ -6,48 +6,41 @@ export class ItemSubscriber extends StorageSubscriber {
     super(dataSource, fileService, locationService, mappingsService, Item);
   }
 
-  afterInsert({ entity }) {
+  beforeInsert(e) {
+    const { entity } = e;
     const { init } = entity;
     if (init) {
       return;
     }
-    this.fileService.create(
-      this.locationService.location(entity),
-      entity.files
+    this.push(e, () =>
+      this.fileService.create(
+        this.locationService.location(entity),
+        entity.files
+      )
     );
   }
 
   async beforeUpdate(e) {
-    const {
-      entity: { init },
-      databaseEntity
-    } = e;
+    const { entity, databaseEntity } = e;
+    const { init } = entity;
     if (init) {
       return;
     }
-    this.save(e, await this.transform(databaseEntity));
-  }
-
-  afterUpdate(e) {
-    const item = this.restore(e);
-    if (!item) {
-      return;
-    }
-    const { entity } = e;
-    this.fileService.update(
-      this.locationService.location(item),
-      this.locationService.location(entity),
-      entity.files
+    const item = await this.transform(databaseEntity);
+    this.push(e, () =>
+      this.fileService.update(
+        this.locationService.location(item),
+        this.locationService.location(entity),
+        entity.files
+      )
     );
   }
 
   async beforeRemove(e) {
     const { databaseEntity } = e;
-    this.save(e, await this.transform(databaseEntity));
-  }
-
-  afterRemove(e) {
-    const item = this.restore(e);
-    this.fileService.clean(this.locationService.location(item), []);
+    const item = await this.transform(databaseEntity);
+    this.push(e, () =>
+      this.fileService.clean(this.locationService.location(item), [])
+    );
   }
 }
