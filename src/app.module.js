@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { EventEmitterModule } from '@nestjs/event-emitter';
 import { UsersModule } from './users/users.module';
 import { DatasourceModule } from './datasource/datasource.module';
 import { ConfigModule } from './config/config.module';
@@ -10,6 +11,7 @@ import { I18nModule } from './i18n/i18n.module';
 
 @Module({
   imports: [
+    EventEmitterModule.forRoot(),
     ConfigModule,
     DatasourceModule,
     UsersModule,

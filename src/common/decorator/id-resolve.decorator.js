@@ -19,12 +19,13 @@ export function IdResolve(type, name) {
           ? Array.isArray(value)
             ? (async () => {
                 const items = await manager.findBy(type(), {
-                  id: In(value.map((v) => (typeof v === 'object' ? v.id : v)))
+                  [manager.getRepository(type()).getPrimaryColumnName()]:
+                    In(value)
                 });
                 return value.map((id) => items.find((item) => id === item.id));
               })()
             : manager.findOneBy(type(), {
-                id: typeof value === 'object' ? value.id : value
+                [manager.getRepository(type()).getPrimaryColumnName()]: value
               })
           : undefined,
       { toClassOnly: true }

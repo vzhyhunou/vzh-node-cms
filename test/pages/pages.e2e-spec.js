@@ -1,4 +1,5 @@
 import { Test } from '@nestjs/testing';
+import { EventEmitterModule } from '@nestjs/event-emitter';
 import { getEntityManagerToken } from '@nestjs/typeorm';
 import request from 'supertest';
 
@@ -32,6 +33,7 @@ describe('PagesController (e2e)', () => {
   beforeEach(async () => {
     const moduleFixture = await Test.createTestingModule({
       imports: [
+        EventEmitterModule.forRoot(),
         ConfigModule,
         DatasourceModule,
         AuthModule,
