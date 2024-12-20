@@ -33,7 +33,9 @@ describe('PagesController (e2e)', () => {
   beforeEach(async () => {
     const moduleFixture = await Test.createTestingModule({
       imports: [
-        EventEmitterModule.forRoot(),
+        EventEmitterModule.forRoot({
+          wildcard: true
+        }),
         ConfigModule,
         DatasourceModule,
         AuthModule,

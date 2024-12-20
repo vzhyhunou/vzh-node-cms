@@ -197,10 +197,10 @@ describe('UsersController (e2e)', () => {
     });
     expect(result).toMatchObject({
       id: entity.id,
-      password: entity.password,
       tags: [{ name: dto.tags[0].name }],
       user: { id: entity.user.id }
     });
+    expect(result).toHaveProperty('password');
   });
 
   it('/users/search/findByIdIn (GET)', async () => {

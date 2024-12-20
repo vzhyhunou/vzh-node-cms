@@ -11,7 +11,7 @@ import customRepository from './users.repository';
 import { UserTag } from './user-tag.entity';
 import { UserResource } from './user.resource';
 import { StorageModule } from '../storage/storage.module';
-import { UserSubscriber } from './user.subscriber';
+import { UserListener } from './user.listener';
 
 @Module({
   imports: [TypeOrmModule.forFeature([User, UserTag]), StorageModule],
@@ -23,7 +23,7 @@ import { UserSubscriber } from './user.subscriber';
       useFactory: (repository) => repository.extend(customRepository)
     },
     UserResource,
-    UserSubscriber
+    UserListener
   ],
   exports: [getCustomRepositoryToken(User)]
 })

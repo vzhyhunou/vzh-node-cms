@@ -31,7 +31,7 @@ import { MenuPageInterceptor } from './menu.page.interceptor';
 @Dependencies(getCustomRepositoryToken(Page), EventEmitter2)
 export class PagesController extends ItemsController {
   constructor(repository, eventEmitter) {
-    super(repository, eventEmitter);
+    super(repository, eventEmitter, Page);
   }
 
   @Post()
@@ -42,14 +42,14 @@ export class PagesController extends ItemsController {
 
   @Put(':id')
   @Bind(Body(ParsePagePipe, AuditItemPipe))
-  async save(entity) {
-    return await super.save(entity);
+  async update(entity) {
+    return await super.update(entity);
   }
 
   @Patch(':id')
   @Bind(Body(PatchPagePipe, ParsePagePipe, AuditItemPipe))
   async patch(entity) {
-    return await super.patch(entity);
+    return await super.update(entity);
   }
 
   @Delete(':id')
