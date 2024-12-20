@@ -1,4 +1,5 @@
 import { Test } from '@nestjs/testing';
+import { EventEmitterModule } from '@nestjs/event-emitter';
 import { getEntityManagerToken } from '@nestjs/typeorm';
 import request from 'supertest';
 
@@ -15,7 +16,12 @@ describe('UsersController (e2e)', () => {
 
   beforeEach(async () => {
     const moduleFixture = await Test.createTestingModule({
-      imports: [ConfigModule, DatasourceModule, AuthModule]
+      imports: [
+        EventEmitterModule.forRoot(),
+        ConfigModule,
+        DatasourceModule,
+        AuthModule
+      ]
     }).compile();
 
     manager = moduleFixture.get(getEntityManagerToken());

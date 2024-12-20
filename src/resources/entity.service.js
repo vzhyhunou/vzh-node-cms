@@ -17,14 +17,12 @@ export class EntityService {
 
   async create(item) {
     const { repository } = this.mappingsService.findByItem(item);
-    item.init = true;
     await repository.save(item);
   }
 
   async update(item) {
     item.version = (await this.find(item)).version;
     const { repository } = this.mappingsService.findByItem(item);
-    item.init = true;
     await repository.save(item);
   }
 

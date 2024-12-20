@@ -1,6 +1,7 @@
 export class BaseController {
-  constructor(repository) {
+  constructor(repository, eventEmitter) {
     this.repository = repository;
+    this.eventEmitter = eventEmitter;
   }
 
   /*
@@ -18,7 +19,11 @@ export class BaseController {
   }
   */
   async create(entity) {
-    return await this.repository.save(entity);
+    const entityId = entity[this.repository.getPrimaryColumnName()];
+    await this.repository.save(entity);
+    const updatedEntity = await this.repository.findById(entityId);
+    this.eventEmitter.emit('created', { entityId, entity, updatedEntity });
+    return updatedEntity;
   }
 
   /*
@@ -36,7 +41,17 @@ export class BaseController {
   }
   */
   async save(entity) {
-    return await this.repository.save(entity);
+    const entityId = entity[this.repository.getPrimaryColumnName()];
+    const databaseEntity = await this.repository.findById(entityId);
+    await this.repository.save(entity);
+    const updatedEntity = await this.repository.findById(entityId);
+    this.eventEmitter.emit('updated', {
+      entityId,
+      entity,
+      databaseEntity,
+      updatedEntity
+    });
+    return updatedEntity;
   }
 
   /*
@@ -53,13 +68,27 @@ export class BaseController {
   }
   */
   async patch(entity) {
-    return await this.repository.save(entity);
+    const entityId = entity[this.repository.getPrimaryColumnName()];
+    const databaseEntity = await this.repository.findById(entityId);
+    await this.repository.save(entity);
+    const updatedEntity = await this.repository.findById(entityId);
+    this.eventEmitter.emit('updated', {
+      entityId,
+      entity,
+      databaseEntity,
+      updatedEntity
+    });
+    return updatedEntity;
   }
 
   /*
   DELETE http://localhost:3010/api/users/editor
   */
-  async remove(id) {
-    await this.repository.remove({ id });
+  async remove(entityId) {
+    const databaseEntity = await this.repository.findById(entityId);
+    await this.repository.remove({
+      [this.repository.getPrimaryColumnName()]: entityId
+    });
+    this.eventEmitter.emit('removed', { entityId, databaseEntity });
   }
 }

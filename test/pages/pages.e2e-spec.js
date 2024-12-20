@@ -1,4 +1,5 @@
 import { Test } from '@nestjs/testing';
+import { EventEmitterModule } from '@nestjs/event-emitter';
 import { getEntityManagerToken } from '@nestjs/typeorm';
 import request from 'supertest';
 
@@ -13,21 +14,36 @@ import { AuthModule } from '../../src/auth/auth.module';
 import { PagesModule } from '../../src/pages/pages.module';
 import { I18nModule } from '../../src/i18n/i18n.module';
 import { PAGE_TAG } from '../../src/pages/constants';
+import { FileService } from '../../src/storage/file.service';
 
 describe('PagesController (e2e)', () => {
   let manager;
+  let fileService;
   let app;
+
+  beforeAll(() => {
+    fileService = {
+      create: jest.fn(),
+      update: jest.fn(),
+      read: jest.fn().mockReturnValue([]),
+      clean: jest.fn()
+    };
+  });
 
   beforeEach(async () => {
     const moduleFixture = await Test.createTestingModule({
       imports: [
+        EventEmitterModule.forRoot(),
         ConfigModule,
         DatasourceModule,
         AuthModule,
         I18nModule,
         PagesModule
       ]
-    }).compile();
+    })
+      .overrideProvider(FileService)
+      .useValue(fileService)
+      .compile();
 
     manager = moduleFixture.get(getEntityManagerToken());
     app = moduleFixture.createNestApplication();
@@ -166,6 +182,7 @@ describe('PagesController (e2e)', () => {
         })),
         user: { id: dto.userId }
       });
+      expect(fileService.create).toHaveBeenCalledWith('pages/sample', []);
     });
   });
 
@@ -212,6 +229,11 @@ describe('PagesController (e2e)', () => {
       })),
       user: { id: dto.userId }
     });
+    expect(fileService.update).toHaveBeenCalledWith(
+      'pages/sample',
+      'pages/sample',
+      []
+    );
   });
 
   describe('/pages/:id (PATCH)', () => {
@@ -248,6 +270,11 @@ describe('PagesController (e2e)', () => {
         })),
         user: { id: entity.user.id }
       });
+      expect(fileService.update).toHaveBeenCalledWith(
+        'pages/sample',
+        'pages/sample',
+        []
+      );
     });
 
     it('should update page', async () => {
@@ -275,6 +302,11 @@ describe('PagesController (e2e)', () => {
         content: [{ key: 'ru', value: 'sample.ru.content' }],
         user: { id: entity.user.id }
       });
+      expect(fileService.update).toHaveBeenCalledWith(
+        'pages/sample',
+        'pages/sample',
+        []
+      );
     });
   });
 
@@ -443,6 +475,15 @@ describe('PagesController (e2e)', () => {
           ]);
         });
     });
+  });
+
+  it('/pages/:id (DELETE)', async () => {
+    let entity = manager.create(Page, page('sample'));
+    await manager.save(entity);
+    await request(app.getHttpServer()).delete('/api/pages/sample').expect(200);
+    const result = await manager.findOneBy(Page, { id: 'sample' });
+    expect(result).toBeNull();
+    expect(fileService.clean).toHaveBeenCalledWith('pages/sample', []);
   });
 
   afterEach(async () => {

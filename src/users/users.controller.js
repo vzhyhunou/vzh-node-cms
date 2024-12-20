@@ -9,6 +9,7 @@ import {
   Bind,
   Param
 } from '@nestjs/common';
+import { EventEmitter2 } from '@nestjs/event-emitter';
 import { getCustomRepositoryToken } from '@nestjs/typeorm';
 
 import { User } from './user.entity';
@@ -20,10 +21,10 @@ import { ItemsController } from '../common/controller/items.controller';
 
 @Controller(`api/${USERS}`)
 @Roles(USER_TAG.MANAGER)
-@Dependencies(getCustomRepositoryToken(User))
+@Dependencies(getCustomRepositoryToken(User), EventEmitter2)
 export class UsersController extends ItemsController {
-  constructor(repository) {
-    super(repository);
+  constructor(repository, eventEmitter) {
+    super(repository, eventEmitter);
   }
 
   @Post()
@@ -47,6 +48,6 @@ export class UsersController extends ItemsController {
   @Delete(':id')
   @Bind(Param('id'))
   async remove(id) {
-    return await super.remove(id);
+    await super.remove(id);
   }
 }

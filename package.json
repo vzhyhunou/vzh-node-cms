@@ -1,6 +1,6 @@
 {
   "name": "@vzhyhunou/vzh-node-cms",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "scripts": {
     "clean": "rimraf dist",
     "format": "prettier --write '{src,test}/**/*.{js,json}'",
@@ -15,8 +15,7 @@
     "test:e2e:users": "cross-env NODE_ENV=development jest --config ./test/users/users.jest-e2e.json",
     "test:e2e:users:repository": "cross-env NODE_ENV=development jest --config ./test/users/users.repository.jest-e2e.json",
     "test:e2e:pages": "cross-env NODE_ENV=development jest --config ./test/pages/pages.jest-e2e.json",
-    "test:e2e:pages:repository": "cross-env NODE_ENV=development jest --config ./test/pages/pages.repository.jest-e2e.json",
-    "test:e2e:page:subscriber": "cross-env NODE_ENV=development jest --config ./test/pages/page.subscriber.jest-e2e.json"
+    "test:e2e:pages:repository": "cross-env NODE_ENV=development jest --config ./test/pages/pages.repository.jest-e2e.json"
   },
   "dependencies": {
     "@babel/runtime": "^7.23.9",
@@ -29,6 +28,7 @@
     "@nestjs/jwt": "^10.2.0",
     "@nestjs/passport": "^10.0.3",
     "@nestjs/serve-static": "^4.0.2",
+    "@nestjs/event-emitter": "^2.1.1",
     "nestjs-i18n": "^10.4.5",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.1",

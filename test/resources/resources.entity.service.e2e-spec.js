@@ -1,5 +1,7 @@
 import { Test } from '@nestjs/testing';
+import { EventEmitterModule } from '@nestjs/event-emitter';
 import { getEntityManagerToken } from '@nestjs/typeorm';
+
 import { DatasourceModule } from '../../src/datasource/datasource.module';
 import { ConfigModule } from '../../src/config/config.module';
 import { EntityService } from '../../src/resources/entity.service';
@@ -15,7 +17,12 @@ describe('EntityService (e2e)', () => {
 
   beforeEach(async () => {
     const moduleFixture = await Test.createTestingModule({
-      imports: [ConfigModule, DatasourceModule, UsersModule]
+      imports: [
+        EventEmitterModule.forRoot(),
+        ConfigModule,
+        DatasourceModule,
+        UsersModule
+      ]
     }).compile();
 
     manager = moduleFixture.get(getEntityManagerToken());

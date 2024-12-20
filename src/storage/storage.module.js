@@ -5,11 +5,11 @@ import { FileService } from './file.service';
 import { LocationService } from './location.service';
 import { MappingsService } from './mappings.service';
 import { config } from './configuration';
-import { ItemSubscriber } from './item.subscriber';
+import { ItemListener } from './item.listener';
 
 @Module({
   imports: [ConfigModule.forFeature(config)],
-  providers: [FileService, LocationService, MappingsService, ItemSubscriber],
+  providers: [FileService, LocationService, MappingsService, ItemListener],
   exports: [FileService, LocationService, MappingsService]
 })
 export class StorageModule {}

@@ -12,6 +12,7 @@ import {
   Request,
   UseInterceptors
 } from '@nestjs/common';
+import { EventEmitter2 } from '@nestjs/event-emitter';
 import { getCustomRepositoryToken } from '@nestjs/typeorm';
 
 import { Page } from './page.entity';
@@ -27,10 +28,10 @@ import { MenuPageInterceptor } from './menu.page.interceptor';
 
 @Controller(`api/${PAGES}`)
 @Roles(USER_TAG.PAGES_EDITOR)
-@Dependencies(getCustomRepositoryToken(Page))
+@Dependencies(getCustomRepositoryToken(Page), EventEmitter2)
 export class PagesController extends ItemsController {
-  constructor(repository) {
-    super(repository);
+  constructor(repository, eventEmitter) {
+    super(repository, eventEmitter);
   }
 
   @Post()
@@ -54,7 +55,7 @@ export class PagesController extends ItemsController {
   @Delete(':id')
   @Bind(Param('id'))
   async remove(id) {
-    return await super.remove(id);
+    await super.remove(id);
   }
 
   @Get('search/one/:id')

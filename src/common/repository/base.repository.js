@@ -1,5 +1,4 @@
-import { SelectQueryBuilder } from 'typeorm';
-import { Repository, In } from 'typeorm';
+import { SelectQueryBuilder, Repository, In } from 'typeorm';
 
 Repository.prototype.getRelationNames = function () {
   return this.metadata.relations.map(({ propertyName }) => propertyName);
