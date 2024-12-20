@@ -6,11 +6,6 @@ const PATTERN = /^\$2[ayb]\$.{56}$/;
 
 @Injectable()
 export class UserListener {
-  constructor(fileService, locationService) {
-    this.fileService = fileService;
-    this.locationService = locationService;
-  }
-
   @OnEvent('before.created.user')
   beforeCreated({ entity }) {
     if (!PATTERN.test(entity.password)) {
