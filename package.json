@@ -15,8 +15,7 @@
     "test:e2e:users": "cross-env NODE_ENV=development jest --config ./test/users/users.jest-e2e.json",
     "test:e2e:users:repository": "cross-env NODE_ENV=development jest --config ./test/users/users.repository.jest-e2e.json",
     "test:e2e:pages": "cross-env NODE_ENV=development jest --config ./test/pages/pages.jest-e2e.json",
-    "test:e2e:pages:repository": "cross-env NODE_ENV=development jest --config ./test/pages/pages.repository.jest-e2e.json",
-    "test:e2e:page:subscriber": "cross-env NODE_ENV=development jest --config ./test/pages/page.subscriber.jest-e2e.json"
+    "test:e2e:pages:repository": "cross-env NODE_ENV=development jest --config ./test/pages/pages.repository.jest-e2e.json"
   },
   "dependencies": {
     "@babel/runtime": "^7.23.9",
