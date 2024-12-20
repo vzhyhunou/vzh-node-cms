@@ -18,8 +18,8 @@ import { BaseController } from './base.controller';
   groups: [REFERENCE]
 })
 export class ItemsController extends BaseController {
-  constructor(repository, eventEmitter) {
-    super(repository, eventEmitter);
+  constructor(repository, eventEmitter, type) {
+    super(repository, eventEmitter, type);
   }
 
   /*

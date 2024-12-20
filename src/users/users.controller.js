@@ -24,7 +24,7 @@ import { ItemsController } from '../common/controller/items.controller';
 @Dependencies(getCustomRepositoryToken(User), EventEmitter2)
 export class UsersController extends ItemsController {
   constructor(repository, eventEmitter) {
-    super(repository, eventEmitter);
+    super(repository, eventEmitter, User);
   }
 
   @Post()
@@ -35,14 +35,14 @@ export class UsersController extends ItemsController {
 
   @Put(':id')
   @Bind(Body(ParseUserPipe, AuditItemPipe))
-  async save(entity) {
-    return await super.save(entity);
+  async update(entity) {
+    return await super.update(entity);
   }
 
   @Patch(':id')
   @Bind(Body(PatchUserPipe, ParseUserPipe, AuditItemPipe))
   async patch(entity) {
-    return await super.patch(entity);
+    return await super.update(entity);
   }
 
   @Delete(':id')

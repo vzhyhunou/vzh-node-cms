@@ -12,16 +12,16 @@ export class ItemListener {
     this.locationService = locationService;
   }
 
-  @OnEvent('created')
-  created({ entity }) {
+  @OnEvent('after.created.*')
+  afterCreated({ entity }) {
     this.fileService.create(
       this.locationService.location(entity),
       entity.files
     );
   }
 
-  @OnEvent('updated')
-  updated({ entity, databaseEntity }) {
+  @OnEvent('after.updated.*')
+  afterUpdated({ entity, databaseEntity }) {
     this.fileService.update(
       this.locationService.location(databaseEntity),
       this.locationService.location(entity),
@@ -29,8 +29,8 @@ export class ItemListener {
     );
   }
 
-  @OnEvent('removed')
-  removed({ databaseEntity }) {
+  @OnEvent('after.removed.*')
+  afterRemoved({ databaseEntity }) {
     this.fileService.clean(this.locationService.location(databaseEntity), []);
   }
 }

@@ -1,7 +1,8 @@
 export class BaseController {
-  constructor(repository, eventEmitter) {
+  constructor(repository, eventEmitter, type) {
     this.repository = repository;
     this.eventEmitter = eventEmitter;
+    this.type = type;
   }
 
   /*
@@ -20,9 +21,17 @@ export class BaseController {
   */
   async create(entity) {
     const entityId = entity[this.repository.getPrimaryColumnName()];
+    this.eventEmitter.emit(`before.created.${this.type.name.toLowerCase()}`, {
+      entityId,
+      entity
+    });
     await this.repository.save(entity);
     const updatedEntity = await this.repository.findById(entityId);
-    this.eventEmitter.emit('created', { entityId, entity, updatedEntity });
+    this.eventEmitter.emit(`after.created.${this.type.name.toLowerCase()}`, {
+      entityId,
+      entity,
+      updatedEntity
+    });
     return updatedEntity;
   }
 
@@ -40,19 +49,6 @@ export class BaseController {
     "userId" : "admin"
   }
   */
-  async save(entity) {
-    const entityId = entity[this.repository.getPrimaryColumnName()];
-    const databaseEntity = await this.repository.findById(entityId);
-    await this.repository.save(entity);
-    const updatedEntity = await this.repository.findById(entityId);
-    this.eventEmitter.emit('updated', {
-      entityId,
-      entity,
-      databaseEntity,
-      updatedEntity
-    });
-    return updatedEntity;
-  }
 
   /*
   PATCH http://localhost:3010/api/users/editor
@@ -67,12 +63,18 @@ export class BaseController {
     } ]
   }
   */
-  async patch(entity) {
+
+  async update(entity) {
     const entityId = entity[this.repository.getPrimaryColumnName()];
     const databaseEntity = await this.repository.findById(entityId);
+    this.eventEmitter.emit(`before.updated.${this.type.name.toLowerCase()}`, {
+      entityId,
+      entity,
+      databaseEntity
+    });
     await this.repository.save(entity);
     const updatedEntity = await this.repository.findById(entityId);
-    this.eventEmitter.emit('updated', {
+    this.eventEmitter.emit(`after.updated.${this.type.name.toLowerCase()}`, {
       entityId,
       entity,
       databaseEntity,
@@ -86,9 +88,16 @@ export class BaseController {
   */
   async remove(entityId) {
     const databaseEntity = await this.repository.findById(entityId);
+    this.eventEmitter.emit(`before.removed.${this.type.name.toLowerCase()}`, {
+      entityId,
+      databaseEntity
+    });
     await this.repository.remove({
       [this.repository.getPrimaryColumnName()]: entityId
     });
-    this.eventEmitter.emit('removed', { entityId, databaseEntity });
+    this.eventEmitter.emit(`after.removed.${this.type.name.toLowerCase()}`, {
+      entityId,
+      databaseEntity
+    });
   }
 }

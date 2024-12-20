@@ -11,7 +11,9 @@ import { I18nModule } from './i18n/i18n.module';
 
 @Module({
   imports: [
-    EventEmitterModule.forRoot(),
+    EventEmitterModule.forRoot({
+      wildcard: true
+    }),
     ConfigModule,
     DatasourceModule,
     UsersModule,
