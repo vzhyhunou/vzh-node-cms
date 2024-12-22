@@ -70,8 +70,9 @@ SelectQueryBuilder.prototype.andWhereIn = function (expression, fields) {
 
 SelectQueryBuilder.prototype.andWhereInQuery = function (expression, builder) {
   return this.andWhere(
-    `${expression} in (${builder.getQuery()})`
-  ).setParameters(builder.getParameters());
+    `${expression} in (${builder.getQuery()})`,
+    builder.getParameters()
+  );
 };
 
 SelectQueryBuilder.prototype.orderByName = function (resource, sort) {

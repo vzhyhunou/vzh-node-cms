@@ -23,8 +23,9 @@ export default {
     if (!names.length) {
       return builder;
     }
+    const expression = names.join('.');
     return builder
-      .innerJoin(`${selection}.tags`, 'tag')
-      .andWhereActiveTagNames('tag', names);
+      .innerJoin(`${selection}.tags`, expression)
+      .andWhereActiveTagNames(expression, names);
   }
 };
