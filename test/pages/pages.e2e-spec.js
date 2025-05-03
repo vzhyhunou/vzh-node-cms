@@ -60,7 +60,7 @@ describe('PagesController (e2e)', () => {
     await manager.save(entity);
     entity = manager.create(Page, page('sample', [tag('b')], ['ru'], entity));
     await manager.save(entity);
-    return request(app.getHttpServer())
+    await request(app.getHttpServer())
       .get('/api/pages?page=0&size=10&sort=id%2CASC')
       .expect(200)
       .expect(({ body }) => {
@@ -88,7 +88,7 @@ describe('PagesController (e2e)', () => {
   it('/pages/search/list (GET)', async () => {
     const entity = manager.create(Page, page('home', [tag('b')], ['en', 'ru']));
     await manager.save(entity);
-    return request(app.getHttpServer())
+    await request(app.getHttpServer())
       .get('/api/pages/search/list?id=h&page=0&size=10&sort=id%2CASC&tags=b')
       .set('Accept-Language', 'ru')
       .expect(200)
@@ -113,7 +113,7 @@ describe('PagesController (e2e)', () => {
     await manager.save(entity);
     entity = manager.create(Page, page('sample', [tag('b')], ['ru'], entity));
     await manager.save(entity);
-    return request(app.getHttpServer())
+    await request(app.getHttpServer())
       .get('/api/pages/sample')
       .expect(200)
       .expect(({ body }) => {
@@ -319,7 +319,7 @@ describe('PagesController (e2e)', () => {
     await manager.save(entity);
     entity = manager.create(Page, page('sample', [tag('b')], ['ru'], entity));
     await manager.save(entity);
-    return request(app.getHttpServer())
+    await request(app.getHttpServer())
       .get('/api/pages/search/findByIdIn?ids=sample')
       .expect(200)
       .expect(({ body }) => {
@@ -341,7 +341,7 @@ describe('PagesController (e2e)', () => {
     it('should return no object', async () => {
       const entity = manager.create(Page, page('sample', [], ['en']));
       await manager.save(entity);
-      return request(app.getHttpServer())
+      await request(app.getHttpServer())
         .get('/api/pages/search/one/sample')
         .expect(200)
         .expect(({ body }) => {
@@ -357,7 +357,7 @@ describe('PagesController (e2e)', () => {
         page('sample', [tag(PAGE_TAG.PUBLISHED)], ['en'])
       );
       await manager.save(entity);
-      return request(app.getHttpServer())
+      await request(app.getHttpServer())
         .get('/api/pages/search/one/sample')
         .expect(200)
         .expect(({ body }) => {
@@ -376,7 +376,7 @@ describe('PagesController (e2e)', () => {
         page('sample', [tag(PAGE_TAG.PUBLISHED)], ['en'])
       );
       await manager.save(entity);
-      return request(app.getHttpServer())
+      await request(app.getHttpServer())
         .get('/api/pages/search/one/sample')
         .set('Accept-Language', 'ru')
         .expect(200)
@@ -393,7 +393,7 @@ describe('PagesController (e2e)', () => {
         page('sample', [tag(PAGE_TAG.PUBLISHED)], ['en', 'ru'])
       );
       await manager.save(entity);
-      return request(app.getHttpServer())
+      await request(app.getHttpServer())
         .get('/api/pages/search/one/sample')
         .set('Accept-Language', 'ru')
         .expect(200)
@@ -412,7 +412,7 @@ describe('PagesController (e2e)', () => {
     it('should return an empty array', async () => {
       const entity = manager.create(Page, page('sample', [], ['en']));
       await manager.save(entity);
-      return request(app.getHttpServer())
+      await request(app.getHttpServer())
         .get('/api/pages/search/menu')
         .expect(200)
         .expect(({ body }) => {
@@ -428,7 +428,7 @@ describe('PagesController (e2e)', () => {
         page('sample', [tag(PAGE_TAG.MENU)], ['en'])
       );
       await manager.save(entity);
-      return request(app.getHttpServer())
+      await request(app.getHttpServer())
         .get('/api/pages/search/menu')
         .expect(200)
         .expect(({ body }) => {
@@ -447,7 +447,7 @@ describe('PagesController (e2e)', () => {
         page('sample', [tag(PAGE_TAG.MENU)], ['en'])
       );
       await manager.save(entity);
-      return request(app.getHttpServer())
+      await request(app.getHttpServer())
         .get('/api/pages/search/menu')
         .set('Accept-Language', 'ru')
         .expect(200)
@@ -464,7 +464,7 @@ describe('PagesController (e2e)', () => {
         page('sample', [tag(PAGE_TAG.MENU)], ['en', 'ru'])
       );
       await manager.save(entity);
-      return request(app.getHttpServer())
+      await request(app.getHttpServer())
         .get('/api/pages/search/menu')
         .set('Accept-Language', 'ru')
         .expect(200)

@@ -35,7 +35,7 @@ describe('UsersController (e2e)', () => {
     await manager.save(entity);
     entity = manager.create(User, user('manager', [tag('b')], entity));
     await manager.save(entity);
-    return request(app.getHttpServer())
+    await request(app.getHttpServer())
       .get('/api/users?page=0&size=10&sort=id%2CASC')
       .expect(200)
       .expect(({ body }) => {
@@ -53,7 +53,7 @@ describe('UsersController (e2e)', () => {
   it('/users/search/list (GET)', async () => {
     const entity = manager.create(User, user('manager', [tag('b')]));
     await manager.save(entity);
-    return request(app.getHttpServer())
+    await request(app.getHttpServer())
       .get('/api/users/search/list?id=a&page=0&size=10&sort=id%2CASC&tags=b')
       .expect(200)
       .expect(({ body }) => {
@@ -70,7 +70,7 @@ describe('UsersController (e2e)', () => {
     await manager.save(entity);
     entity = manager.create(User, user('manager', [tag('b')], entity));
     await manager.save(entity);
-    return request(app.getHttpServer())
+    await request(app.getHttpServer())
       .get('/api/users/manager')
       .expect(200)
       .expect(({ body }) => {
@@ -208,7 +208,7 @@ describe('UsersController (e2e)', () => {
     await manager.save(entity);
     entity = manager.create(User, user('manager', [tag('b')], entity));
     await manager.save(entity);
-    return request(app.getHttpServer())
+    await request(app.getHttpServer())
       .get('/api/users/search/findByIdIn?ids=manager')
       .expect(200)
       .expect(({ body }) => {
